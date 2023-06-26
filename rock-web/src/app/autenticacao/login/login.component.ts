@@ -13,7 +13,7 @@ import { version } from '../../../../package.json';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  nomeApp = 'bume';
+  nomeApp = 'rockjobs';
   versao = '0.0.0';
 
   visivel = false;

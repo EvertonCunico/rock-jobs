@@ -1,8 +1,6 @@
 import { Component, Injector, OnInit } from "@angular/core";
 import {
   AbstractControl,
-  FormArray,
-  FormControl,
   FormGroup,
   Validators,
 } from "@angular/forms";
@@ -15,6 +13,9 @@ import { UsuarioCRUDService } from "app/services/usuario-crud.service";
 import { cpf } from "cpf-cnpj-validator";
 import { MessageService } from "primeng/api";
 import { AlteracaoSenhaAdmin } from "../../../modelos/alteracao_senha_admin";
+import { EnumUtils } from "app/shared/utils/enum-utils";
+import { SimNaoBoolean } from "@boom/modelos/sim-nao";
+import { RolesUser } from "app/modelos/roles";
 
 export function verificarCPFValido(
   control: AbstractControl
@@ -42,16 +43,9 @@ export class UsuarioManutencaoComponent
 {
   idUsuario: any = null;
 
-  situacoes = [
-    { label: "Sim", value: true },
-    { label: "Não", value: false },
-  ];
+  situacoes = [];
 
-  permissoes = [
-    { value: "RH_EMPRESA", label: "RH da Empresa", checked: false },
-    { value: "ADMIN_EMPRESA", label: "Administrador Empresa", checked: false },
-    { value: "ADMIN_GERAL", label: "Administrador Geral", checked: false },
-  ];
+  permissoes = [];
 
   formAlterarSenha: FormGroup;
 
@@ -63,12 +57,13 @@ export class UsuarioManutencaoComponent
     super(injector, userCRUDService);
     this.titulo = "Cadastros / Usuário";
     this.form = this.formBuilder.group({
-      nome: ["", [Validators.required, Validators.maxLength(100)]],
+      nome: ["", [Validators.required, Validators.maxLength(255)]],
+      sobrenome: ["", [Validators.required, Validators.maxLength(255)]],
       email: [
         "",
         [Validators.required, Validators.maxLength(100), Validators.email],
       ],
-      login: [
+      senha: [
         "",
         [
           Validators.required,
@@ -76,7 +71,11 @@ export class UsuarioManutencaoComponent
           Validators.maxLength(100),
         ],
       ],
-      senha: [
+      confirmaremail: [
+        "",
+        [Validators.required, Validators.maxLength(100), Validators.email],
+      ],
+      confirmarsenha: [
         "",
         [
           Validators.required,
@@ -105,6 +104,8 @@ export class UsuarioManutencaoComponent
           Validators.maxLength(10),
         ],
       ],
+      endereco: [''],
+      cliente: [''],
       ativo: [true, [Validators.required]],
       tipoAcesso: ["RH_EMPRESA", Validators.required],
     });
@@ -112,6 +113,26 @@ export class UsuarioManutencaoComponent
       idUsuario: [null, [Validators.required]],
       senha: [null, [Validators.required]],
     });
+  }
+
+  onRegistroValidar(registro: Usuario) {
+    if (!registro.id) {
+      //Valida campo e-mail e confirmar e-mail
+      if (this.form.get('email').value != this.form.get('confirmaremail').value) {
+        this.mensagemService.notificarMensagemAlerta('Atenção!', 'Os e-mail informados não coincidem!');
+        return false;
+      }
+
+      //Valida preenchimento da senha com valor válido
+      this.validarSenha();
+
+      //Valida campo senha e confirmar senha
+      if (this.form.get('senha').value != this.form.get('confirmarsenha').value) {
+        this.mensagemService.notificarMensagemAlerta('Atenção!', 'As senhas não coincidem!');
+        return false;
+      }
+    }
+    return true;
   }
 
   validarSenha() {
@@ -169,5 +190,8 @@ export class UsuarioManutencaoComponent
     if (this.idUsuario) {
       this.form.get('senha').setValidators(null);
     }
+
+    this.situacoes = EnumUtils.getLabelValueArray(SimNaoBoolean);
+    this.permissoes = EnumUtils.getLabelValueArray(RolesUser);
   }
 }

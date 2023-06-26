@@ -12,7 +12,7 @@ import {MessageService} from 'primeng/api';
   styleUrls: ['./esqueci-senha.component.css']
 })
 export class EsqueciSenhaComponent implements OnInit {
-  nomeApp = 'bume';
+  nomeApp = 'rockjobs';
   versao = '0.0.0';
 
   visivel = false;

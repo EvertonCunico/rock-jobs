@@ -21,11 +21,11 @@ export class UserDetailComponent implements OnInit {
 
     @Input()
     set loginInfo(loginInfo: LoginInfo) {
-        if (loginInfo && loginInfo.usuario.login) {
-            const nome = loginInfo.usuario.nome.split(' ')[0];
+        if (loginInfo && loginInfo.usuario.email) {
+            const nome = loginInfo.usuario.nome;
             // this.nomeUsuario = nome.length > 7 ? (nome.slice(0, 7) + '...') : nome;
             this.nomeUsuario = nome;
-            this.login = loginInfo.usuario.login.split(' ')[0];
+            this.login = loginInfo.usuario.email;
         } else {
             this.nomeUsuario = '';
         }

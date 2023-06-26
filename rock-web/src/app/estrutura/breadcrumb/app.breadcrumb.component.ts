@@ -14,7 +14,7 @@ export class AppBreadcrumbComponent {
     constructor(private breadcrumbService: BreadcrumbService, private interfaceService: InterfaceService) {
         this.breadcrumbService.breadcrumbAtualizado.subscribe(
             itens => {
-                let titulo = this.interfaceService.tituloMenu === undefined ? 'BUME' : this.interfaceService.tituloMenu;
+                let titulo = this.interfaceService.tituloMenu === undefined ? 'ROCK JOBS' : this.interfaceService.tituloMenu;
                 titulo += (itens && itens.descricao ? ' / '  + itens.descricao : '');
                 titulo += (itens && itens.detalhe ? ' / '  + itens.detalhe : '');
                 this.tituloRota = titulo;

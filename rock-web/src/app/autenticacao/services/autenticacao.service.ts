@@ -74,7 +74,7 @@ export class AutenticacaoService {
     let rota = this.rota;
     this.rota = null;
     if (!rota) {
-      if (this.loginInfo?.usuario.tipoAcesso === RolesUser.ADMIN_EMPRESA || this.loginInfo?.usuario.tipoAcesso === RolesUser.RH_EMPRESA) {
+      if (this.loginInfo?.usuario.tipoAcesso.toString() === "ADMIN_EMPRESA" || this.loginInfo?.usuario.tipoAcesso.toString() === "RH_EMPRESA") {
         rota = 'empresa';
       } else {
         rota = 'admin';

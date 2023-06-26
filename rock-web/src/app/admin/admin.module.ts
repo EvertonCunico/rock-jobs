@@ -1,4 +1,3 @@
-import { ClienteQueNaoCompraPesquisaComponent } from './relatorio/cliente/cliente-que-nao-compra/cliente-que-nao-compra-pesquisa/cliente-que-nao-compra-pesquisa.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -20,6 +19,10 @@ const routes = [
         path: 'usuario',
         loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule)
       },
+      {
+        path: 'cliente',
+        loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule)
+      },
       { path: '', redirectTo: 'pagina-inicial', pathMatch: 'full' },
     ]
   }
@@ -29,7 +32,7 @@ const routes = [
 @NgModule({
   declarations: [
     PaginaInicialComponent,
-    BaseModuloAdminComponent
+    BaseModuloAdminComponent,
   ],
   imports: [
     RouterModule.forChild(routes),

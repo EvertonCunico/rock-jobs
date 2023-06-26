@@ -19,8 +19,8 @@ export class UsuarioPesquisaComponent extends ViewBase {
   colunas: Coluna[] = [
     { field: 'id', header: 'Código' },
     { field: 'nome', header: 'Nome' },
-    { field: 'email', header: 'E-mail', tipo: TiposCampo.ENUM},
-    { field: 'cpf', header: 'CPF', mascara: '###.###.###-##'},
+    { field: 'email', header: 'E-mail'},
+    { field: 'cnpj', header: 'CPF', mascara: '##.###.###/####-##'},
     { field: 'telefoneCelular', header: 'Telefone', mascara: '(##) #####-####'},
     { field: 'ativo', header: 'Ativo', tipo: TiposCampo.BOOLEAN}
   ];

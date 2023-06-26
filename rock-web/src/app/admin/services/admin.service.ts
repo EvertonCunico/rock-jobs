@@ -26,7 +26,7 @@ export class AdminService {
   }
 
   setTituloMenuByLoginInfo(loginInfo: LoginInfo) {
-    this.interfaceService.tituloMenu = 'BUME';
+    this.interfaceService.tituloMenu = 'ROCK JOBS';
     this.breadcrumbService.atualizar();
   }
 
