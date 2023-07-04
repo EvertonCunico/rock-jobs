@@ -1,7 +1,6 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { ViewBase } from '@boom/ui/views/view-base';
 import { AppComponent } from 'app/app.component';
-import { LogadoService } from 'app/autenticacao/services/logado.service';
 
 @Component({
     selector: 'app-pagina-inicial',
@@ -15,7 +14,6 @@ export class PaginaInicialComponent extends ViewBase implements OnInit {
     totalVendas: number = 0;
 
     constructor(protected injector: Injector,
-                private logadoService: LogadoService,
                 public app: AppComponent) {
         super(injector);
         this.titulo = 'Página Inicial';

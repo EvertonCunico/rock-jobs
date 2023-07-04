@@ -19,18 +19,6 @@ import { Router } from '@angular/router';
 })
 export class UserDetailComponent implements OnInit {
 
-    @Input()
-    set loginInfo(loginInfo: LoginInfo) {
-        if (loginInfo && loginInfo.usuario.email) {
-            const nome = loginInfo.usuario.nome;
-            // this.nomeUsuario = nome.length > 7 ? (nome.slice(0, 7) + '...') : nome;
-            this.nomeUsuario = nome;
-            this.login = loginInfo.usuario.email;
-        } else {
-            this.nomeUsuario = '';
-        }
-    }
-
     nomeUsuario = '';
     login = '';
     alterarSenhaDialog = false;
@@ -56,6 +44,19 @@ export class UserDetailComponent implements OnInit {
         this.formAlterarSenha.get('senhaAtual').setValue(null);
         this.formAlterarSenha.get('senhaNova').setValue(null);
         this.formAlterarSenha.get('senhaConfirmacao').setValue(null);
+
+        if (this.autenticacaoService.loginInfo && this.autenticacaoService.loginInfo.usuario.email) {
+            const nome = this.autenticacaoService.loginInfo.usuario.nome;
+
+            if (this.autenticacaoService.loginInfo.usuario.email) {
+                this.nomeUsuario = nome;
+                this.login = this.autenticacaoService.loginInfo.usuario.email;
+            } else {
+                this.nomeUsuario = '';
+            }
+        } else {
+            this.routerService.navigate(['login']);
+        }
     }
 
     logout(event) {

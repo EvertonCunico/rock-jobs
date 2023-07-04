@@ -13,18 +13,6 @@ export class TokenInterceptorService implements HttpInterceptor {
 
   constructor(public autenticacaoService: AutenticacaoService, private router: Router) {}
 
-  /*intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (this.interceptarURL(request.url)) {
-      const clonedRequest = request.clone({
-        setHeaders: {
-          Authorization: `${this.autenticacaoService.authorization}`
-        }
-      });
-      return next.handle(clonedRequest);
-    } else {
-      return next.handle(request);
-    }
-  }*/
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
@@ -39,7 +27,15 @@ export class TokenInterceptorService implements HttpInterceptor {
       //return next.handle(clonedRequest);
       return next.handle(clonedRequest).pipe(
         tap(
-          () => {},
+          () => {
+            if (this.autenticacaoService.authorization) {
+              if (this.autenticacaoService.expiration > new Date()) {
+                localStorage.setItem('tokenExpiration', new Date(new Date().getTime() + 60 * 60 * 1000).toISOString());
+              } else {
+                this.router.navigate(['login']);
+              }
+            }
+          },
           (err: any) => {
             if (err instanceof HttpErrorResponse) {
               if (err.status === 401) {

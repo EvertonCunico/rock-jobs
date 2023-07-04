@@ -7,4 +7,5 @@ import { Usuario } from '../../modelos/usuario';
 export interface LoginInfo {
     usuario?: Usuario;
     token?: string;
+    tokenExpiration?: Date;
 }

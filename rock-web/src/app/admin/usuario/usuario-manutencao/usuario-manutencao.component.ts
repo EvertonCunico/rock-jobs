@@ -189,6 +189,7 @@ export class UsuarioManutencaoComponent
     this.idUsuario = this.route.snapshot.paramMap.get("id");
     if (this.idUsuario) {
       this.form.get('senha').setValidators(null);
+      this.form.get('confirmarsenha').setValidators(null);
     }
 
     this.situacoes = EnumUtils.getLabelValueArray(SimNaoBoolean);

@@ -3,7 +3,6 @@ import {AppComponent} from '../../app.component';
 import {MenuService} from './app.menu.service';
 import {AutenticacaoService} from 'app/autenticacao/services/autenticacao.service';
 import {LoginInfo} from 'app/autenticacao/modelos/login-info';
-import {TipoContaLogin} from 'app/autenticacao/modelos/tipo-conta-login';
 import { RolesUser } from 'app/modelos/roles';
 
 @Component({
@@ -30,16 +29,26 @@ export class AppMenuComponent implements OnInit {
     }
 
     observarLogin() {
-        this.autenticacaoService.onLogin.subscribe(
-            (loginInfo: LoginInfo) => {
-                if (loginInfo.usuario.tipoAcesso.toString() === "ADMIN_GERAL") {
-                    this.model = this.getMenuAdmin();
-                } else {
-                    this.model = this.getMenuEmpresa();
-                    this.perfil = loginInfo.usuario.tipoAcesso;
-                }
+        if (this.autenticacaoService.authorization) {
+            if (this.autenticacaoService.loginInfo.usuario.tipoAcesso.toString() === "ADMIN_GERAL") {
+                this.model = this.getMenuAdmin();
+            } else {
+                this.model = this.getMenuEmpresa();
+                this.perfil = this.autenticacaoService.loginInfo.usuario.tipoAcesso;
             }
-        );
+        } else {
+            this.autenticacaoService.onLogin.subscribe(
+                (loginInfo: LoginInfo) => {
+                    if (loginInfo.usuario.tipoAcesso.toString() === "ADMIN_GERAL") {
+                        this.model = this.getMenuAdmin();
+                    } else {
+                        this.model = this.getMenuEmpresa();
+                        this.perfil = loginInfo.usuario.tipoAcesso;
+                    }
+                }
+            );
+        }
+        
     }
 
     getMenuAdmin(): any[] {

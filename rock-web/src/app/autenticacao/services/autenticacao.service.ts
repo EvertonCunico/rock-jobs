@@ -3,27 +3,23 @@ import { Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, delay, flatMap, tap } from 'rxjs/operators';
 import { LoginInfo } from '../modelos/login-info';
-import { TipoContaLogin } from '../modelos/tipo-conta-login';
 import { LoginArgs } from '../modelos/login-args';
 import { HttpClient } from '@angular/common/http';
-import { LogadoService } from './logado.service';
 import { environment } from 'environments/environment';
 import { Usuario } from 'app/modelos/usuario';
 import {RecuperarSenha} from '../modelos/esqueci-senha';
-import { RolesUser } from 'app/modelos/roles';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AutenticacaoService {
   primeiroAcesso = true;
-  loginInfoAutenticado?: LoginInfo | undefined | null;
   rota?: string | undefined | null;
 
   onLogin: EventEmitter<LoginInfo> = new EventEmitter<LoginInfo>();
   onLogout: EventEmitter<LoginInfo> = new EventEmitter<LoginInfo>();
 
-  constructor(private router: Router, private http: HttpClient, private logadoService: LogadoService) { }
+  constructor(private router: Router, private http: HttpClient) { }
 
   login(loginArgs: LoginArgs): Observable<LoginInfo> {
     const url = `${environment.api}/login`;
@@ -42,13 +38,13 @@ export class AutenticacaoService {
   }
 
   finalizarLogin(loginInfo: LoginInfo): any {
-    this.loginInfoAutenticado = loginInfo;
-    localStorage.setItem('loginInfo', JSON.stringify(this.loginInfoAutenticado));
-    if (this.loginInfoAutenticado.token) {
-      localStorage.setItem('token', this.loginInfoAutenticado.token);
+    localStorage.setItem('loginInfo', JSON.stringify(loginInfo));
+    if (loginInfo.token) {
+      localStorage.setItem('token', loginInfo.token);
+      localStorage.setItem('tokenExpiration', loginInfo.tokenExpiration.toISOString());
+      localStorage.setItem('tipoLogin', loginInfo.usuario.tipoAcesso!);
     }
-    localStorage.setItem('tipoLogin', this.loginInfoAutenticado.usuario.tipoAcesso!);
-    this.registrarLogin(this.loginInfoAutenticado);
+    this.onLogin.next(this.loginInfo!);
     this.redirecionarRota();
   }
 
@@ -60,14 +56,6 @@ export class AutenticacaoService {
   requererLogin(rota: string) {
     this.rota = rota;
     this.router.navigate(['login']);
-  }
-
-  registrarLogin(loginInfo: LoginInfo) {
-    this.primeiroAcesso = false;
-    this.loginInfoAutenticado = loginInfo;
-    this.logadoService.loginInfoAutenticado = loginInfo;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.onLogin.next(this.loginInfo!);
   }
 
   redirecionarRota() {
@@ -84,25 +72,8 @@ export class AutenticacaoService {
   }
 
   isLogado(): Observable<boolean> {
-    // TODO Refatorar
-    if (this.loginInfo) {
-      const isLogado = true;
-      return of(isLogado);
-    } else {
-      const tokenInfoStr = localStorage.getItem('token');
-      const loginInfoLocalStorage = localStorage.getItem('loginInfo');
-      if (tokenInfoStr) {
-        try {
-          const tokenInfo = JSON.parse(loginInfoLocalStorage);
-          return this.finalizarLogin(tokenInfo).pipe(
-            flatMap(
-              loginInfo => of(this.loginInfo && this.loginInfo.token ? true : false)
-            )
-          );
-        } catch (e) {
-        }
-      }
-    }
+    var valido = this.authorization && this.expiration && this.expiration > new Date();
+    return of(valido);
   }
 
   logout(): Observable<LoginInfo | any> {
@@ -110,7 +81,12 @@ export class AutenticacaoService {
     const rotaLogin = 'login';
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.onLogout.next(this.loginInfo!);
-    this.loginInfoAutenticado = null;
+    
+    localStorage.removeItem('loginInfo');
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenExpiration');
+    localStorage.removeItem('tipoLogin');
+
     this.router.navigate([rotaLogin]);
     return of(this.loginInfo).pipe(
       delay(1000)
@@ -124,12 +100,25 @@ export class AutenticacaoService {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   get loginInfo(): LoginInfo | undefined | null {
-    return this.loginInfoAutenticado;
+    var l = JSON.parse(localStorage.getItem('loginInfo'));
+    if (l) return l;
+
+    this.router.navigate(['login']);
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   get authorization() {
     return localStorage.getItem('token');
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  get expiration(): Date {
+    return localStorage.getItem('tokenExpiration') != null ? new Date(localStorage.getItem('tokenExpiration')) : null;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  get tipoLogin() {
+    return localStorage.getItem('tipoLogin');
   }
 
   toBase64(dado: string): string {
