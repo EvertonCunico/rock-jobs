@@ -59,8 +59,7 @@
                             <div class='p-col-12 p-md-6'>
                                 <app-rotulo rotulo='E-mail'>
                                     <input formControlName="email" pInputText type='email' maxlength="100"
-                                    onblur="this.validarEmail()"
-                                           [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"/>
+                                    [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"/>
                                 </app-rotulo>
                             </div>
                             <div class='p-col-12 p-md-6'>
