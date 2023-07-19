@@ -1,6 +1,7 @@
 package com.rockjobs.features.cidade;
 
 import com.ordnaelmedeiros.jpafluidselect.querybuilder.select.pagination.PaginationResult;
+import com.rockjobs.core.pesquisa_base_old.RequestPesquisa;
 import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 
 import javax.inject.Inject;
@@ -15,12 +16,9 @@ public class CidadePesquisaResource {
     @Inject
     CidadePesquisaService controller;
 
-    @GET
-    public PaginationResult<Cidade> pesquisa(
-            @QueryParam("pagina") Integer pagina,
-            @Parameter(required = false, name = "id") @QueryParam("id") Long id,
-            @Parameter(required = false, name = "valor") @QueryParam("valor") String valor) throws Exception {
-        return controller.listar(pagina, id, valor);
+    @POST
+    public PaginationResult<Cidade> pesquisa(RequestPesquisa requisicaoPesquisa) throws Exception {
+        return controller.listar(requisicaoPesquisa);
     }
     
     @GET

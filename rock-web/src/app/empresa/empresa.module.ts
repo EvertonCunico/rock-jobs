@@ -15,6 +15,10 @@ const routes = [
         path: 'usuario',
         loadChildren: () => import('./usuario/usuario.module').then(m => m.UsuarioModule)
       },
+      {
+        path: 'vaga',
+        loadChildren: () => import('./vaga/vaga.module').then(m => m.VagaModule)
+      },
       { path: '', redirectTo: 'pagina-inicial', pathMatch: 'full' }
     ]
   }

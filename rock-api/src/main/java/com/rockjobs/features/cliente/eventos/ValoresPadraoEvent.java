@@ -32,5 +32,7 @@ public class ValoresPadraoEvent extends EventoPadrao<Cliente> {
             entity.setTelefoneResponsavelRH(entity.getTelefoneResponsavelRH().replaceAll(Regex.DIGITO_SEM_MASCARA, ""));
         if (StringUtil.isNotEmpty(entity.getCnpj()))
             entity.setCnpj(entity.getCnpj().replaceAll(Regex.DIGITO_SEM_MASCARA, ""));
+        if (StringUtil.isNotEmpty(entity.getEnderecoCep()))
+            entity.setEnderecoCep(entity.getEnderecoCep().replaceAll(Regex.DIGITO_SEM_MASCARA, ""));
     }
 }

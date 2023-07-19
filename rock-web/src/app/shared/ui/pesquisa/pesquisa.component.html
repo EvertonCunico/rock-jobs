@@ -13,7 +13,7 @@
                 </ng-template>
                 <ng-template pTemplate='header'>
                     <tr>
-                        <th *ngFor="let col of colunas">
+                        <th style="max-width: 350px; word-wrap: break-word;" *ngFor="let col of colunas">
                             {{col.header}}
                         </th>
                         <th style="width: 60px;" *ngIf='acoes && (acoes.visualizar || acoes.editar || acoes.acao1)'>Ações</th>
@@ -21,7 +21,7 @@
                 </ng-template>
                 <ng-template pTemplate='body' let-item>
                     <tr class='ui-selectable-row'>
-                        <td *ngFor="let col of colunas">
+                        <td style="max-width: 350px; word-wrap: break-word;" *ngFor="let col of colunas">
                             <span class="ui-column-title">{{ col.header }}</span>
                             <span>{{ col.subField ? item[col.field][col.subField] : item[col.field] | campo:col }}</span>
                         </td>

@@ -154,11 +154,71 @@ body .ui-toast .ui-toast-message.ui-toast-message-error {
 
 /* BUTTONS */
 body .ui-button {
-    background-color: #007bff;
-    border-color: #0069d9;
+    background-color: #f49c40;
+    border-color: #ffaf42;
 }
 body .ui-button:enabled:hover {
-    background-color: #0069d9;
+    background-color: #ffaf42;
+}
+
+body .ui-paginator .ui-paginator-pages .ui-paginator-page.ui-state-active {
+    background-color: #f49c40;
+    color: #ffffff;
+}
+
+body .layout-wrapper.layout-static .layout-menu-container .layout-menu li a:hover {
+    background-color: #f49c40;
+    color: #ffffff;
+}
+
+body .layout-wrapper.layout-static .layout-menu-container .layout-menu li.active-menuitem>a:hover {
+    background-color: #f49c40;
+    color: #ffffff;
+}
+
+body .layout-wrapper.layout-static .layout-menu-container .layout-menu li.active-menuitem>a {
+    background-color: #ffffff;
+    color: #c17b32;
+}
+
+body .layout-wrapper .layout-menu-container .layout-menu li>a.active-menuitem-routerlink {
+    color: #c17b32;
+    font-weight: 700;
+}
+
+body .ui-inputtext:enabled:focus:not(.ui-state-error) {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2em #ffc841;
+    border-color: #f49c40;
+}
+
+body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item.ui-state-highlight, body .ui-dropdown-panel .ui-dropdown-items .ui-dropdown-item-group.ui-state-highlight {
+    color: #ffffff;
+    background-color: #f49c40;
+}
+
+body .ui-dropdown:not(.ui-state-disabled).ui-state-focus {
+    outline: 0 none;
+    outline-offset: 0;
+    box-shadow: 0 0 0 0.2em #ffc841;
+    border-color: #f49c40;
+}
+
+body .layout-wrapper .topbar {
+    background-color: #f49c40;
+}
+
+body .layout-wrapper .topbar .topbar-menu>li a:hover {
+    background-color: #ffc841;
+}
+
+body .layout-wrapper .topbar .topbar-menu {
+    background-color: #f6a249;
+}
+
+body a {
+    color: #f49c40;
 }
 
 body .ui-button.ui-state-default.ui-button-secondary, body .ui-buttonset.ui-button-secondary > .ui-button.ui-state-default {
@@ -187,11 +247,11 @@ body .ui-button.ui-state-default.ui-button-danger:enabled:hover, body .ui-button
     background-color: #c82333;
 }
 body .ui-button.ui-state-default.ui-button-success, body .ui-buttonset.ui-button-success > .ui-button.ui-state-default {
-    background-color: #28a745;
-    border-color: #218838;
+    background-color: #f4ad61;
+    border-color: #f4ad61;
 }
 body .ui-button.ui-state-default.ui-button-success:enabled:hover, body .ui-buttonset.ui-button-success > .ui-button.ui-state-default:enabled:hover {
-    background-color: #218838;
+    background-color: #f6a249;
 }
 
 

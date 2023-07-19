@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {Component, Input, ContentChild} from '@angular/core';
 import {FormControlName, AbstractControl, Validators} from '@angular/forms';
 
@@ -27,7 +28,8 @@ export class RotuloComponent {
     obrigatorio = false;
     mensagem = '';
 
-    constructor(private formValidations: FormValidations) {
+    constructor(private datePipe: DatePipe, 
+        private formValidations: FormValidations) {
     }
 
     observarAlteracaoStatusControl(control: AbstractControl) {
@@ -53,6 +55,8 @@ export class RotuloComponent {
                         mensagem += ', E-mail inválido';
                     } else if (key === 'min') {
                         mensagem += ', Valor mínimo: ' + control.errors[key].min;
+                    } else if (key === 'dataMinima') {
+                        mensagem += ', Data mínima: ' + this.datePipe.transform(control.errors[key].min, 'dd/MM/yyyy');
                     } else if (key === 'max') {
                         mensagem += ', Valor máximo: ' + control.errors[key].max;
                     } else if (key === 'minlength') {

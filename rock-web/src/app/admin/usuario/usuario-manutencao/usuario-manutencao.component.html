@@ -1,9 +1,9 @@
 <app-manutencao
-        [acoes]='{ incluir: true, atualizar: true, deletar: true, visualizar: false, pesquisar: true, cancelar: true}'>
+        [acoes]='this.acoes'>
     <p-card>
         <div [formGroup]='form'>
             <div class="ui-fluid">
-                <p-fieldset legend="Dados básicos">
+                <p-fieldset legend="Dados Básicos">
                     <div class="p-grid p-nogutter">
                         <div style="margin-left: 1%" class="p-col p-grid">
                             <div class='p-col-12 p-md-6'>
@@ -14,7 +14,7 @@
                             </div>
                             <div class='p-col-12 p-md-6'>
                                 <app-rotulo rotulo='Sobrenome'>
-                                    <input formControlName="sobrenome" appAutofocus pInputText type='text'
+                                    <input formControlName="sobrenome" pInputText type='text'
                                            maxlength="255"/>
                                 </app-rotulo>
                             </div>
@@ -39,14 +39,14 @@
                     <div class="p-grid p-nogutter">
                         <div style="margin-left: 1%" class="p-col p-grid">
                             <div class='p-col-12 p-md-3'>
-                                <app-rotulo rotulo='Telefone Celular'>
+                                <app-rotulo rotulo='Telefone para Contato'>
                                     <p-inputMask formControlName="telefoneCelular" mask="(99) 9999-9999?9"
                                                 value="telefoneCelular"></p-inputMask>
                                 </app-rotulo>
                             </div>
                             <div class='p-col-12 p-md-9'>
                                 <app-rotulo rotulo='Endereço'>
-                                    <input formControlName="endereco" appAutofocus pInputText type='text'
+                                    <input formControlName="endereco" pInputText type='text'
                                            maxlength="255"/>
                                 </app-rotulo>
                             </div>
@@ -59,6 +59,7 @@
                             <div class='p-col-12 p-md-6'>
                                 <app-rotulo rotulo='E-mail'>
                                     <input formControlName="email" pInputText type='email' maxlength="100"
+                                    onblur="this.validarEmail()"
                                            [class.is-invalid]="form.get('email')?.invalid && form.get('email')?.touched"/>
                                 </app-rotulo>
                             </div>
@@ -117,8 +118,8 @@
                                     <input formControlName="senha" pInputText type='text' maxlength="16"/>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-3'>
-                                <button type="button" style="margin-top: 7%" pButton (click)="validarSenha()" class="ui-button-success"
+                            <div class='p-col-12 p-md-3' style="display: flex; align-items: center;">
+                                <button type="button" pButton (click)="validarSenha(false)" class="ui-button-success"
                                         label="Alterar Senha" icon="pi pi-lock"></button>
                             </div>
                         </div>

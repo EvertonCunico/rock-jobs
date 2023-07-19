@@ -72,7 +72,7 @@ export class PesquisaComponent implements OnInit {
     this.pesquisando = true;
     this.interfaceService.bloquear();
 
-    requisicao.filtro = this.formFiltros ? this.formFiltros.getRawValue() : null;
+    requisicao.filtrosPersonalizados = this.formFiltros ? this.formFiltros.getRawValue() : null;
     requisicao.valor = this.controlesPesquisa.filtroSimples;
 
     this.service.pesquisar(requisicao).subscribe(

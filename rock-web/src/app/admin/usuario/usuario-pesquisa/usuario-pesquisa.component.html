@@ -1,10 +1,3 @@
-<div class='ui-fluid'>
-    <div class='p-grid'>
-        <div class='p-col-12 p-md-2' *ngIf="pesquisado">
-            <button pButton type="button" label="Relatório" icon='fa-light fa-print' (click)="relatorio()"></button>
-        </div>
-    </div>
-</div>
 <app-pesquisa [formFiltros]='formFiltros' [service]='usuarioPesquisaService' [colunas]='colunas' [acoes]='{ editar: true, incluir: true, visualizar: true, filtrar: true, pesquisar: true }' placeHolderControles='pesquisar por nome' (pesquisaConcluida)='pesquisaConcluida($event)'>
     <div class='form-filtros'>
         <div [formGroup]='formFiltros'>
@@ -20,12 +13,12 @@
                             <input formControlName='cpf' pInputText type='text' maxlength="11" />
                         </app-rotulo>
                     </div>
-                    <div class='p-col-12 p-md-6'>
+                    <div class='p-col-12 p-md-3'>
                         <app-rotulo rotulo='E-mail'>
                             <input formControlName='email' pInputText type='text' maxlength="30" />
                         </app-rotulo>
                     </div>
-                    <div class='p-col-12 p-md-6'>
+                    <div class='p-col-12 p-md-3'>
                         <app-rotulo rotulo='Permissão de acesso'>
                             <p-dropdown formControlName="permissao" [options]='permissoes' [autoDisplayFirst]='true'></p-dropdown>
                         </app-rotulo>

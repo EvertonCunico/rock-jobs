@@ -32,8 +32,11 @@ export class AppMenuComponent implements OnInit {
         if (this.autenticacaoService.authorization) {
             if (this.autenticacaoService.loginInfo.usuario.tipoAcesso.toString() === "ADMIN_GERAL") {
                 this.model = this.getMenuAdmin();
-            } else {
+            } else if (this.autenticacaoService.loginInfo.usuario.tipoAcesso.toString() === "ADMIN_EMPRESA") {
                 this.model = this.getMenuEmpresa();
+                this.perfil = this.autenticacaoService.loginInfo.usuario.tipoAcesso;
+            } else {
+                this.model = this.getMenuRH();
                 this.perfil = this.autenticacaoService.loginInfo.usuario.tipoAcesso;
             }
         } else {
@@ -58,10 +61,11 @@ export class AppMenuComponent implements OnInit {
                 label: 'Cadastros',
                 icon: 'fa-light fa-table-tree',
                 items: [
+                    { label: 'Clientes', icon: 'fa-light fa-building', routerLink: '/admin/cliente/'},
                     { label: 'Usuários', icon: 'fa-light fa-users', routerLink: '/admin/usuario/'},
-                    { label: 'Clientes', icon: 'fa-light fa-building', routerLink: '/admin/cliente/'}
                 ]
-            }
+            },
+            { label: 'Vagas', icon: 'fa-light fa-address-card', routerLink: '/admin/vaga/'},
         ];
     }
 
@@ -69,6 +73,13 @@ export class AppMenuComponent implements OnInit {
         return [
             { label: 'Página Inicial', icon: 'fa-light fa-house', routerLink: '/empresa/pagina-inicial' },
             { label: 'Usuários', icon: 'fa-light fa-users', routerLink: '/empresa/usuario/'},
+            { label: 'Vagas', icon: 'fa-light fa-address-card', routerLink: '/empresa/vaga/'},
+        ];
+    }
+
+    getMenuRH(): any[] {
+        return [
+            { label: 'Vagas', icon: 'fa-light fa-address-card', routerLink: '/empresa/vaga/'},
         ];
     }
 

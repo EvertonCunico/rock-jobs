@@ -85,7 +85,9 @@ export class AutoCompleteComponent implements ControlValueAccessor {
   @Input()
   sugestoes: any[] = [];
 
-
+  @Input()
+  desativado: boolean;
+  
   sugestoesFiltrado: any[] = [];
  
 
@@ -104,7 +106,6 @@ export class AutoCompleteComponent implements ControlValueAccessor {
   pesquisaConcluida: EventEmitter<{ query: string, registros: any[] }> = new EventEmitter();
 
   formCtrl: FormControl;
-  desativado: boolean;
   mascaraLabel: string;
   camposLabel: string[];
 

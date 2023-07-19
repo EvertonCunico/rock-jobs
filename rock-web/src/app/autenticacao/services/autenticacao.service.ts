@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { Usuario } from 'app/modelos/usuario';
 import {RecuperarSenha} from '../modelos/esqueci-senha';
+import { MensagemService } from '@boom/services/programa/mensagem.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,11 @@ export class AutenticacaoService {
   constructor(private router: Router, private http: HttpClient) { }
 
   login(loginArgs: LoginArgs): Observable<LoginInfo> {
+    localStorage.removeItem('rockjobs-loginInfo');
+    localStorage.removeItem('rockjobs-token');
+    localStorage.removeItem('rockjobs-tokenExpiration');
+    localStorage.removeItem('rockjobs-tipoLogin');
+
     const url = `${environment.api}/login`;
     return this.http.post<LoginInfo>(url, loginArgs).pipe(
       flatMap(
@@ -30,7 +36,7 @@ export class AutenticacaoService {
       catchError(
         erro => {
           this.requererLogin('');
-          const msg = erro && erro.error ? erro.error : 'Não foi possível fazer o login';
+          const msg = erro && typeof erro.error === 'string' ? erro.error : 'Não foi possível fazer o login';
           return throwError(msg);
         }
       )
@@ -38,11 +44,11 @@ export class AutenticacaoService {
   }
 
   finalizarLogin(loginInfo: LoginInfo): any {
-    localStorage.setItem('loginInfo', JSON.stringify(loginInfo));
+    localStorage.setItem('rockjobs-loginInfo', JSON.stringify(loginInfo));
     if (loginInfo.token) {
-      localStorage.setItem('token', loginInfo.token);
-      localStorage.setItem('tokenExpiration', loginInfo.tokenExpiration.toISOString());
-      localStorage.setItem('tipoLogin', loginInfo.usuario.tipoAcesso!);
+      localStorage.setItem('rockjobs-token', loginInfo.token);
+      localStorage.setItem('rockjobs-tokenExpiration', loginInfo.tokenExpiration.toISOString());
+      localStorage.setItem('rockjobs-tipoLogin', loginInfo.usuario.tipoAcesso!);
     }
     this.onLogin.next(this.loginInfo!);
     this.redirecionarRota();
@@ -69,6 +75,10 @@ export class AutenticacaoService {
       }
     }
     this.router.navigate([rota]);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+    
   }
 
   isLogado(): Observable<boolean> {
@@ -77,17 +87,17 @@ export class AutenticacaoService {
   }
 
   logout(): Observable<LoginInfo | any> {
-    localStorage.removeItem('a');
     const rotaLogin = 'login';
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     this.onLogout.next(this.loginInfo!);
     
-    localStorage.removeItem('loginInfo');
-    localStorage.removeItem('token');
-    localStorage.removeItem('tokenExpiration');
-    localStorage.removeItem('tipoLogin');
+    localStorage.removeItem('rockjobs-loginInfo');
+    localStorage.removeItem('rockjobs-token');
+    localStorage.removeItem('rockjobs-tokenExpiration');
+    localStorage.removeItem('rockjobs-tipoLogin');
 
     this.router.navigate([rotaLogin]);
+    window.location.reload();
     return of(this.loginInfo).pipe(
       delay(1000)
     );
@@ -100,7 +110,7 @@ export class AutenticacaoService {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   get loginInfo(): LoginInfo | undefined | null {
-    var l = JSON.parse(localStorage.getItem('loginInfo'));
+    var l = JSON.parse(localStorage.getItem('rockjobs-loginInfo'));
     if (l) return l;
 
     this.router.navigate(['login']);
@@ -108,17 +118,17 @@ export class AutenticacaoService {
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   get authorization() {
-    return localStorage.getItem('token');
+    return localStorage.getItem('rockjobs-token');
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   get expiration(): Date {
-    return localStorage.getItem('tokenExpiration') != null ? new Date(localStorage.getItem('tokenExpiration')) : null;
+    return localStorage.getItem('rockjobs-tokenExpiration') != null ? new Date(localStorage.getItem('rockjobs-tokenExpiration')) : null;
   }
 
   // eslint-disable-next-line @typescript-eslint/member-ordering
   get tipoLogin() {
-    return localStorage.getItem('tipoLogin');
+    return localStorage.getItem('rockjobs-tipoLogin');
   }
 
   toBase64(dado: string): string {

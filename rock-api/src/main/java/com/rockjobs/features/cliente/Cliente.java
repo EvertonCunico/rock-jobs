@@ -1,5 +1,6 @@
 package com.rockjobs.features.cliente;
 
+import com.rockjobs.core.usuario.Usuario;
 import com.rockjobs.features.cidade.Cidade;
 import com.rockjobs.features.cliente.enums.AreaDeAtuacao;
 import com.rockjobs.features.cliente.enums.NumeroClientes;
@@ -9,6 +10,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -17,7 +19,7 @@ import java.io.Serializable;
 @Builder
 @Entity
 @Table(name = "cliente")
-public class Cliente extends PanacheEntityBase implements Serializable, Cloneable {
+public class Cliente extends PanacheEntityBase implements Serializable {
 
     @Id
     @Column
@@ -32,6 +34,12 @@ public class Cliente extends PanacheEntityBase implements Serializable, Cloneabl
 
     @Column(nullable = false, length = 14)
     private String cnpj;
+
+    @Column
+    private UUID foto;
+
+    @Transient
+    private String urlFoto;
 
     @Column(name = "inscricao_estadual", length = 20)
     private String inscricaoEstadual;
@@ -75,5 +83,12 @@ public class Cliente extends PanacheEntityBase implements Serializable, Cloneabl
 
     @Column(name = "telefone_responsavel_rh", length = 20)
     private String telefoneResponsavelRH;
+
+    public static Cliente findByCNPJ(Long id, String value) {
+        if (id != null) {
+            return find("id <> ?1 and cnpj = ?2", id, value).firstResult();
+        }
+        return find("cnpj = ?1", value).firstResult();
+    }
 
 }

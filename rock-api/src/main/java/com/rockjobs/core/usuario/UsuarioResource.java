@@ -3,6 +3,7 @@ package com.rockjobs.core.usuario;
 import com.rockjobs.core.pesquisa_base_old.RequestPesquisa;
 import com.rockjobs.core.security.service.PermissoesAcesso;
 import com.rockjobs.core.usuario.dto.AlteracaoSenha;
+import com.rockjobs.core.usuario.dto.AlteracaoSenhaAdmin;
 import com.rockjobs.core.usuario.dto.UsuarioDto;
 
 import javax.inject.Inject;
@@ -55,6 +56,13 @@ public class UsuarioResource {
     @PUT
     @Path("/altera-senha")
     public Response alterarSenha(@Valid AlteracaoSenha alteracaoSenha) throws Exception {
+        service.alterarSenhaUsuario(alteracaoSenha);
+        return Response.ok("").build();
+    }
+
+    @PUT
+    @Path("/altera-senha-admin")
+    public Response alterarSenha(@Valid AlteracaoSenhaAdmin alteracaoSenha) throws Exception {
         service.alterarSenhaUsuario(alteracaoSenha);
         return Response.ok("").build();
     }

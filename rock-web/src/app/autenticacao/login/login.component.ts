@@ -6,6 +6,7 @@ import { FormValidations } from '@boom/forms/services/form-validations';
 import { LoginArgs } from '../modelos/login-args';
 import { name } from '../../../../package.json';
 import { version } from '../../../../package.json';
+import { MensagemService } from '@boom/services/programa/mensagem.service';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +25,7 @@ export class LoginComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private formValidations: FormValidations,
     private autenticacaoService: AutenticacaoService,
+    private mensagemService: MensagemService,
     private router: Router) {
     this.nomeApp = name;
     this.versao = version;
@@ -64,7 +66,7 @@ export class LoginComponent implements OnInit {
       },
       loginErro => {
         this.aguardar = false;
-        this.msgErroLogin = loginErro;
+        this.mensagemService.notificarMensagemAlerta(loginErro);
       }
     );
   }

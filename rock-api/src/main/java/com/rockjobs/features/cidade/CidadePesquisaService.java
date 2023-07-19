@@ -2,6 +2,8 @@ package com.rockjobs.features.cidade;
 
 import com.ordnaelmedeiros.jpafluidselect.querybuilder.select.pagination.PaginationResult;
 import com.rockjobs.Dados;
+import com.rockjobs.core.pesquisa_base_old.RequestPesquisa;
+import com.rockjobs.core.util.StringUtil;
 import org.hibernate.Session;
 
 import javax.enterprise.context.RequestScoped;
@@ -30,11 +32,11 @@ public class CidadePesquisaService {
     private final static String JOINS =
             "inner join estado e on (t.estado_id=e.estado_id) \n";
 
-    public PaginationResult<Cidade> listar(Integer pagina, Long id, String valor) throws Exception {
+    public PaginationResult<Cidade> listar(RequestPesquisa requisicaoPesquisa) throws Exception {
         List<Cidade> lista = null;
         //Faz o count dos registros
         String sql = SQL;
-        sql = adicionaFiltrosPesquisa(id, valor, sql);
+        sql = adicionaFiltrosPesquisa(requisicaoPesquisa, sql);
         sql = sql.replace("<<campos>>", "count(*) ");
         sql = sql.replace("<<joins>>", JOINS);
         Long count = Long.valueOf(this.em.unwrap(Session.class).createSQLQuery(sql).getSingleResult().toString());
@@ -42,19 +44,20 @@ public class CidadePesquisaService {
         sql = SQL;
         sql = sql.replace("<<campos>>", "*");
         sql = sql.replace("<<joins>>", JOINS);
-        sql = adicionaFiltrosPesquisa(id, valor, sql);
-        sql = sql + " order by t.nome limit 50 " + (pagina > 1 ? "offset " + (pagina - 1) * 50 : "");
+        sql = adicionaFiltrosPesquisa(requisicaoPesquisa, sql);
+        sql = sql + " order by t.nome limit 50 " + (requisicaoPesquisa.getPagina() > 1 ? "offset " + (requisicaoPesquisa.getPagina() - 1) * 50 : "");
         List<Cidade> cidades = this.em.unwrap(Session.class).createSQLQuery(sql).addEntity(Cidade.class).getResultList();
-        PaginationResult<Cidade> list = Dados.geraLista(cidades, pagina, count);
+        PaginationResult<Cidade> list = Dados.geraLista(cidades, requisicaoPesquisa.getPagina(), count);
         return list;
     }
 
-    private String adicionaFiltrosPesquisa(Long id, String valor, String sql) {
-        if (id != null) {
-            sql = sql + " and (t.cidade_id = " + id + ")";
-        }
-        if (valor != null) {
-            sql = sql + " and (t.nome ilike '%" + valor + "%') ";
+    private String adicionaFiltrosPesquisa(RequestPesquisa requestPesquisa, String sql) {
+        if (requestPesquisa.getValor() != null) {
+            if (StringUtil.isNumeric(requestPesquisa.getValor())) {
+                sql = sql + " and (t.cidade_id = " + requestPesquisa.getValor() + ")";
+            } else {
+                sql = sql + " and (t.nome ilike '%" + requestPesquisa.getValor() + "%') ";
+            }
         }
         return sql;
     }

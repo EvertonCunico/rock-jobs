@@ -81,6 +81,9 @@ export class ManutencaoViewBase<T extends Modelo> extends ViewBase implements On
                                             this.formValue = registro;
 
                                             this.registroAlterado.setValue(true);
+                                            if ('onRegistroCarregado' in this) {
+                                                (this as OnRegistroCarregado).onRegistroCarregado(registro);
+                                            }
                                             this.interfaceService.desbloquear();
                                         }
                                     );

@@ -8,6 +8,8 @@ import { RequisicaoPesquisa } from '@boom/modelos/requisicao-pesquisa';
 import { ResultadoPesquisa } from '@boom/modelos/resultado-pesquisa';
 import { Usuario } from 'app/modelos/usuario';
 import { NavigationExtras } from '@angular/router';
+import { EnumUtils } from 'app/shared/utils/enum-utils';
+import { RolesUser } from 'app/modelos/roles';
 
 @Component({
   selector: 'app-usuario-pesquisa',
@@ -19,30 +21,28 @@ export class UsuarioPesquisaComponent extends ViewBase {
   colunas: Coluna[] = [
     { field: 'id', header: 'Código' },
     { field: 'nome', header: 'Nome' },
+    { field: 'email', header: 'E-mail'},
     { field: 'cpf', header: 'CPF', mascara: '###.###.###-##'},
-    { field: 'telefone', header: 'Telefone', mascara: '(##) #####-####'},
-    { field: 'ativo', header: 'Ativo', tipo: TiposCampo.ENUM, opcoes: { S: 'Sim', N: 'Não'}}
+    { field: 'telefoneCelular', header: 'Telefone', mascara: '(##) #####-####'},
+    { field: 'ativo', header: 'Ativo', tipo: TiposCampo.BOOLEAN}
   ];
-  permissoes = [
-    { label: '', value: '' },
-    { value: 'GARCOM', label: 'Garçom' },
-    { value: 'GERENTE', label: 'Gerente' },
-  ];
+  permissoes = [];
 
   pesquisado: boolean = false;
 
   constructor(protected injector: Injector, public usuarioPesquisaService: UsuarioPesquisaService) {
     super(injector);
-    this.titulo = 'Usuários';
+    this.titulo = 'Cadastros / Usuários';
     this.formFiltros = this.criarFormularioFiltros();
+    this.permissoes = EnumUtils.getLabelValueArrayComIgnore(RolesUser, [RolesUser.ADMIN_GERAL.toString()]);
   }
 
   criarFormularioFiltros(): FormGroup {
     return this.formBuilder.group({
       nome: '',
-      estabelecimento: undefined,
       cpf: '',
-      grupo: ''
+      email: '',
+      permissao: ''
     });
   }
 

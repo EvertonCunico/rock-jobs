@@ -39,25 +39,55 @@ export class DateInterceptorService implements HttpInterceptor {
   }
 
   convertToDate(body) {
-    if (body === null || body === undefined) {
-      return body;
-    }
-    if (typeof body !== 'object') {
-      return body;
-    }
-    for (const key of Object.keys(body)) {
-      const value = body[key];
-      if (this.isIso8601(value)) {
-        let dateStr = '' + value;
-        dateStr = value.slice(0, value.indexOf('[UTC]'));
-        body[key] = new Date(dateStr);
-      } else if (typeof value === 'object') {
-        this.convertToDate(value);
+    try {
+      if (body === null || body === undefined) {
+        return body;
       }
-      if (this.localDateTimeRegex.test(value) || this.localDateRegex.test(value)) {
-        body[key] = new Date(value);
+      if (typeof body !== 'object') {
+        return body;
       }
+      for (const key of Object.keys(body)) {
+        const value = body[key];
+        if (typeof value === 'object') {
+          this.convertToDate(value);
+        }
+        if (this.isIso8601(value)) {
+          let dateStr = '' + value;
+          dateStr = value.slice(0, value.indexOf('[UTC]'));
+          body[key] = new Date(dateStr);
+        } else if (this.localDateTimeRegex.test(value)) {
+          body[key] = this.localDateTimeParaDate(value);
+        } else if (this.localDateRegex.test(value)) {
+          body[key] = this.localDateParaDate(value)
+        }
+      }
+    } catch (erro) {
+      console.log(erro)
     }
+  }
+
+  localDateParaDate(value) {
+    const partesData = value.split('-');
+    const ano = parseInt(partesData[0], 10);
+    const mes = parseInt(partesData[1], 10) - 1; // Subtrai 1 do mês, pois os meses são indexados de 0 a 11
+    const dia = parseInt(partesData[2], 10);
+
+    return new Date(ano, mes, dia);
+  }
+
+  localDateTimeParaDate(value) {
+    const partesDataHora = value.split('T');
+    const partesData = partesDataHora[0].split('-');
+    const partesHora = partesDataHora[1].split(':');
+    
+    const ano = parseInt(partesData[0], 10);
+    const mes = parseInt(partesData[1], 10) - 1; // Subtrai 1 do mês, pois os meses são indexados de 0 a 11
+    const dia = parseInt(partesData[2], 10);
+    const hora = parseInt(partesHora[0], 10);
+    const minuto = parseInt(partesHora[1], 10);
+    const segundo = parseInt(partesHora[2], 10);
+    
+    return new Date(ano, mes, dia, hora, minuto, segundo);
   }
 
   isIso8601(value) {

@@ -24,6 +24,7 @@ export class Cliente extends Modelo  {
   nomeFantasia: string;
   razaoSocial: string;
   cnpj: string;
+  url?: string;
   inscricaoEstadual: string;
   telefone: string;
   email: string;
@@ -36,4 +37,6 @@ export class Cliente extends Modelo  {
   ramoDeAtuacao: RamoDeAtuacao;
   responsavelRH: string;
   telefoneResponsavelRH: string;
+
+  
 }

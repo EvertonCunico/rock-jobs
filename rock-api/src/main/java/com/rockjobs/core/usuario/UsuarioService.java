@@ -8,10 +8,12 @@ import com.rockjobs.core.exceptions.ValidacaoException;
 import com.rockjobs.core.security.PasswordUtil;
 import com.rockjobs.core.security.service.Logado;
 import com.rockjobs.core.usuario.dto.AlteracaoSenha;
+import com.rockjobs.core.usuario.dto.AlteracaoSenhaAdmin;
 import com.rockjobs.core.usuario.dto.UsuarioDto;
 import com.rockjobs.core.usuario.eventos.CriptografarSenhaEvent;
 import com.rockjobs.core.usuario.eventos.ValoresPadraoEvent;
 import com.rockjobs.core.usuario.validacoes.ValidaDuplicidadeUsuario;
+import com.rockjobs.core.usuario.validacoes.ValoresObrigatorios;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
 import javax.enterprise.context.RequestScoped;
@@ -31,6 +33,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long>, PanacheReposi
 	@Inject CriptografarSenhaEvent criptografarSenhaEvent;
 	@Inject ValoresPadraoEvent valoresPadraoEvent;
 	@Inject ValidaDuplicidadeUsuario validaDuplicidadeUsuario;
+	@Inject ValoresObrigatorios valoresObrigatorios;
 
 	@Override
 	public List<Class<? extends EventoPadrao<Usuario>>> eventosExecutarAntes() {
@@ -44,7 +47,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long>, PanacheReposi
 
 	@Override
 	public List<Class<? extends ValidacaoPadrao<Usuario>>> validacoes() {
-		return List.of(ValidaDuplicidadeUsuario.class);
+		return List.of(ValidaDuplicidadeUsuario.class, ValoresObrigatorios.class);
 	}
 
 	public UsuarioDto novo(UsuarioDto dto) throws Exception {
@@ -73,6 +76,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long>, PanacheReposi
 		u.setDataNascimento(dto.getDataNascimento());
 		u.setAtivo(dto.getAtivo());
 		u.setTipoAcesso(dto.getTipoAcesso());
+		u.setCliente(dto.getCliente());
 		var usuarioDto = new UsuarioDto(this.alterar(u));
 		return usuarioDto;
 	}
@@ -112,6 +116,13 @@ public class UsuarioService implements ServiceBase<Usuario, Long>, PanacheReposi
 		if (!PasswordUtil.verifyPassword(alteracaoSenha.getSenhaAtual(), usuario.getSenha())) throw ValidacaoException.builder().status(400).mensagem("Senha atual não confere.").build();
 		if (!alteracaoSenha.getSenhaNova().equals(alteracaoSenha.getSenhaConfirmacao())) throw ValidacaoException.builder().status(400).mensagem("A senha de confirmação não coincide com a nova senha.").build();
 		usuario.setSenha(PasswordUtil.encryptPassword(alteracaoSenha.getSenhaNova()));
+		alterar(usuario);
+	}
+
+	public void alterarSenhaUsuario(AlteracaoSenhaAdmin alteracaoSenha) throws Exception {
+		Usuario usuario = Usuario.findById(alteracaoSenha.getIdUsuario());
+		if (usuario == null) throw ValidacaoException.builder().status(404).mensagem("Usuário não encontrado.").build();
+		usuario.setSenha(PasswordUtil.encryptPassword(alteracaoSenha.getSenha()));
 		alterar(usuario);
 	}
 }

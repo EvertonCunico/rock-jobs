@@ -13,6 +13,8 @@ import com.rockjobs.core.usuario.dto.UsuarioDto;
 import com.rockjobs.core.usuario.eventos.CriptografarSenhaEvent;
 import com.rockjobs.core.usuario.validacoes.ValidaDuplicidadeUsuario;
 import com.rockjobs.features.cliente.eventos.ValoresPadraoEvent;
+import com.rockjobs.features.cliente.validacoes.ValidaDuplicidadeCliente;
+import com.rockjobs.features.cliente.validacoes.ValidaExclusaoCliente;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
 import javax.enterprise.context.RequestScoped;
@@ -30,6 +32,12 @@ public class ClienteService implements ServiceBase<Cliente, Long>, PanacheReposi
 	@Inject
 	ValoresPadraoEvent valoresPadraoEvent;
 
+	@Inject
+	ValidaDuplicidadeCliente validaDuplicidadeCliente;
+
+	@Inject
+	ValidaExclusaoCliente validaExclusaoCliente;
+
 	@Override
 	public List<Class<? extends EventoPadrao<Cliente>>> eventosExecutarAntes() {
 		return List.of(ValoresPadraoEvent.class);
@@ -42,7 +50,7 @@ public class ClienteService implements ServiceBase<Cliente, Long>, PanacheReposi
 
 	@Override
 	public List<Class<? extends ValidacaoPadrao<Cliente>>> validacoes() {
-		return List.of();
+		return List.of(ValidaExclusaoCliente.class, ValidaDuplicidadeCliente.class);
 	}
 
 	@Transactional
@@ -81,7 +89,7 @@ public class ClienteService implements ServiceBase<Cliente, Long>, PanacheReposi
 
 	@Transactional
 	public void deletar(Long id) throws Exception {
-		Cliente cliente = Usuario.findById(id);
+		Cliente cliente = Cliente.findById(id);
 		preOperacao(AcaoCrud.DELETE, cliente);
 		cliente.delete();
 		posOperacao(AcaoCrud.DELETE, cliente);

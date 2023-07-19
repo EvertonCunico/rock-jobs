@@ -55,7 +55,6 @@ public class UsuarioDto  {
     @NotNull(message = "CPF é obrigatório")
     private String cpf;
 
-    @NotBlank(message = "Telefone não pode estar em branco")
     private String telefoneCelular;
 
     private LocalDate dataNascimento;

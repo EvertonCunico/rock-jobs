@@ -3,7 +3,7 @@
     <p-card>
         <div [formGroup]='form'>
             <div class='ui-fluid'>
-                <p-fieldset legend='Dados básicos'>
+                <p-fieldset legend='Dados Básicos'>
                     <div class='p-grid p-nogutter'>
                         <div style='margin-left: 1%' class='p-col p-grid'>
                             <div class='p-col-12 p-md-6'>
@@ -14,7 +14,7 @@
                             </div>
                             <div class='p-col-12 p-md-6'>
                                 <app-rotulo rotulo='Nome Fantasia'>
-                                    <input formControlName='nomeFantasia' appAutofocus pInputText type='text'
+                                    <input formControlName='nomeFantasia' pInputText type='text'
                                            maxlength='255'/>
                                 </app-rotulo>
                             </div>
@@ -27,7 +27,7 @@
                             </div>
                             <div class='p-col-6 p-md-3'>
                                 <app-rotulo rotulo='Inscrição Estadual'>
-                                    <input formControlName='inscricaoEstadual' appAutofocus pInputText type='text'
+                                    <input formControlName='inscricaoEstadual' pInputText type='text'
                                            maxlength='20'/>
                                 </app-rotulo>
                             </div>
@@ -38,43 +38,43 @@
                 <p-fieldset legend='Dados de Contato e Endereço'>
                     <div class='p-grid p-nogutter'>
                         <div style='margin-left: 1%' class='p-col p-grid'>
-                            <div class='p-col-12 p-md-6'>
+                            <div class='p-col-12 p-md-2'>
                                 <app-rotulo rotulo='Telefone'>
                                     <p-inputMask formControlName='telefone' mask='(99) 9999-9999?9'
                                                 value='telefone'></p-inputMask>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-6'>
-                                <app-rotulo rotulo='Email'>
-                                    <input formControlName='email' appAutofocus pInputText type='text'
+                            <div class='p-col-12 p-md-4'>
+                                <app-rotulo rotulo='E-mail'>
+                                    <input formControlName='email' pInputText type='text'
                                            maxlength='100'/>
                                 </app-rotulo>
                             </div>
                             <div class='p-col-12 p-md-6'>
                                 <app-rotulo rotulo='Endereço'>
-                                    <input formControlName='endereco' appAutofocus pInputText type='text'
+                                    <input formControlName='endereco' pInputText type='text'
                                            maxlength='255'/>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-6 p-md-3'>
+                            <div class='p-col-6 p-md-2'>
                                 <app-rotulo rotulo='Número'>
-                                    <input formControlName='enderecoNumero' appAutofocus pInputText type='text'
+                                    <input formControlName='enderecoNumero' pInputText type='text'
                                            maxlength='20'/>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-6 p-md-3'>
+                            <div class='p-col-6 p-md-2'>
                                 <app-rotulo rotulo='CEP'>
                                     <p-inputMask formControlName='enderecoCep'
                                                  mask='99999-999'></p-inputMask>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-6'>
+                            <div class='p-col-12 p-md-4'>
                                 <app-rotulo rotulo='Bairro'>
-                                    <input formControlName='enderecoBairro' appAutofocus pInputText type='text'
+                                    <input formControlName='enderecoBairro' pInputText type='text'
                                            maxlength='100'/>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-6'>
+                            <div class='p-col-12 p-md-4'>
                                 <app-rotulo rotulo='Cidade'>
                                     <app-autocomplete url='cidade/pesquisa' dataKey='id'
                                                       label='{nome} - {estado.uf}'
@@ -105,14 +105,14 @@
                                                 [autoDisplayFirst]='true'></p-dropdown>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-6'>
+                            <div class='p-col-12 p-md-4'>
                                 <app-rotulo rotulo='Nome do Responsável RH'>
-                                    <input formControlName='responsavelRH' appAutofocus pInputText type='text'
+                                    <input formControlName='responsavelRH' pInputText type='text'
                                            maxlength='255'/>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-6'>
-                                <app-rotulo rotulo='Telefone Responsável RH'>
+                            <div class='p-col-12 p-md-2'>
+                                <app-rotulo rotulo='Telefone do Responsável RH'>
                                     <p-inputMask formControlName='telefoneResponsavelRH' mask='(99) 9999-9999?9'
                                                 value='telefoneResponsavelRH'></p-inputMask>
                                 </app-rotulo>

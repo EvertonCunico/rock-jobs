@@ -13,7 +13,7 @@ public class RequestPesquisa {
 
     private int quantidade;
 
-    private String valorPesquisa;
+    private String valor;
 
     private Map<String, Object> filtrosPersonalizados;
 }

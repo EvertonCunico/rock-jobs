@@ -1,0 +1,152 @@
+<app-manutencao [acoes]='{ incluir: true, atualizar: true, deletar: true, visualizar: false, pesquisar: true, cancelar: true}'>
+    <p-card>
+        <div [formGroup]='form'>
+            <div class='ui-fluid'>
+                <p-fieldset legend='Dados da Empresa'>
+                    <div class='p-grid p-nogutter'>
+                        <div style='margin-left: 1%' class='p-col p-grid'>
+                            <div class='p-col-12 p-md-6'>
+                                <app-rotulo rotulo='Cliente'>
+                                    <app-autocomplete url='cliente/pesquisa' dataKey='id' appAutofocus
+                                                      label='{razaoSocial}'
+                                                      formControlName='cliente'></app-autocomplete>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-6'>
+                                <app-rotulo rotulo='Nome Fantasia'>
+                                    <input [value]="this.getNomeFantasia()" pInputText disabled />
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-3'>
+                                <app-rotulo rotulo='CNPJ'>
+                                    <input [value]="this.getCnpj()" pInputText disabled />
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-9'>
+                                <app-rotulo rotulo='Endereço'>
+                                    <input [value]="this.enderecoCompleto()" pInputText disabled />
+                                </app-rotulo>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+
+                <p-fieldset legend='Dados Básicos'>
+                    <div class='p-grid p-nogutter'>
+                        <div style='margin-left: 1%' class='p-col p-grid'>
+                            <div class='p-col-12 p-md-6'>
+                                <app-rotulo rotulo='Nome da função'>
+                                    <input formControlName='nomeDaFuncao' pInputText type='text'
+                                           maxlength='120'/>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-3'>
+                                <app-rotulo rotulo='Quantidade de vagas'>
+                                    <input formControlName='quantidadeDeVagas' pInputText type='number'
+                                           maxlength='120'/>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-3'>
+                                <app-rotulo rotulo='Vaga Sigilosa'>
+                                    <p-dropdown [(ngModel)]="this.vagaSigilosa" formControlName="vagaSigilosa" [options]='optionsSimNao'></p-dropdown>
+                                </app-rotulo>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+
+                <p-fieldset legend='Prazos'>
+                    <div class='p-grid p-nogutter'>
+                        <div style='margin-left: 1%' class='p-col p-grid'>
+                            <div class='p-col-12 p-md-4'>
+                                <app-rotulo rotulo='Recrutamento e seleção até'>
+                                    <app-date-picker formControlName='dataLimiteSelecao'>
+                                    </app-date-picker>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-4'>
+                                <app-rotulo rotulo='Integração até'>
+                                    <app-date-picker formControlName='dataLimiteIntegracao'>
+                                    </app-date-picker>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-4'>
+                                <app-rotulo rotulo='Situação'>
+                                    <p-dropdown formControlName="situacao" [options]='opcoesSituacoes'></p-dropdown>
+                                </app-rotulo>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+
+                <p-fieldset legend='Descrição'>
+                    <div class='p-grid p-nogutter'>
+                        <div style='margin-left: 1%' class='p-col p-grid'>
+                            <div class='p-col-12 p-md-12'>
+                                <app-rotulo rotulo='Atribuição sumária'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='atribuicaoSumaria' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Atividades típicas da função'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='atividadesTipicas' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Atividades eventuais da função'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='atividadesEventuais' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Nível de autoridade e responsabilidade'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='nivelAutoridadeResponsabilidade' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Habilidades e  atitudes necessárias'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='habilidadesNecessarias' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Requisitos básicos da função'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='requisitosBasicos' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Requisitos desejáveis da função'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='requisitosDesejaveis' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-3'>
+                                <app-rotulo rotulo='Escolaridade'>
+                                    <p-dropdown [(ngModel)]="this.escolaridadeSelecionada" formControlName="escolaridade" [options]='opcoesEscolaridade'></p-dropdown>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Cursos obrigatórios'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='cursosObrigatorios' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-6'>
+                                <app-rotulo rotulo='Tipo de Contrato'>
+                                    <p-dropdown [(ngModel)]="this.tipoContratoSelecionado" formControlName="tipoContrato" [options]='opcoesTipoContrato'></p-dropdown>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-6'>
+                                <app-rotulo rotulo='Carga Horária Semanal'>
+                                    <input formControlName='cargaHorariaSemanal' pInputText type='number'
+                                           maxlength='2'/>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Remuneração, comissões e bônus:'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='remuneracao' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+        </div>
+    </p-card>
+</app-manutencao>

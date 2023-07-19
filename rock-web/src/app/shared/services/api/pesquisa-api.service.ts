@@ -53,14 +53,14 @@ export class PesquisaAPIService<T extends Modelo> implements PesquisaAPIInterfac
         if (requisicao.valor) {
             options.params = options.params.set('valor', '' + requisicao.valor);
         }
-        if (requisicao.filtro) {
-            Object.keys(requisicao.filtro).forEach(
+        if (requisicao.filtrosPersonalizados) {
+            Object.keys(requisicao.filtrosPersonalizados).forEach(
                 key => {
-                    if (requisicao.filtro[key] || requisicao.filtro[key] === 0) {
-                        if (requisicao.filtro[key].id) {
-                            options.params = options.params.set(key, requisicao.filtro[key].id);
+                    if (requisicao.filtrosPersonalizados[key] || requisicao.filtrosPersonalizados[key] === 0) {
+                        if (requisicao.filtrosPersonalizados[key].id) {
+                            options.params = options.params.set(key, requisicao.filtrosPersonalizados[key].id);
                         } else {
-                            options.params = options.params.set(key, requisicao.filtro[key]);
+                            options.params = options.params.set(key, requisicao.filtrosPersonalizados[key]);
                         }
                     }
                 }

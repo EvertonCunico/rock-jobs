@@ -23,6 +23,10 @@ const routes = [
         path: 'cliente',
         loadChildren: () => import('./cliente/cliente.module').then(m => m.ClienteModule)
       },
+      {
+        path: 'vaga',
+        loadChildren: () => import('./vaga/vaga.module').then(m => m.VagaModule)
+      },
       { path: '', redirectTo: 'pagina-inicial', pathMatch: 'full' },
     ]
   }

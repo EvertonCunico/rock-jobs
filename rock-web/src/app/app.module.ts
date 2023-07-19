@@ -18,6 +18,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
+import { TesteService } from '@estrutura/services/teste.service';
+import { CampoPipeModule } from './shared/pipes/campo-pipe/campo-pipe.module';
 registerLocaleData(localePt);
 
 @NgModule({
@@ -32,7 +34,8 @@ registerLocaleData(localePt);
         EstruturaModule,
         ToastModule,
         LoginModule,
-        NgxSpinnerModule
+        NgxSpinnerModule,
+        CampoPipeModule
     ],
     declarations: [
         AppComponent
@@ -54,7 +57,8 @@ registerLocaleData(localePt);
             useValue: 'pt-BR'
         },
         MenuService,
-        MessageService
+        MessageService,
+        TesteService
     ],
     bootstrap: [AppComponent]
 })

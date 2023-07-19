@@ -16,6 +16,8 @@ import { AlteracaoSenhaAdmin } from "../../../modelos/alteracao_senha_admin";
 import { EnumUtils } from "app/shared/utils/enum-utils";
 import { SimNaoBoolean } from "@boom/modelos/sim-nao";
 import { RolesUser } from "app/modelos/roles";
+import { AutenticacaoService } from "app/autenticacao/services/autenticacao.service";
+import { distinctUntilChanged } from "rxjs/operators";
 
 export function verificarCPFValido(
   control: AbstractControl
@@ -44,7 +46,7 @@ export class UsuarioManutencaoComponent
   idUsuario: any = null;
 
   situacoes = [];
-
+  acoes = {incluir: true, atualizar: true, deletar: true, visualizar: false, pesquisar: true, cancelar: true};
   permissoes = [];
 
   formAlterarSenha: FormGroup;
@@ -52,19 +54,22 @@ export class UsuarioManutencaoComponent
   constructor(
     protected injector: Injector,
     public userCRUDService: UsuarioCRUDService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private autenticacaoService: AutenticacaoService
   ) {
     super(injector, userCRUDService);
     this.titulo = "Cadastros / Usuário";
     this.form = this.formBuilder.group({
-      nome: ["", [Validators.required, Validators.maxLength(255)]],
-      sobrenome: ["", [Validators.required, Validators.maxLength(255)]],
+      nome: ['', [Validators.required, 
+        Validators.minLength(3), Validators.maxLength(255)]],
+      sobrenome: ['', [Validators.required, 
+        Validators.minLength(3),Validators.maxLength(255)]],
       email: [
-        "",
+        '',
         [Validators.required, Validators.maxLength(100), Validators.email],
       ],
       senha: [
-        "",
+        '',
         [
           Validators.required,
           Validators.minLength(1),
@@ -72,11 +77,11 @@ export class UsuarioManutencaoComponent
         ],
       ],
       confirmaremail: [
-        "",
+        '',
         [Validators.required, Validators.maxLength(100), Validators.email],
       ],
       confirmarsenha: [
-        "",
+        '',
         [
           Validators.required,
           Validators.minLength(1),
@@ -84,7 +89,7 @@ export class UsuarioManutencaoComponent
         ],
       ],
       cpf: [
-        "",
+        '',
         [
           verificarCPFValido,
           Validators.required,
@@ -93,7 +98,7 @@ export class UsuarioManutencaoComponent
         ],
       ],
       telefoneCelular: [
-        "",
+        '',
         [Validators.minLength(10), Validators.maxLength(15)],
       ],
       dataNascimento: [
@@ -105,7 +110,7 @@ export class UsuarioManutencaoComponent
         ],
       ],
       endereco: [''],
-      cliente: [''],
+      cliente: ['', [Validators.required]],
       ativo: [true, [Validators.required]],
       tipoAcesso: ["RH_EMPRESA", Validators.required],
     });
@@ -123,25 +128,34 @@ export class UsuarioManutencaoComponent
         return false;
       }
 
-      //Valida preenchimento da senha com valor válido
-      this.validarSenha();
-
       //Valida campo senha e confirmar senha
       if (this.form.get('senha').value != this.form.get('confirmarsenha').value) {
         this.mensagemService.notificarMensagemAlerta('Atenção!', 'As senhas não coincidem!');
         return false;
-      }
+      }      
+
+      //Valida preenchimento da senha com valor válido
+      
+      return this.validarSenha(true);
     }
     return true;
   }
 
-  validarSenha() {
+  validarSenha(inclusao) {
+    var senha = "";
+    if (inclusao) {
+      senha = this.form.get("senha").value;
+    } else {
+      senha = this.formAlterarSenha.get("senha").value;
+    }
     const regex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%*()_+^&?]{5,16}$/;
-    const senha = this.formAlterarSenha.get("senha").value;
     if (senha !== null) {
       if (regex.test(senha)) {
-        this.alterarSenha(senha);
+        if (!inclusao) {
+          this.alterarSenha(senha);
+        }
+        return true;
       } else {
         this.messageService.add({
           severity: "warn",
@@ -150,13 +164,11 @@ export class UsuarioManutencaoComponent
             "A senha deve ter pelo menos 5 e no máximo 16 caracteres, incluindo pelo menos um dígito, uma letra minúscula e uma letra maiúscula.",
           life: 6000,
         });
+        return false;
       }
     } else {
-      this.messageService.add({
-        severity: "warn",
-        summary: "Campo vazio!",
-        detail: "Verifique os campos.",
-      });
+      this.mensagemService.notificarFormInvalido('Senha não informada');
+      return false;
     }
   }
 
@@ -187,12 +199,58 @@ export class UsuarioManutencaoComponent
   ngOnInit(): void {
     super.ngOnInit();
     this.idUsuario = this.route.snapshot.paramMap.get("id");
+
     if (this.idUsuario) {
-      this.form.get('senha').setValidators(null);
-      this.form.get('confirmarsenha').setValidators(null);
+      this.tratarCamposEdicao();
+
+      if (this.autenticacaoService.loginInfo.usuario.id == this.idUsuario) {
+        this.acoes.deletar = false;
+      }
     }
+
+    this.form.get('tipoAcesso').valueChanges.subscribe(value => {
+      if (value === 'ADMIN_GERAL') {
+        this.desabilitarCliente();
+      } else {
+        this.form.get('cliente').enable();
+        this.form.get('cliente').setValidators([Validators.required]);
+      }
+      this.form.get('cliente').updateValueAndValidity();
+    });
+
+    this.form.get('email').valueChanges
+    .pipe(distinctUntilChanged())
+    .subscribe(value => {
+      this.form.get('confirmaremail').setValue(null);
+    });
 
     this.situacoes = EnumUtils.getLabelValueArray(SimNaoBoolean);
     this.permissoes = EnumUtils.getLabelValueArray(RolesUser);
+  }
+
+  onRegistroCarregado(registro: Usuario) {
+    this.tratarCamposEdicao();
+
+    if (registro.tipoAcesso.toString() == 'ADMIN_GERAL') {
+      this.desabilitarCliente();
+    }
+  }
+
+  tratarCamposEdicao() {
+    this.form.get('senha').setValidators(null);
+    this.form.get('senha').updateValueAndValidity();
+    this.form.get('confirmarsenha').setValidators(null);
+    this.form.get('confirmarsenha').updateValueAndValidity();
+    this.form.get('confirmaremail').setValue(this.form.get('email').value);
+    this.form.get('confirmaremail').markAsTouched();
+    this.form.get('confirmaremail').updateValueAndValidity();
+  }
+
+  desabilitarCliente() {
+    this.form.get('cliente').setValue(null);
+    this.form.get('cliente').disable();
+    this.form.get('cliente').setValidators(null);
+    this.form.get('cliente').markAsTouched();
+    this.form.get('cliente').updateValueAndValidity();
   }
 }

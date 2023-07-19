@@ -16,7 +16,7 @@ export class ClientePesquisaComponent extends ViewBase {
     { field: 'id', header: 'Código' },
     { field: 'razaoSocial', header: 'Razão Social' },
     { field: 'email', header: 'E-mail'},
-    { field: 'cnpj', header: 'CPF', mascara: '##.###.###/####-##'},
+    { field: 'cnpj', header: 'CNPJ', mascara: '##.###.###/####-##'},
     { field: 'telefone', header: 'Telefone', mascara: '(##) #####-####'}
   ];
 

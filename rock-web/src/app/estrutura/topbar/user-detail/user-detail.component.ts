@@ -141,8 +141,4 @@ export class UserDetailComponent implements OnInit {
             }
         );
     }
-
-    acessarPerfil(){
-        this.routerService.navigateByUrl('/admin/usuario/' +  this.idUsuario);
-    }
 }
