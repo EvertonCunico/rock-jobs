@@ -1,5 +1,5 @@
 import { Modelo } from '@boom/modelos/modelo';
-import { Cliente } from './cliente';
+import { Empresa } from './empresa';
 import { RolesUser } from './roles';
 
 export class Usuario extends Modelo {
@@ -14,5 +14,6 @@ export class Usuario extends Modelo {
     senha?: string;
     ativo?: boolean;
     tipoAcesso?: RolesUser;
-    cliente?: Cliente;
+    empresa?: Empresa;
+    dataInclusao?: Date;
 }

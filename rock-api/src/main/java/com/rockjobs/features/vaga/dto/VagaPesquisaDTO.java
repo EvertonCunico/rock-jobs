@@ -17,11 +17,11 @@ public class VagaPesquisaDTO {
     @CampoSQL
     private Long id;
 
-    @CampoSQL(name = "cliente_id")
-    private Long clienteId;
+    @CampoSQL(name = "empresa_id")
+    private Long empresaId;
 
-    @CampoSQL(name = "cliente_razao_social")
-    private String clienteRazaoSocial;
+    @CampoSQL(name = "Empresa_razao_social")
+    private String EmpresaRazaoSocial;
 
     @CampoSQL(name = "nome_da_funcao")
     private String nomeDaFuncao;

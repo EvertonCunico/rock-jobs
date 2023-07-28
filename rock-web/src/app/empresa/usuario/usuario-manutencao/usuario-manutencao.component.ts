@@ -17,6 +17,7 @@ import { EnumUtils } from "app/shared/utils/enum-utils";
 import { SimNaoBoolean } from "@boom/modelos/sim-nao";
 import { RolesUser } from "app/modelos/roles";
 import { AutenticacaoService } from "app/autenticacao/services/autenticacao.service";
+import { distinctUntilChanged } from "rxjs/operators";
 
 export function verificarCPFValido(
   control: AbstractControl
@@ -109,9 +110,10 @@ export class UsuarioManutencaoComponent
         ],
       ],
       endereco: [undefined],
-      cliente: [undefined, [Validators.required]],
+      empresa: [undefined, [Validators.required]],
       ativo: [true, [Validators.required]],
       tipoAcesso: ["RH_EMPRESA", Validators.required],
+      dataInclusao: ['']
     });
     this.formAlterarSenha = this.formBuilder.group({
       idUsuario: [null, [Validators.required]],
@@ -205,14 +207,14 @@ export class UsuarioManutencaoComponent
     if (this.idUsuario) {
       this.tratarCamposEdicao();
     } else {
-      this.form.get('cliente').setValue(this.autenticacaoService.loginInfo.usuario.cliente);
+      this.form.get('empresa').setValue(this.autenticacaoService.loginInfo.usuario.empresa);
     }
-    this.desabilitarCliente();
+    this.desabilitarEmpresa();
 
-    this.form.get('email').valueChanges.subscribe(value => {
-      if (this.form.get('email').dirty) {
-        this.form.get('confirmaremail').setValue(null);
-      }
+    this.form.get('email').valueChanges
+    .pipe(distinctUntilChanged())
+    .subscribe(value => {
+      this.form.get('confirmaremail').setValue(null);
     });
 
     this.situacoes = EnumUtils.getLabelValueArray(SimNaoBoolean);
@@ -233,9 +235,9 @@ export class UsuarioManutencaoComponent
     this.form.get('confirmaremail').updateValueAndValidity();
   }
 
-  desabilitarCliente() {
-    this.form.get('cliente').disable();
-    this.form.get('cliente').markAsTouched();
-    this.form.get('cliente').updateValueAndValidity();
+  desabilitarEmpresa() {
+    this.form.get('empresa').disable();
+    this.form.get('empresa').markAsTouched();
+    this.form.get('empresa').updateValueAndValidity();
   }
 }

@@ -35,19 +35,20 @@ public class UsuarioResource {
     }
 
     @POST
-    @PermissoesAcesso(perfis = { TipoAcesso.ADMIN_GERAL })
+    @PermissoesAcesso(perfis = { TipoAcesso.ADMIN_GERAL, TipoAcesso.ADMIN_EMPRESA })
     public Response novo(@Valid UsuarioDto dto) throws Exception {
         return Response.ok(service.novo(dto).getId()).build();
     }
 
     @PUT
+    @PermissoesAcesso(perfis = { TipoAcesso.ADMIN_GERAL, TipoAcesso.ADMIN_EMPRESA })
     public Response alterar(@Valid UsuarioDto dto) throws Exception {
         return Response.ok(service.alterar(dto)).build();
     }
 
     @DELETE
     @Path("{id}")
-    @PermissoesAcesso(perfis = { TipoAcesso.ADMIN_GERAL })
+    @PermissoesAcesso(perfis = { TipoAcesso.ADMIN_GERAL, TipoAcesso.ADMIN_EMPRESA })
     public Response deletar(@PathParam("id") Long id) throws Exception {
         service.deletar(id);
         return Response.status(204).build();

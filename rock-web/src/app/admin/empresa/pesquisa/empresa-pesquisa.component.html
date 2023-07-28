@@ -1,0 +1,26 @@
+<app-pesquisa [formFiltros]='formFiltros' [service]='empresaPesquisaService' [colunas]='colunas' [acoes]='{ editar: true, incluir: true, visualizar: true, filtrar: true, pesquisar: true }' placeHolderControles='pesquisar por nome'>
+    <div class='form-filtros'>
+        <div [formGroup]='formFiltros'>
+            <div class='ui-fluid'>
+                <div class='p-grid'>
+                    <div class='p-col-12 p-md-4'>
+                        <app-rotulo rotulo='CNPJ'>
+                            <p-inputMask formControlName="cnpj" mask="99.999.999/9999-99"></p-inputMask>
+                        </app-rotulo>
+                    </div>
+                    <div class='p-col-12 p-md-4'>
+                        <app-rotulo rotulo='Telefone'>
+                            <p-inputMask formControlName="telefone" mask="(99) 9999-9999?9"
+                                         value="telefone"></p-inputMask>
+                        </app-rotulo>
+                    </div>
+                    <div class='p-col-12 p-md-4'>
+                        <app-rotulo rotulo='Email'>
+                            <input formControlName='email' pInputText type='text' maxlength="100" />
+                        </app-rotulo>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-pesquisa>

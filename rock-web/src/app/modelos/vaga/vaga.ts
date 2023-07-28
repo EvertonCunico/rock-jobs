@@ -1,11 +1,12 @@
 import { Modelo } from '@boom/modelos/modelo';
-import { Cliente } from '../cliente';
+import { Empresa } from '../empresa';
 import { Escolaridade } from './escolaridade';
 import { TipoContrato } from './tipoContrato';
 import { Situacao } from './situacao';
+import { Genero } from './genero';
 
 export class Vaga extends Modelo {
-    cliente: Cliente;
+    empresa: Empresa;
     url?: string;
     nomeDaFuncao: string;
     quantidadeVagas: number;
@@ -25,5 +26,27 @@ export class Vaga extends Modelo {
     tipoContrato: TipoContrato;
     cargaHorariaSemanal: number;
     remuneracao: string;
-    
+    informaComissoesBonus: boolean;
+    comissoesBonus: string;
+    valeAlimentacao: boolean;
+    valeTransporte: boolean;
+    valeRefeicao: boolean;
+    segundaFeiraInicio: string;
+    segundaFeiraFim: string;
+    tercaFeiraInicio: string;
+    tercaFeiraFim: string;
+    quartaFeiraInicio: string;
+    quartaFeiraFim: string;
+    quintaFeiraInicio: string;
+    quintaFeiraFim: string;
+    sextaFeiraInicio: string;
+    sextaFeiraFim: string;
+    sabadoInicio: string;
+    sabadoFim: string;
+    domingoInicio: string;
+    domingoFim: string;
+    informacoesRock: string;
+    genero: Genero;
+    dataInclusao: Date;
+    sequencialEmpresa: number;
 }

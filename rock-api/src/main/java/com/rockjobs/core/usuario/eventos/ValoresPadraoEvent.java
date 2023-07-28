@@ -7,6 +7,7 @@ import com.rockjobs.core.util.Regex;
 import com.rockjobs.core.util.StringUtil;
 
 import javax.enterprise.context.RequestScoped;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,6 +22,10 @@ public class ValoresPadraoEvent extends EventoPadrao<Usuario> {
     @Override
     public void executar(AcaoCrud acao, Usuario entity) {
         retiraMascara(entity);
+
+        if (AcaoCrud.CREATE.equals(acao)) {
+            entity.setDataInclusao(LocalDateTime.now());
+        }
     }
 
     public void retiraMascara(Usuario entity) {

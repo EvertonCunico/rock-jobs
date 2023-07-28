@@ -5,7 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ProgramaCrudModule } from '@boom/ui/programas/programa-crud/programa-crud.module';
 import { TableModule } from 'primeng/table';
 import { TextMaskModule } from 'angular2-text-mask';
-import { FieldsetModule, InputMaskModule, PanelModule, TabViewModule } from 'primeng';
+import { CalendarModule, CheckboxModule, FieldsetModule, InputMaskModule, PanelModule, TabViewModule } from 'primeng';
 import { AutoCompleteModule } from '@boom/ui/auto-complete/auto-complete.module';
 import { DatePickerModule } from '@boom/ui/date-picker/date-picker.module';
 import { VagaPesquisaComponent } from './pesquisa/vaga-pesquisa.component';
@@ -36,7 +36,9 @@ import { FormsModule } from '@angular/forms';
       AutoCompleteModule,
       FieldsetModule,
       DatePickerModule,
-      PanelModule
+      PanelModule,
+      CheckboxModule,
+      CalendarModule
   ],
   providers: [
     VagaCRUDService,

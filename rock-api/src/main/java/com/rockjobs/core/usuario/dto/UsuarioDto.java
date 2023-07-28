@@ -2,7 +2,7 @@ package com.rockjobs.core.usuario.dto;
 
 import com.rockjobs.core.usuario.TipoAcesso;
 import com.rockjobs.core.usuario.Usuario;
-import com.rockjobs.features.cliente.Cliente;
+import com.rockjobs.features.empresa.Empresa;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,6 +13,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -31,7 +32,8 @@ public class UsuarioDto  {
         this.setDataNascimento(usuario.getDataNascimento());
         this.setAtivo(usuario.getAtivo());
         this.setTipoAcesso(usuario.getTipoAcesso());
-        this.setCliente(usuario.getCliente());
+        this.setEmpresa(usuario.getEmpresa());
+        this.setDataInclusao(usuario.getDataInclusao());
     }
 
     private Long id;
@@ -62,7 +64,9 @@ public class UsuarioDto  {
     private Boolean ativo;
     private TipoAcesso tipoAcesso;
 
-    private Cliente cliente;
+    private Empresa empresa;
+
+    private LocalDateTime dataInclusao;
 
     public Usuario mapToUsuario(UsuarioDto dto) {
         Usuario u = new Usuario();
@@ -76,7 +80,8 @@ public class UsuarioDto  {
         u.setDataNascimento(dto.getDataNascimento());
         u.setAtivo(dto.getAtivo());
         u.setTipoAcesso(dto.getTipoAcesso());
-        u.setCliente(dto.getCliente());
+        u.setEmpresa(dto.getEmpresa());
+        u.setDataInclusao(dto.getDataInclusao());
         return u;
     }
 }

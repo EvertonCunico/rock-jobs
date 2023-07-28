@@ -61,7 +61,7 @@ export class AppMenuComponent implements OnInit {
                 label: 'Cadastros',
                 icon: 'fa-light fa-table-tree',
                 items: [
-                    { label: 'Clientes', icon: 'fa-light fa-building', routerLink: '/admin/cliente/'},
+                    { label: 'Empresas', icon: 'fa-light fa-building', routerLink: '/admin/empresa/'},
                     { label: 'Usuários', icon: 'fa-light fa-users', routerLink: '/admin/usuario/'},
                 ]
             },

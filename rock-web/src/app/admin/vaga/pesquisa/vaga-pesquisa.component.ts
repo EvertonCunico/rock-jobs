@@ -13,7 +13,7 @@ export class VagaPesquisaComponent extends ViewBase {
   formFiltros: FormGroup;
   colunas: Coluna[] = [
     { field: 'id', header: 'Código'},
-    { field: 'cliente', header: 'Cliente', tipo: TiposCampo.OBJETO, propriedades: ['id', 'razaoSocial']},
+    { field: 'empresa', header: 'Empresa', tipo: TiposCampo.OBJETO, propriedades: ['id', 'razaoSocial']},
     { field: 'nomeDaFuncao', header: 'Função'},
     { field: 'quantidadeDeVagas', header: 'Vagas'},
   ];
@@ -29,7 +29,7 @@ export class VagaPesquisaComponent extends ViewBase {
 
   criarFormularioFiltros(): FormGroup {
     return this.formBuilder.group({
-      cliente: '',
+      empresa: '',
       dataSelecao: '',
     });
   }

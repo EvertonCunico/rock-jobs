@@ -32,6 +32,7 @@ export class DatePickerComponent implements ControlValueAccessor {
 
   @Input() exibirHora;
   @Input() exibirSegundos;
+  @Input() disabled;
 
   ptBR = {
     firstDayOfWeek: 0,

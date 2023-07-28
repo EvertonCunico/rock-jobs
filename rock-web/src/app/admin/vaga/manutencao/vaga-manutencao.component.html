@@ -2,14 +2,19 @@
     <p-card>
         <div [formGroup]='form'>
             <div class='ui-fluid'>
+                <div class='p-grid p-nogutter' *ngIf="this.editando">
+                    <div class='p-col-12'>
+                        <p-card header="Vaga {{this.sequencialEmpresa}}"></p-card>
+                    </div>
+                </div>
                 <p-fieldset legend='Dados da Empresa'>
                     <div class='p-grid p-nogutter'>
                         <div style='margin-left: 1%' class='p-col p-grid'>
                             <div class='p-col-12 p-md-6'>
-                                <app-rotulo rotulo='Cliente'>
-                                    <app-autocomplete url='cliente/pesquisa' dataKey='id' appAutofocus
+                                <app-rotulo rotulo='Razão Social'>
+                                    <app-autocomplete url='empresa/pesquisa' dataKey='id' appAutofocus
                                                       label='{razaoSocial}'
-                                                      formControlName='cliente'></app-autocomplete>
+                                                      formControlName='empresa'></app-autocomplete>
                                 </app-rotulo>
                             </div>
                             <div class='p-col-12 p-md-6'>
@@ -40,15 +45,20 @@
                                            maxlength='120'/>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-3'>
+                            <div class='p-col-12 p-md-2'>
                                 <app-rotulo rotulo='Quantidade de vagas'>
                                     <input formControlName='quantidadeDeVagas' pInputText type='number'
                                            maxlength='120'/>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-3'>
+                            <div class='p-col-12 p-md-2'>
                                 <app-rotulo rotulo='Vaga Sigilosa'>
                                     <p-dropdown [(ngModel)]="this.vagaSigilosa" formControlName="vagaSigilosa" [options]='optionsSimNao'></p-dropdown>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12 p-md-2'>
+                                <app-rotulo rotulo='Gênero'>
+                                    <p-dropdown [(ngModel)]="this.generoSelecionado" formControlName="genero" [options]='opcoesGenero'></p-dropdown>
                                 </app-rotulo>
                             </div>
                         </div>
@@ -138,11 +148,207 @@
                                            maxlength='2'/>
                                 </app-rotulo>
                             </div>
+                            <div class='p-col-12 p-md-12'>
+                                <app-rotulo rotulo='Informações Rock Jobs'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='informacoesRock' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+
+                <p-fieldset legend='Financeiro'>
+                    <div class='p-grid p-nogutter'>
+                        <div style='margin-left: 1%' class='p-col p-grid'>
                             <div class='p-col-12'>
-                                <app-rotulo rotulo='Remuneração, comissões e bônus:'>
+                                <app-rotulo rotulo='Remuneração:'>
                                     <textarea maxlength="3000" pInputTextarea formControlName='remuneracao' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
                                 </app-rotulo>
                             </div>
+                            <div class='p-col-12'>
+                                <p-checkbox formControlName="informaComissoesBonus" label="Comissões e Bônus" [binary]="true" (onChange)="changeHabilitaComissoes()"></p-checkbox>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Descrição:'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='comissoesBonus' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-4'>
+                                <p-checkbox formControlName="valeAlimentacao" label="Vale alimentação" [binary]="true"></p-checkbox>
+                            </div>
+                            <div class='p-col-4'>
+                                <p-checkbox formControlName="valeTransporte" label="Vale transporte" [binary]="true"></p-checkbox>
+                            </div>
+                            <div class='p-col-4'>
+                                <p-checkbox formControlName="valeRefeicao" label="Vale refeição" [binary]="true"></p-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </p-fieldset>
+
+                <p-fieldset legend='Horários'>
+                    <div class='p-grid p-nogutter'>
+                        <div style='margin-left: 1%' class='p-col p-grid'>
+                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end;">
+                                <label>Segunda Feira:</label>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="segundaInicio" 
+                                    name="segundaInicio"
+                                    formControlName="segundaFeiraInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="segundaFim" 
+                                    name="segundaFim"
+                                    formControlName="segundaFeiraFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-6'></div>
+
+                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Terça Feira:</label>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="tercaInicio" 
+                                    name="tercaInicio"
+                                    formControlName="tercaFeiraInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="tercaFim" 
+                                    name="tercaFim"
+                                    formControlName="tercaFeiraFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-6'></div>
+
+                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Quarta Feira:</label>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="quartaInicio" 
+                                    name="quartaInicio"
+                                    formControlName="quartaFeiraInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="quartaFim" 
+                                    name="quartaFim"
+                                    formControlName="quartaFeiraFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-6'></div>
+
+                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Quinta Feira:</label>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="quintaInicio" 
+                                    name="quintaInicio"
+                                    formControlName="quintaFeiraInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="quintaFim" 
+                                    name="quintaFim"
+                                    formControlName="quintaFeiraFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-6'></div>
+
+                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Sexta Feira:</label>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="sextaInicio" 
+                                    name="sextaInicio"
+                                    formControlName="sextaFeiraInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="sextaFim" 
+                                    name="sextaFim"
+                                    formControlName="sextaFeiraFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-6'></div>
+
+                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Sábado:</label>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="sabadoInicio" 
+                                    name="sabadoInicio"
+                                    formControlName="sabadoInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="sabadoFim" 
+                                    name="sabadoFim"
+                                    formControlName="sabadoFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-6'></div>
+
+                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Domingo:</label>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="domingoInicio" 
+                                    name="domingoInicio"
+                                    formControlName="domingoInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-2'>
+                                <p-calendar  
+                                    id="domingoFim" 
+                                    name="domingoFim"
+                                    formControlName="domingoFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-6'></div>
                         </div>
                     </div>
                 </p-fieldset>

@@ -67,7 +67,7 @@ public class CidadePesquisaService {
         String sql = SQL;
         sql = sql.replace("<<campos>>", "*");
         sql = sql.replace("<<joins>>", JOINS);
-        sql = sql + " and exists(select 1 from cliente c where c.cidade_id=t.cidade_id) order by t.nome";
+        sql = sql + " and exists(select 1 from Empresa c where c.cidade_id=t.cidade_id) order by t.nome";
         return this.em.unwrap(Session.class).createSQLQuery(sql).addEntity(Cidade.class).getResultList();
     }
     

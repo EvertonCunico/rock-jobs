@@ -4,9 +4,8 @@ import com.rockjobs.core.crud_base.ServiceBase;
 import com.rockjobs.core.crud_base.validations.AcaoCrud;
 import com.rockjobs.core.crud_base.validations.EventoPadrao;
 import com.rockjobs.core.crud_base.validations.ValidacaoPadrao;
-import com.rockjobs.core.usuario.Usuario;
-import com.rockjobs.features.cliente.Cliente;
-import com.rockjobs.features.cliente.eventos.ValoresPadraoEvent;
+import com.rockjobs.core.security.service.Logado;
+import com.rockjobs.features.vaga.eventos.ValoresPadraoEvent;
 import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 
 import javax.enterprise.context.RequestScoped;
@@ -22,11 +21,14 @@ public class VagaService implements ServiceBase<Vaga, Long>, PanacheRepositoryBa
 	EntityManager em;
 
 	@Inject
+	Logado logado;
+
+	@Inject
 	ValoresPadraoEvent valoresPadraoEvent;
 
 	@Override
 	public List<Class<? extends EventoPadrao<Vaga>>> eventosExecutarAntes() {
-		return List.of();
+		return List.of(ValoresPadraoEvent.class);
 	}
 
 	@Override
@@ -40,44 +42,94 @@ public class VagaService implements ServiceBase<Vaga, Long>, PanacheRepositoryBa
 	}
 
 	@Transactional
-	public Vaga novo(Vaga cliente) throws Exception {
-		this.preOperacao(AcaoCrud.CREATE, cliente);
-		em.persist(cliente);
-		this.posOperacao(AcaoCrud.CREATE, cliente);
-		return cliente;
+	public Vaga novo(Vaga vaga) throws Exception {
+		this.preOperacao(AcaoCrud.CREATE, vaga);
+		em.persist(vaga);
+		this.posOperacao(AcaoCrud.CREATE, vaga);
+		return vaga;
 	}
 
 	@Transactional
-	public Vaga alterar(Vaga clienteAlterar) throws Exception {
-		Vaga c = Vaga.findById(clienteAlterar.getId());
-		c.setId(clienteAlterar.getId());
-		c.setCliente(clienteAlterar.getCliente());
-		c.setNomeDaFuncao(clienteAlterar.getNomeDaFuncao());
-		c.setQuantidadeDeVagas(clienteAlterar.getQuantidadeDeVagas());
-		c.setVagaSigilosa(clienteAlterar.getVagaSigilosa());
-		c.setDataLimiteSelecao(clienteAlterar.getDataLimiteSelecao());
-		c.setDataLimiteIntegracao(clienteAlterar.getDataLimiteIntegracao());
-		c.setAtribuicaoSumaria(clienteAlterar.getAtribuicaoSumaria());
-		c.setAtividadesEventuais(clienteAlterar.getAtividadesEventuais());
-		c.setAtividadesTipicas(clienteAlterar.getAtividadesTipicas());
-		c.setNivelAutoridadeResponsabilidade(clienteAlterar.getNivelAutoridadeResponsabilidade());
-		this.preOperacao(AcaoCrud.UPDATE, c);
-		em.merge(c);
-		this.posOperacao(AcaoCrud.UPDATE, c);
-		return c;
+	public Vaga alterar(Vaga vagaAtualizada) throws Exception {
+		this.preOperacao(AcaoCrud.UPDATE, vagaAtualizada);
+
+		// Carrega a entidade Vaga existente do banco de dados pelo ID
+		Vaga vagaExistente = em.find(Vaga.class, vagaAtualizada.getId());
+
+		// Verifica se a entidade Vaga existe
+		if (vagaExistente == null) {
+			throw new RuntimeException("Vaga não encontrada!");
+		}
+
+		vagaExistente.setNomeDaFuncao(vagaAtualizada.getNomeDaFuncao());
+		vagaExistente.setQuantidadeDeVagas(vagaAtualizada.getQuantidadeDeVagas());
+		vagaExistente.setFoto(vagaAtualizada.getFoto());
+		vagaExistente.setUrlFoto(vagaAtualizada.getUrlFoto());
+		vagaExistente.setDataLimiteSelecao(vagaAtualizada.getDataLimiteSelecao());
+		vagaExistente.setDataLimiteIntegracao(vagaAtualizada.getDataLimiteIntegracao());
+		vagaExistente.setSituacao(vagaAtualizada.getSituacao());
+		vagaExistente.setAtribuicaoSumaria(vagaAtualizada.getAtribuicaoSumaria());
+		vagaExistente.setAtividadesTipicas(vagaAtualizada.getAtividadesTipicas());
+		vagaExistente.setAtividadesEventuais(vagaAtualizada.getAtividadesEventuais());
+		vagaExistente.setNivelAutoridadeResponsabilidade(vagaAtualizada.getNivelAutoridadeResponsabilidade());
+		vagaExistente.setHabilidadesNecessarias(vagaAtualizada.getHabilidadesNecessarias());
+		vagaExistente.setRequisitosBasicos(vagaAtualizada.getRequisitosBasicos());
+		vagaExistente.setRequisitosDesejaveis(vagaAtualizada.getRequisitosDesejaveis());
+		vagaExistente.setEscolaridade(vagaAtualizada.getEscolaridade());
+		vagaExistente.setCursosObrigatorios(vagaAtualizada.getCursosObrigatorios());
+		vagaExistente.setTipoContrato(vagaAtualizada.getTipoContrato());
+		vagaExistente.setCargaHorariaSemanal(vagaAtualizada.getCargaHorariaSemanal());
+		vagaExistente.setRemuneracao(vagaAtualizada.getRemuneracao());
+		vagaExistente.setInformaComissoesBonus(vagaAtualizada.isInformaComissoesBonus());
+		vagaExistente.setComissoesBonus(vagaAtualizada.getComissoesBonus());
+		vagaExistente.setValeAlimentacao(vagaAtualizada.isValeAlimentacao());
+		vagaExistente.setValeTransporte(vagaAtualizada.isValeTransporte());
+		vagaExistente.setValeRefeicao(vagaAtualizada.isValeRefeicao());
+		vagaExistente.setSegundaFeiraInicio(vagaAtualizada.getSegundaFeiraInicio());
+		vagaExistente.setSegundaFeiraFim(vagaAtualizada.getSegundaFeiraFim());
+		vagaExistente.setTercaFeiraInicio(vagaAtualizada.getTercaFeiraInicio());
+		vagaExistente.setTercaFeiraFim(vagaAtualizada.getTercaFeiraFim());
+		vagaExistente.setQuartaFeiraInicio(vagaAtualizada.getQuartaFeiraInicio());
+		vagaExistente.setQuartaFeiraFim(vagaAtualizada.getQuartaFeiraFim());
+		vagaExistente.setQuintaFeiraInicio(vagaAtualizada.getQuintaFeiraInicio());
+		vagaExistente.setQuintaFeiraFim(vagaAtualizada.getQuintaFeiraFim());
+		vagaExistente.setSextaFeiraInicio(vagaAtualizada.getSextaFeiraInicio());
+		vagaExistente.setSextaFeiraFim(vagaAtualizada.getSextaFeiraFim());
+		vagaExistente.setSabadoInicio(vagaAtualizada.getSabadoInicio());
+		vagaExistente.setSabadoFim(vagaAtualizada.getSabadoFim());
+		vagaExistente.setDomingoInicio(vagaAtualizada.getDomingoInicio());
+		vagaExistente.setDomingoFim(vagaAtualizada.getDomingoFim());
+
+		// Mantém o valor atual de informacoesRock se estiver nulo na entidade vagaAtualizada
+		if (vagaAtualizada.getInformacoesRock() != null) {
+			vagaExistente.setInformacoesRock(vagaAtualizada.getInformacoesRock());
+		}
+
+		// Salva as alterações no banco de dados
+		em.merge(vagaExistente);
+
+		this.posOperacao(AcaoCrud.UPDATE, vagaAtualizada);
+		return vagaAtualizada;
 	}
 
 	@Transactional
 	public void deletar(Long id) throws Exception {
-		Vaga cliente = Vaga.findById(id);
-		preOperacao(AcaoCrud.DELETE, cliente);
-		cliente.delete();
-		posOperacao(AcaoCrud.DELETE, cliente);
+		Vaga vaga = Vaga.findById(id);
+		preOperacao(AcaoCrud.DELETE, vaga);
+		vaga.delete();
+		posOperacao(AcaoCrud.DELETE, vaga);
 	}
 
 	@Override
 	public Vaga buscarPorId(Long id) throws Exception {
-		return Vaga.findById(id);
+		Vaga v = Vaga.findById(id);
+		if (!logado.isAdminGeral()) {
+			v.setInformacoesRock(null);
+
+			if (!logado.getUsuario().getEmpresa().getId().equals(v.getEmpresa().getId()))
+				return null;
+		}
+		return v;
 	}
 
 	public List<Vaga> buscarTodos() throws Exception {

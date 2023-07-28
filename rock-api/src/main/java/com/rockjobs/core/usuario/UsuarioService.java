@@ -76,7 +76,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long>, PanacheReposi
 		u.setDataNascimento(dto.getDataNascimento());
 		u.setAtivo(dto.getAtivo());
 		u.setTipoAcesso(dto.getTipoAcesso());
-		u.setCliente(dto.getCliente());
+		u.setEmpresa(dto.getEmpresa());
 		var usuarioDto = new UsuarioDto(this.alterar(u));
 		return usuarioDto;
 	}
@@ -103,6 +103,12 @@ public class UsuarioService implements ServiceBase<Usuario, Long>, PanacheReposi
 	}
 
 	public UsuarioDto buscarPorIdDto(Long id) throws Exception {
+		Usuario u = Usuario.findById(id);
+		if (!TipoAcesso.ADMIN_GERAL.equals(logado.getUsuario().getTipoAcesso()) &&
+			logado.getUsuario().getEmpresa() != null &&
+			!u.getEmpresa().getId().equals(logado.getUsuario().getEmpresa().getId())) {
+			return null;
+		}
 		return new UsuarioDto(Usuario.findById(id));
 	}
 

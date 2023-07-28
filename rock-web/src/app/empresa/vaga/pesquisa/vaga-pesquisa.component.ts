@@ -14,7 +14,7 @@ export class VagaPesquisaComponent extends ViewBase {
   formFiltros: FormGroup;
   colunas: Coluna[] = [
     { field: 'id', header: 'Código'},
-    { field: 'cliente', header: 'Cliente', tipo: TiposCampo.OBJETO, propriedades: ['id', 'razaoSocial']},
+    { field: 'empresa', header: 'Empresa', tipo: TiposCampo.OBJETO, propriedades: ['id', 'razaoSocial']},
     { field: 'nomeDaFuncao', header: 'Função'},
     { field: 'quantidadeDeVagas', header: 'Vagas'},
   ];
@@ -28,14 +28,14 @@ export class VagaPesquisaComponent extends ViewBase {
   }
 
   ngOnInit(): void {
-    if (this.autenticacaoService.loginInfo.usuario.cliente) {
-      this.formFiltros.get('cliente').setValue(this.autenticacaoService.loginInfo.usuario.cliente.id);
+    if (this.autenticacaoService.loginInfo.usuario.empresa) {
+      this.formFiltros.get('empresa').setValue(this.autenticacaoService.loginInfo.usuario.empresa.id);
     }
   }
 
   criarFormularioFiltros(): FormGroup {
     return this.formBuilder.group({
-      cliente: '',
+      empresa: '',
       dataSelecao: '',
     });
   }

@@ -88,10 +88,10 @@
                                 </app-rotulo>
                             </div>
                             <div class='p-col-12 p-md-6'>
-                                <app-rotulo rotulo='Cliente'>
-                                    <app-autocomplete url='cliente/pesquisa' dataKey='id'
+                                <app-rotulo rotulo='Empresa'>
+                                    <app-autocomplete url='empresa/pesquisa' dataKey='id'
                                                       label='{razaoSocial}'
-                                                      formControlName='cliente'></app-autocomplete>
+                                                      formControlName='empresa'></app-autocomplete>
                                 </app-rotulo>
                             </div>
                         </div>
@@ -106,21 +106,29 @@
                                                 [autoDisplayFirst]='true'></p-dropdown>
                                 </app-rotulo>
                             </div>
+                            <div class='p-col-12 p-md-2'>
+                                <app-rotulo rotulo='Data de Inclusão'>
+                                    <app-date-picker formControlName='dataInclusao' exibirHora="true" disabled="true"></app-date-picker>
+                                </app-rotulo>
+                            </div>
                         </div>
                     </div>
                 </p-fieldset>
                 <p-fieldset *ngIf="idUsuario" legend="Alterar Senha">
                     <div [formGroup]='formAlterarSenha'>
                         <div class="p-grid">
-                            <div class='p-col-12 p-md-3'>
-                                <app-rotulo rotulo='Senha'>
-                                    <input formControlName="senha" pInputText type='text' maxlength="16"/>
-                                </app-rotulo>
+                            <div style="margin-left: 1%" class="p-col p-grid">
+                                <div class='p-col-12 p-md-3'>
+                                    <app-rotulo rotulo='Senha'>
+                                        <input formControlName="senha" pInputText type='text' maxlength="16"/>
+                                    </app-rotulo>
+                                </div>
+                                <div class='p-col-12 p-md-3' style="display: flex; align-items: center;">
+                                    <button type="button" pButton (click)="validarSenha(false)" class="ui-button-success"
+                                            label="Alterar Senha" icon="pi pi-lock"></button>
+                                </div>
                             </div>
-                            <div class='p-col-12 p-md-3' style="display: flex; align-items: center;">
-                                <button type="button" pButton (click)="validarSenha(false)" class="ui-button-success"
-                                        label="Alterar Senha" icon="pi pi-lock"></button>
-                            </div>
+                            
                         </div>
                     </div>
                 </p-fieldset>

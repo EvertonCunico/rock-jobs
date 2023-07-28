@@ -110,9 +110,10 @@ export class UsuarioManutencaoComponent
         ],
       ],
       endereco: [''],
-      cliente: ['', [Validators.required]],
+      empresa: ['', [Validators.required]],
       ativo: [true, [Validators.required]],
       tipoAcesso: ["RH_EMPRESA", Validators.required],
+      dataInclusao: ['']
     });
     this.formAlterarSenha = this.formBuilder.group({
       idUsuario: [null, [Validators.required]],
@@ -210,12 +211,12 @@ export class UsuarioManutencaoComponent
 
     this.form.get('tipoAcesso').valueChanges.subscribe(value => {
       if (value === 'ADMIN_GERAL') {
-        this.desabilitarCliente();
+        this.desabilitarEmpresa();
       } else {
-        this.form.get('cliente').enable();
-        this.form.get('cliente').setValidators([Validators.required]);
+        this.form.get('empresa').enable();
+        this.form.get('empresa').setValidators([Validators.required]);
       }
-      this.form.get('cliente').updateValueAndValidity();
+      this.form.get('empresa').updateValueAndValidity();
     });
 
     this.form.get('email').valueChanges
@@ -232,7 +233,7 @@ export class UsuarioManutencaoComponent
     this.tratarCamposEdicao();
 
     if (registro.tipoAcesso.toString() == 'ADMIN_GERAL') {
-      this.desabilitarCliente();
+      this.desabilitarEmpresa();
     }
   }
 
@@ -246,11 +247,11 @@ export class UsuarioManutencaoComponent
     this.form.get('confirmaremail').updateValueAndValidity();
   }
 
-  desabilitarCliente() {
-    this.form.get('cliente').setValue(null);
-    this.form.get('cliente').disable();
-    this.form.get('cliente').setValidators(null);
-    this.form.get('cliente').markAsTouched();
-    this.form.get('cliente').updateValueAndValidity();
+  desabilitarEmpresa() {
+    this.form.get('empresa').setValue(null);
+    this.form.get('empresa').disable();
+    this.form.get('empresa').setValidators(null);
+    this.form.get('empresa').markAsTouched();
+    this.form.get('empresa').updateValueAndValidity();
   }
 }
