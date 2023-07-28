@@ -19,6 +19,7 @@ export class DateInterceptorService implements HttpInterceptor {
   utcDateRegex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*)?)Z$/;
   localDateTimeRegex = /\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/;
   localDateRegex = /\d{4}-\d{2}-\d{2}/;
+  localTimeRegex = /\d{2}:\d{2}:\d{2}/;
 
   public intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
@@ -59,6 +60,8 @@ export class DateInterceptorService implements HttpInterceptor {
           body[key] = this.localDateTimeParaDate(value);
         } else if (this.localDateRegex.test(value)) {
           body[key] = this.localDateParaDate(value)
+        } else if (this.localTimeRegex.test(value)) {
+          body[key] = this.localTimeParaDate(value)
         }
       }
     } catch (erro) {
@@ -73,6 +76,15 @@ export class DateInterceptorService implements HttpInterceptor {
     const dia = parseInt(partesData[2], 10);
 
     return new Date(ano, mes, dia);
+  }
+
+  localTimeParaDate(value) {
+    const [hour, minute, second] = value.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hour);
+    date.setMinutes(minute);
+    date.setSeconds(second);
+    return date;
   }
 
   localDateTimeParaDate(value) {
