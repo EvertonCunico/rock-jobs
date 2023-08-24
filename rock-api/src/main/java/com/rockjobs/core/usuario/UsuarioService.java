@@ -71,6 +71,7 @@ public class UsuarioService implements ServiceBase<Usuario, Long>, PanacheReposi
 		u.setSobrenome(dto.getSobrenome());
 		u.setEmail(dto.getEmail());
 		u.setEndereco(dto.getEndereco());
+		u.setComplemento(dto.getComplemento());
 		u.setCpf(dto.getCpf());
 		u.setTelefoneCelular(dto.getTelefoneCelular());
 		u.setDataNascimento(dto.getDataNascimento());

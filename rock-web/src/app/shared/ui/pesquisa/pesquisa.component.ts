@@ -49,6 +49,9 @@ export class PesquisaComponent implements OnInit {
   @Input()
   service: PesquisaAPIService<Modelo>;
 
+  @Input()
+  carregarPesquisado: boolean = false;
+
   pesquisando = false;
   executouUmaPesquisa = false;
 
@@ -65,7 +68,11 @@ export class PesquisaComponent implements OnInit {
     this.breadcrumbService.atualizar({ detalhe: 'Pesquisa' });
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    if (this.carregarPesquisado) {
+      this.onPesquisar();
+    }
+  }
 
   pesquisar(requisicao: RequisicaoPesquisa = { } as RequisicaoPesquisa) {
 

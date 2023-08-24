@@ -1,4 +1,4 @@
-import { Component, Injector } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild } from '@angular/core';
 import { ViewBase } from '@boom/ui/views/view-base';
 import { Coluna } from '@boom/modelos/coluna';
 import { FormGroup } from '@angular/forms';
@@ -10,14 +10,19 @@ import { Usuario } from 'app/modelos/usuario';
 import { NavigationExtras } from '@angular/router';
 import { EnumUtils } from 'app/shared/utils/enum-utils';
 import { RolesUser } from 'app/modelos/roles';
+import { PesquisaComponent } from '@boom/ui/pesquisa/pesquisa.component';
 
 @Component({
   selector: 'app-usuario-pesquisa',
   templateUrl: './usuario-pesquisa.component.html',
   styleUrls: ['./usuario-pesquisa.component.css']
 })
-export class UsuarioPesquisaComponent extends ViewBase {
+export class UsuarioPesquisaComponent extends ViewBase implements OnInit {
   formFiltros: FormGroup;
+  
+  @ViewChild('pesquisa')
+  pesquisa: PesquisaComponent;
+
   colunas: Coluna[] = [
     { field: 'id', header: 'Código' },
     { field: 'nome', header: 'Nome' },
@@ -35,6 +40,10 @@ export class UsuarioPesquisaComponent extends ViewBase {
     this.titulo = 'Cadastros / Usuários';
     this.formFiltros = this.criarFormularioFiltros();
     this.permissoes = EnumUtils.getLabelValueArrayComIgnore(RolesUser, [RolesUser.ADMIN_GERAL.toString()]);
+  }
+
+  ngOnInit(): void {
+    this.pesquisa.pesquisar();
   }
 
   criarFormularioFiltros(): FormGroup {

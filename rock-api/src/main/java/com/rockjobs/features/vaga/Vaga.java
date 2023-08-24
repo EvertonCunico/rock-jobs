@@ -111,11 +111,17 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
     @Column(name = "vale_refeicao")
     private boolean valeRefeicao;
 
+    @Column(name = "trabalha_segunda")
+    private Boolean trabalhaSegunda;
+
     @Column(name = "segunda_feira_inicio")
     private LocalTime segundaFeiraInicio;
 
     @Column(name = "segunda_feira_fim")
     private LocalTime segundaFeiraFim;
+
+    @Column(name = "trabalha_terca")
+    private Boolean trabalhaTerca;
 
     @Column(name = "terca_feira_inicio")
     private LocalTime tercaFeiraInicio;
@@ -123,11 +129,17 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
     @Column(name = "terca_feira_fim")
     private LocalTime tercaFeiraFim;
 
+    @Column(name = "trabalha_quarta")
+    private Boolean trabalhaQuarta;
+
     @Column(name = "quarta_feira_inicio")
     private LocalTime quartaFeiraInicio;
 
     @Column(name = "quarta_feira_fim")
     private LocalTime quartaFeiraFim;
+
+    @Column(name = "trabalha_quinta")
+    private Boolean trabalhaQuinta;
 
     @Column(name = "quinta_feira_inicio")
     private LocalTime quintaFeiraInicio;
@@ -135,17 +147,26 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
     @Column(name = "quinta_feira_fim")
     private LocalTime quintaFeiraFim;
 
+    @Column(name = "trabalha_sexta")
+    private Boolean trabalhaSexta;
+
     @Column(name = "sexta_feira_inicio")
     private LocalTime sextaFeiraInicio;
 
     @Column(name = "sexta_feira_fim")
     private LocalTime sextaFeiraFim;
 
+    @Column(name = "trabalha_sabado")
+    private Boolean trabalhaSabado;
+
     @Column(name = "sabado_inicio")
     private LocalTime sabadoInicio;
 
     @Column(name = "sabado_fim")
     private LocalTime sabadoFim;
+
+    @Column(name = "trabalha_domingo")
+    private Boolean trabalhaDomingo;
 
     @Column(name = "domingo_inicio")
     private LocalTime domingoInicio;

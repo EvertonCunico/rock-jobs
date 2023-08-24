@@ -3,8 +3,9 @@
         <div [formGroup]='form'>
             <div class='ui-fluid'>
                 <div class='p-grid p-nogutter' *ngIf="this.editando">
-                    <div class='p-col-12'>
+                    <div class='p-col-12' style="display: flex; align-content: center; justify-content: flex-start; flex-direction: column;">
                         <p-card header="Vaga {{this.sequencialEmpresa}}"></p-card>
+                        <button pButton type="button" label="Imprimir" (click)="abrirRelatorio()" class="ui-button-success" style="width: 100px; height: 30px;"></button>
                     </div>
                 </div>
                 <p-fieldset legend='Dados da Empresa'>
@@ -189,13 +190,14 @@
                 <p-fieldset legend='Horários'>
                     <div class='p-grid p-nogutter'>
                         <div style='margin-left: 1%' class='p-col p-grid'>
-                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end;">
-                                <label>Segunda Feira:</label>
+                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                                <p-checkbox formControlName="trabalhaSegunda" label="Segunda Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-2'>
                                 <p-calendar  
                                     id="segundaInicio" 
                                     name="segundaInicio"
+                                    [disabled]="this.form.get('trabalhaSegunda').value == false"
                                     formControlName="segundaFeiraInicio"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -205,6 +207,7 @@
                                 <p-calendar  
                                     id="segundaFim" 
                                     name="segundaFim"
+                                    [disabled]="this.form.get('trabalhaSegunda').value == false"
                                     formControlName="segundaFeiraFim"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -213,12 +216,13 @@
                             <div class='p-col-6'></div>
 
                             <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
-                                <label>Terça Feira:</label>
+                                <p-checkbox formControlName="trabalhaTerca" label="Terça Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-2'>
                                 <p-calendar  
                                     id="tercaInicio" 
                                     name="tercaInicio"
+                                    [disabled]="this.form.get('trabalhaTerca').value == false"
                                     formControlName="tercaFeiraInicio"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -228,6 +232,7 @@
                                 <p-calendar  
                                     id="tercaFim" 
                                     name="tercaFim"
+                                    [disabled]="this.form.get('trabalhaTerca').value == false"
                                     formControlName="tercaFeiraFim"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -236,12 +241,13 @@
                             <div class='p-col-6'></div>
 
                             <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
-                                <label>Quarta Feira:</label>
+                                <p-checkbox formControlName="trabalhaQuarta" label="Quarta Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-2'>
                                 <p-calendar  
                                     id="quartaInicio" 
                                     name="quartaInicio"
+                                    [disabled]="this.form.get('trabalhaQuarta').value == false"
                                     formControlName="quartaFeiraInicio"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -251,6 +257,7 @@
                                 <p-calendar  
                                     id="quartaFim" 
                                     name="quartaFim"
+                                    [disabled]="this.form.get('trabalhaQuarta').value == false"
                                     formControlName="quartaFeiraFim"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -259,12 +266,13 @@
                             <div class='p-col-6'></div>
 
                             <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
-                                <label>Quinta Feira:</label>
+                                <p-checkbox formControlName="trabalhaQuinta" label="Quinta Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-2'>
                                 <p-calendar  
                                     id="quintaInicio" 
                                     name="quintaInicio"
+                                    [disabled]="this.form.get('trabalhaQuinta').value == false"
                                     formControlName="quintaFeiraInicio"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -274,6 +282,7 @@
                                 <p-calendar  
                                     id="quintaFim" 
                                     name="quintaFim"
+                                    [disabled]="this.form.get('trabalhaQuinta').value == false"
                                     formControlName="quintaFeiraFim"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -282,12 +291,13 @@
                             <div class='p-col-6'></div>
 
                             <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
-                                <label>Sexta Feira:</label>
+                                <p-checkbox formControlName="trabalhaSexta" label="Sexta Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-2'>
                                 <p-calendar  
                                     id="sextaInicio" 
                                     name="sextaInicio"
+                                    [disabled]="this.form.get('trabalhaSexta').value == false"
                                     formControlName="sextaFeiraInicio"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -297,6 +307,7 @@
                                 <p-calendar  
                                     id="sextaFim" 
                                     name="sextaFim"
+                                    [disabled]="this.form.get('trabalhaSexta').value == false"
                                     formControlName="sextaFeiraFim"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -305,12 +316,13 @@
                             <div class='p-col-6'></div>
 
                             <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
-                                <label>Sábado:</label>
+                                <p-checkbox formControlName="trabalhaSabado" label="Sábado" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-2'>
                                 <p-calendar  
                                     id="sabadoInicio" 
                                     name="sabadoInicio"
+                                    [disabled]="this.form.get('trabalhaSabado').value == false"
                                     formControlName="sabadoInicio"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -320,6 +332,7 @@
                                 <p-calendar  
                                     id="sabadoFim" 
                                     name="sabadoFim"
+                                    [disabled]="this.form.get('trabalhaSabado').value == false"
                                     formControlName="sabadoFim"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -328,12 +341,13 @@
                             <div class='p-col-6'></div>
 
                             <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
-                                <label>Domingo:</label>
+                                <p-checkbox formControlName="trabalhaDomingo" label="Domingo" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-2'>
                                 <p-calendar  
                                     id="domingoInicio" 
                                     name="domingoInicio"
+                                    [disabled]="this.form.get('trabalhaDomingo').value == false"
                                     formControlName="domingoInicio"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 
@@ -343,6 +357,7 @@
                                 <p-calendar  
                                     id="domingoFim" 
                                     name="domingoFim"
+                                    [disabled]="this.form.get('trabalhaDomingo').value == false"
                                     formControlName="domingoFim"
                                     [timeOnly]="true" hourFormat="24" 
                                     [inline]="false" 

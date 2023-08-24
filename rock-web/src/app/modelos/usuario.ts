@@ -8,6 +8,7 @@ export class Usuario extends Modelo {
     cpf?: string;
     url?: string;
     endereco?: string;
+    complemento?: string;
     dataNascimento?: Date;
     email?: string;
     telefoneCelular?: string;

@@ -11,6 +11,7 @@ import { Situacao } from 'app/modelos/vaga/situacao';
 import { TipoContrato } from 'app/modelos/vaga/tipoContrato';
 import { Vaga } from 'app/modelos/vaga/vaga';
 import { VagaCRUDService } from 'app/services/vaga/vaga-crud.service';
+import { DateUtils } from 'app/shared/utils/date-utils';
 import { EnumUtils } from 'app/shared/utils/enum-utils';
 import { MessageService } from 'primeng';
 
@@ -31,6 +32,8 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
   escolaridadeSelecionada : any;
   tipoContratoSelecionado : any;
   generoSelecionado : any;
+
+  abrirRelatorioSalvo: boolean = false;
 
   empresa: Empresa = new Empresa();
 
@@ -65,18 +68,25 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
         valeAlimentacao: [''],
         valeTransporte: [''],
         valeRefeicao: [''],
+        trabalhaSegunda: [false],
         segundaFeiraInicio: [''],
         segundaFeiraFim: [''],
+        trabalhaTerca: [false],
         tercaFeiraInicio: [''],
         tercaFeiraFim: [''],
+        trabalhaQuarta: [false],
         quartaFeiraInicio: [''],
         quartaFeiraFim: [''],
+        trabalhaQuinta: [false],
         quintaFeiraInicio: [''],
         quintaFeiraFim: [''],
+        trabalhaSexta: [false],
         sextaFeiraInicio: [''],
         sextaFeiraFim: [''],
+        trabalhaSabado: [false],
         sabadoInicio: [''],
         sabadoFim: [''],
+        trabalhaDomingo: [false],
         domingoInicio: [''],
         domingoFim: [''],
         genero: ["IGNORADO", [Validators.required]],
@@ -162,11 +172,26 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
   
   onNovo() {
     this.editando = false;
+    this.abrirRelatorioSalvo = false;
+  }
+
+  onRegistroIncluido(registroId: number) {
+    this.abrirRelatorioSalvo = true;
+  }
+
+
+  onRegistroAtualizado(registroId: number) {
+    this.abrirRelatorioSalvo = true;
   }
 
   onRegistroCarregado(registro: Vaga) {
+    this.registro = registro;
     this.editando = true;
     this.changeHabilitaComissoes();
+    if (this.abrirRelatorioSalvo) {
+      this.abrirRelatorio();
+      this.abrirRelatorioSalvo = false;
+    }
   }
 
   changeHabilitaComissoes() {
@@ -188,6 +213,154 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     const idEmpresa = this.empresa.id.toString().padStart(2, '0');
     const sequencialEmpresa = this.form.get('sequencialEmpresa').value.toString().padStart(3, '0');
 
-    return `${ano}${idEmpresa}${sequencialEmpresa}`;
+    return `${ano}${sequencialEmpresa}${idEmpresa}`;
+  }
+
+  changeDiasSemana() {
+    if (this.form.get('trabalhaDomingo').value == false) {
+      this.form.get('domingoInicio').setValue(null);
+      this.form.get('domingoInicio').updateValueAndValidity();
+      this.form.get('domingoFim').setValue(null);
+      this.form.get('domingoFim').updateValueAndValidity();
+    }
+    if (this.form.get('trabalhaSegunda').value == false) {
+      this.form.get('segundaFeiraInicio').setValue(null);
+      this.form.get('segundaFeiraInicio').updateValueAndValidity();
+      this.form.get('segundaFeiraFim').setValue(null);
+      this.form.get('segundaFeiraFim').updateValueAndValidity();
+    }
+    if (this.form.get('trabalhaTerca').value == false) {
+      this.form.get('tercaFeiraInicio').setValue(null);
+      this.form.get('tercaFeiraInicio').updateValueAndValidity();
+      this.form.get('tercaFeiraFim').setValue(null);
+      this.form.get('tercaFeiraFim').updateValueAndValidity();
+    }
+    if (this.form.get('trabalhaQuarta').value == false) {
+      this.form.get('quartaFeiraInicio').setValue(null);
+      this.form.get('quartaFeiraInicio').updateValueAndValidity();
+      this.form.get('quartaFeiraFim').setValue(null);
+      this.form.get('quartaFeiraFim').updateValueAndValidity();
+    }
+    if (this.form.get('trabalhaQuinta').value == false) {
+      this.form.get('quintaFeiraInicio').setValue(null);
+      this.form.get('quintaFeiraInicio').updateValueAndValidity();
+      this.form.get('quintaFeiraFim').setValue(null);
+      this.form.get('quintaFeiraFim').updateValueAndValidity();
+    }
+    if (this.form.get('trabalhaSexta').value == false) {
+      this.form.get('sextaFeiraInicio').setValue(null);
+      this.form.get('sextaFeiraInicio').updateValueAndValidity();
+      this.form.get('sextaFeiraFim').setValue(null);
+      this.form.get('sextaFeiraFim').updateValueAndValidity();
+    }
+    if (this.form.get('trabalhaSabado').value == false) {
+      this.form.get('sabadoInicio').setValue(null);
+      this.form.get('sabadoInicio').updateValueAndValidity();
+      this.form.get('sabadoFim').setValue(null);
+      this.form.get('sabadoFim').updateValueAndValidity();
+    }
+  }
+
+  abrirRelatorio() {
+    const relatorioWindow = window.open('', '_blank');
+    if (relatorioWindow) {
+      relatorioWindow.document.write(`<!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Relatório de Vaga</title>
+          <style>
+              body {
+                  font-family: Arial, sans-serif;
+                  margin-left: 20px;
+                  margin-right: 20px;
+                  margin-bottom: 50px;
+              }
+              .header {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  flex-direction: column;
+                  font-size: 24px;
+                  margin-bottom: 20px;
+              }
+              .section {
+                  margin-bottom: 20px;
+              }
+              .section-title {
+                  font-size: 16px;
+                  font-weight: bold;
+                  margin-bottom: 5px;
+              }
+              .section-content {
+                  font-size: 12px;
+                  border: 1px solid #ccc;
+                  padding: 10px;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="header">
+            <img src="assets/imagens/logo.png" style="max-width:150px;max-height:150px" />
+            <span>Relatório de Vaga</span>
+          </div>
+          <div class="section">
+              <div class="section-title">Dados Gerais</div>
+              <div class="section-content">
+                  <div><b>Empresa:</b> ${this.registro.empresa.razaoSocial}</div>
+                  <div><b>Nome da Função:</b> ${this.registro.nomeDaFuncao}</div>
+                  <div><b>Quantidade de Vagas:</b> ${this.registro.quantidadeDeVagas ? this.registro.quantidadeDeVagas : 'Não Informado'}</div>
+                  <div><b>Vaga Sigilosa:</b> ${this.registro.vagaSigilosa ? 'Sim' : 'Não' }</div>
+                  <div><b>Gênero:</b> ${Genero[this.registro.genero]}</div>
+                  <div><b>Data de Inclusão:</b> ${DateUtils.formatDateTime(this.registro.dataInclusao)}</div>
+              </div>
+          </div>
+          <div class="section">
+              <div class="section-title">Prazos</div>
+              <div class="section-content">
+                  <div><b>Data Limite de Seleção:</b> ${DateUtils.formatDate(this.registro.dataLimiteSelecao)}</div>
+                  <div><b>Data Limite de Integração:</b> ${DateUtils.formatDate(this.registro.dataLimiteIntegracao)}</div>
+                  <div><b>Situação:</b> ${Situacao[this.registro.situacao]}</div>
+              </div>
+          </div>
+          <div class="section">
+              <div class="section-title">Descrição</div>
+              <div class="section-content">
+                  <div><b>Atribuição Sumária: </b> ${this.registro.atribuicaoSumaria}</div>
+                  <div><b>Atividades Típicas: </b> ${this.registro.atividadesTipicas}</div>
+                  <div><b>Atividades Eventuais: </b> ${this.registro.atividadesEventuais}</div>
+                  <div><b>Nível de Autoridade e Responsabilidade: </b> ${this.registro.nivelAutoridadeResponsabilidade}</div>
+                  <div><b>Habilidades Necessárias: </b> ${this.registro.habilidadesNecessarias}</div>
+                  <div><b>Requisitos Básicos: </b> ${this.registro.requisitosBasicos}</div>
+                  <div><b>Requisitos Desejáveis: </b> ${this.registro.requisitosDesejaveis}</div>
+                  <div><b>Escolaridade: </b> ${Escolaridade[this.registro.escolaridade]}</div>
+                  <div><b>Cursos Obrigatórios: </b> ${this.registro.cursosObrigatorios}</div>
+                  <div><b>Tipo de Contrato: </b> ${TipoContrato[this.registro.tipoContrato]}</div>
+                  <div><b>Carga Horária Semanal: </b> ${this.registro.cargaHorariaSemanal}</div>
+                  <div><b>Remuneração: </b> ${this.registro.remuneracao}</div>
+                  <div><b>Comissões e Bônus: </b> ${this.registro.informaComissoesBonus ? this.registro.comissoesBonus : 'Não informado'}</div>
+                  <div><b>Vale Alimentação: </b> ${this.registro.valeAlimentacao ? 'Sim' : 'Não'}</div>
+                  <div><b>Vale Transporte: </b> ${this.registro.valeTransporte ? 'Sim' : 'Não'}</div>
+                  <div><b>Vale Refeição: </b> ${this.registro.valeRefeicao ? 'Sim' : 'Não'}</div>
+              </div>
+          </div>
+          <div class="section">
+            <div class="section-title">Dias da Semana</div>
+            <div class="section-content">
+              <div><b>Segunda-Feira:</b> ${this.registro.trabalhaSegunda ? DateUtils.formatTime(this.registro.segundaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.segundaFeiraFim) : 'Não'}</div>
+              <div><b>Terça:</b> ${this.registro.trabalhaTerca ? DateUtils.formatTime(this.registro.tercaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.tercaFeiraFim) : 'Não'}</div>
+              <div><b>Quarta:</b> ${this.registro.trabalhaQuarta ? DateUtils.formatTime(this.registro.quartaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quartaFeiraFim) : 'Não'}</div>
+              <div><b>Quinta:</b> ${this.registro.trabalhaQuinta ? DateUtils.formatTime(this.registro.quintaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quintaFeiraFim) : 'Não'}</div>
+              <div><b>Sexta:</b> ${this.registro.trabalhaSexta ? DateUtils.formatTime(this.registro.sextaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.sextaFeiraFim) : 'Não'}</div>
+              <div><b>Sábado:</b> ${this.registro.trabalhaSabado ? DateUtils.formatTime(this.registro.sabadoInicio) + ' - ' + DateUtils.formatTime(this.registro.sabadoInicio) : 'Não'}</div>
+              <div><b>Domingo:</b> ${this.registro.trabalhaDomingo ? DateUtils.formatTime(this.registro.domingoInicio) + ' - ' + DateUtils.formatTime(this.registro.domingoFim) : 'Não'}</div>
+            </div>
+          </div>
+      </body>
+      </html>
+      `);
+      relatorioWindow.document.close();
+    }
   }
 }

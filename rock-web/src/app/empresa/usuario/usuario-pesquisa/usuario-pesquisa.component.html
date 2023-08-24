@@ -1,4 +1,5 @@
-<app-pesquisa [formFiltros]='formFiltros' [service]='usuarioPesquisaService' [colunas]='colunas' [acoes]='{ editar: true, incluir: true, visualizar: true, filtrar: true, pesquisar: true }' placeHolderControles='pesquisar por nome' (pesquisaConcluida)='pesquisaConcluida($event)'>
+<app-pesquisa #pesquisa [formFiltros]='formFiltros' [service]='usuarioPesquisaService' [colunas]='colunas' [acoes]='{ editar: true, incluir: true, visualizar: true, filtrar: true, pesquisar: true }' 
+    placeHolderControles='pesquisar por nome' (pesquisaConcluida)='pesquisaConcluida($event)' [carregarPesquisado]="true">
     <div class='form-filtros'>
         <div [formGroup]='formFiltros'>
             <div class='ui-fluid'>

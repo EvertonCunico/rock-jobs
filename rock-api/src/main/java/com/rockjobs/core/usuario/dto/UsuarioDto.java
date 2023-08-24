@@ -27,6 +27,7 @@ public class UsuarioDto  {
         this.setSobrenome(usuario.getSobrenome());
         this.setEmail(usuario.getEmail());
         this.setEndereco(usuario.getEndereco());
+        this.setComplemento(usuario.getComplemento());
         this.setCpf(usuario.getCpf());
         this.setTelefoneCelular(usuario.getTelefoneCelular());
         this.setDataNascimento(usuario.getDataNascimento());
@@ -54,6 +55,8 @@ public class UsuarioDto  {
 
     private String endereco;
 
+    private String complemento;
+
     @NotNull(message = "CPF é obrigatório")
     private String cpf;
 
@@ -76,6 +79,7 @@ public class UsuarioDto  {
         u.setSenha(dto.getSenha());
         u.setCpf(dto.getCpf());
         u.setEndereco(dto.getEndereco());
+        u.setComplemento(dto.getComplemento());
         u.setTelefoneCelular(dto.getTelefoneCelular());
         u.setDataNascimento(dto.getDataNascimento());
         u.setAtivo(dto.getAtivo());

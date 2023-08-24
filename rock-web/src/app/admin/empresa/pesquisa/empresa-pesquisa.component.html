@@ -1,4 +1,4 @@
-<app-pesquisa [formFiltros]='formFiltros' [service]='empresaPesquisaService' [colunas]='colunas' [acoes]='{ editar: true, incluir: true, visualizar: true, filtrar: true, pesquisar: true }' placeHolderControles='pesquisar por nome'>
+<app-pesquisa [formFiltros]='formFiltros' [service]='empresaPesquisaService' [colunas]='colunas' [acoes]='{ editar: true, incluir: true, visualizar: true, filtrar: true, pesquisar: true }' placeHolderControles='pesquisar por nome' [carregarPesquisado]="true">
     <div class='form-filtros'>
         <div [formGroup]='formFiltros'>
             <div class='ui-fluid'>

@@ -75,6 +75,9 @@ export class ManutencaoViewBase<T extends Modelo> extends ViewBase implements On
                                 if (result) {
                                     this.formValue = result;
                                     this.mensagemService.notificarRegistroAtualizadoComSucesso(registroId);
+                                    if ('onRegistroAtualizado' in this) {
+                                        (this as OnRegistroAtualizado).onRegistroAtualizado(registroId);
+                                    }
                                     this.crudAPIService.get(registroId).subscribe(
                                         registro => {
                                             this.registro = registro;
@@ -103,10 +106,10 @@ export class ManutencaoViewBase<T extends Modelo> extends ViewBase implements On
                             registroId => {
                                 this.interfaceService.desbloquear();
                                 this.mensagemService.notificarRegistroIncluidoComSucesso(registroId);
-                                this.router.navigate(['../' + registroId], { relativeTo: this.route });
                                 if ('onRegistroIncluido' in this) {
                                     (this as OnRegistroIncluido).onRegistroIncluido(registroId);
                                 }
+                                this.router.navigate(['../' + registroId], { relativeTo: this.route });
                             },
                             erro => {
                                 this.mensagemService.notificarErro({ erro });

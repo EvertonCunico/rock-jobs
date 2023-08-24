@@ -110,6 +110,7 @@ export class UsuarioManutencaoComponent
         ],
       ],
       endereco: [''],
+      complemento: [''],
       empresa: ['', [Validators.required]],
       ativo: [true, [Validators.required]],
       tipoAcesso: ["RH_EMPRESA", Validators.required],
@@ -149,8 +150,7 @@ export class UsuarioManutencaoComponent
     } else {
       senha = this.formAlterarSenha.get("senha").value;
     }
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%*()_+^&?]{5,16}$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%*()_+^&?]{5,}$/;
     if (senha !== null) {
       if (regex.test(senha)) {
         if (!inclusao) {
@@ -162,7 +162,7 @@ export class UsuarioManutencaoComponent
           severity: "warn",
           summary: "Atenção!!",
           detail:
-            "A senha deve ter pelo menos 5 e no máximo 16 caracteres, incluindo pelo menos um dígito, uma letra minúscula e uma letra maiúscula.",
+            "A senha deve ter pelo menos 5 caracteres, incluindo pelo menos um dígito, uma letra minúscula e uma letra maiúscula.",
           life: 6000,
         });
         return false;
