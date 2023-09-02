@@ -27,7 +27,6 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
   opcoesGenero = [];
 
   editando: boolean;
-  vagaSigilosa: any;
   escolaridadeSelecionada : any;
   tipoContratoSelecionado : any;
   generoSelecionado : any;
@@ -44,11 +43,11 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
       this.form = this.formBuilder.group({
         empresa: ['', [Validators.required, Validators.maxLength(255)]],
         nomeDaFuncao: ['', [Validators.required, Validators.maxLength(120)]],
-        quantidadeDeVagas: ['', [Validators.required]],
-        vagaSigilosa: [false, [Validators.required]],
+        quantidadeDeVagas: ['', [Validators.required, Validators.min(1)]],
+        vagaSigilosa: [false],
         dataLimiteSelecao: ['', [Validators.required]],
         dataLimiteIntegracao: ['', [Validators.required]],
-        situacao: ['PENDENTE', [Validators.required]],
+        situacao: ["PENDENTE", [Validators.required]],
         atribuicaoSumaria: ['', [Validators.maxLength(3000)]],
         atividadesTipicas: ['', [Validators.maxLength(3000)]],
         atividadesEventuais: ['', [Validators.maxLength(3000)]],
@@ -62,7 +61,7 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
         cargaHorariaSemanal: ['', [Validators.required]],
         remuneracao: ['', [Validators.maxLength(3000)]],
         informaComissoesBonus: [false, [Validators.required]],
-        comissoesBonus: [''],
+        comissoesBonus: [false],
         valeAlimentacao: [''],
         valeTransporte: [''],
         valeRefeicao: [''],
@@ -112,20 +111,27 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     this.form.get('empresa').valueChanges.subscribe(value => {
       this.empresa = value;
     });
-    
+
     this.optionsSimNao = EnumUtils.getLabelValueArray(SimNaoBoolean);
     this.opcoesEscolaridade = EnumUtils.getLabelValueArray(Escolaridade);
     this.opcoesTipoContrato = EnumUtils.getLabelValueArray(TipoContrato);
     this.opcoesSituacoes = EnumUtils.getLabelValueArray(Situacao);
     this.opcoesGenero = EnumUtils.getLabelValueArray(Genero);
 
-    this.vagaSigilosa = "false";
-    this.escolaridadeSelecionada = "SEM_NIVEL_EXIGIDO";
-    this.tipoContratoSelecionado = "CLT";
-    this.generoSelecionado = 'IGNORADO';
-
     this.form.get('comissoesBonus').disable();
     this.form.get('comissoesBonus').setValue(null);
+
+    this.escolaridadeSelecionada = "SEM_NIVEL_EXIGIDO";
+    this.tipoContratoSelecionado = "CLT";
+    this.generoSelecionado = "IGNORADO";
+
+    this.form.get('escolaridade').updateValueAndValidity();
+    this.form.get('tipoContrato').updateValueAndValidity();
+    this.form.get('genero').updateValueAndValidity();
+
+    this.form.get('genero').valueChanges.subscribe(value => {
+      console.log(value)
+    })
     
     super.ngOnInit();
   }
@@ -166,9 +172,17 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     return '';
   }
   
-  onNovo() {
+  onRegistroNovo() {
     this.editando = false;
     this.abrirRelatorioSalvo = false;
+
+    this.escolaridadeSelecionada = "SEM_NIVEL_EXIGIDO";
+    this.tipoContratoSelecionado = "CLT";
+    this.generoSelecionado = "IGNORADO";
+
+    this.form.get('escolaridade').updateValueAndValidity();
+    this.form.get('tipoContrato').updateValueAndValidity();
+    this.form.get('genero').updateValueAndValidity();
   }
 
   onRegistroIncluido(registroId: number) {
@@ -188,6 +202,14 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
       this.abrirRelatorio();
       this.abrirRelatorioSalvo = false;
     }
+
+    this.escolaridadeSelecionada = registro.escolaridade;
+    this.tipoContratoSelecionado = registro.tipoContrato;
+    this.generoSelecionado = registro.genero;
+
+    this.form.get('escolaridade').updateValueAndValidity();
+    this.form.get('tipoContrato').updateValueAndValidity();
+    this.form.get('genero').updateValueAndValidity();
   }
 
   changeHabilitaComissoes() {

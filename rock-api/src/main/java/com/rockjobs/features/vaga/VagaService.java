@@ -63,6 +63,7 @@ public class VagaService implements ServiceBase<Vaga, Long>, PanacheRepositoryBa
 
 		vagaExistente.setNomeDaFuncao(vagaAtualizada.getNomeDaFuncao());
 		vagaExistente.setQuantidadeDeVagas(vagaAtualizada.getQuantidadeDeVagas());
+		vagaExistente.setGenero(vagaAtualizada.getGenero());
 		vagaExistente.setFoto(vagaAtualizada.getFoto());
 		vagaExistente.setUrlFoto(vagaAtualizada.getUrlFoto());
 		vagaExistente.setDataLimiteSelecao(vagaAtualizada.getDataLimiteSelecao());

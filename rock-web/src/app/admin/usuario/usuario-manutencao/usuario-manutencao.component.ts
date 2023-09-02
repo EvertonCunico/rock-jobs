@@ -33,6 +33,17 @@ export function verificarCPFValido(
   return null;
 }
 
+export function textoValidoValidator(control: AbstractControl): { [key: string]: any } | null {
+  const texto = control.value;
+  const regex = /^[a-zA-Z\s]*$/; // Permite apenas letras e espaços em branco
+
+  if (!regex.test(texto)) {
+    return { textoInvalido: true };
+  }
+
+  return null;
+}
+
 @Component({
   selector: "app-usuario-manutencao",
   templateUrl: "./usuario-manutencao.component.html",
@@ -61,9 +72,9 @@ export class UsuarioManutencaoComponent
     this.titulo = "Cadastros / Usuário";
     this.form = this.formBuilder.group({
       nome: ['', [Validators.required, 
-        Validators.minLength(3), Validators.maxLength(255)]],
+        Validators.minLength(3), Validators.maxLength(255), textoValidoValidator]],
       sobrenome: ['', [Validators.required, 
-        Validators.minLength(3),Validators.maxLength(255)]],
+        Validators.minLength(3),Validators.maxLength(255), textoValidoValidator]],
       email: [
         '',
         [Validators.required, Validators.maxLength(100), Validators.email],

@@ -27,7 +27,7 @@ public class ValidaDuplicidadeUsuario extends ValidacaoPadrao<Usuario> {
     @Override
     public void validar(AcaoCrud acao, Usuario entity) throws ValidacaoException {
         if (StringUtil.isNotEmpty(entity.getCpf()) && existsByCPF(acao, entity))
-            throw ValidacaoException.builder().status(400).mensagem("CPF já cadastrado na base de dados.").build();
+             throw ValidacaoException.builder().status(400).mensagem("CPF já cadastrado na base de dados.").build();
         if (StringUtil.isNotEmpty(entity.getEmail()) && existsByEmail(acao, entity))
             throw ValidacaoException.builder().status(400).mensagem("E-mail já cadastrado na base de dados.").build();
     }
@@ -45,7 +45,7 @@ public class ValidaDuplicidadeUsuario extends ValidacaoPadrao<Usuario> {
     private boolean existsByEmail(AcaoCrud acao, Usuario entity) {
         Query q = em.unwrap(Session.class)
                 .createSQLQuery("SELECT EXISTS(SELECT 1 FROM usuario u WHERE u.email = :email " + (AcaoCrud.UPDATE.equals(acao) ? " and u.id <> :id" : "") + ")");
-        q.setParameter("email", entity.getEmail().replaceAll(Regex.DIGITO_SEM_MASCARA, ""));
+        q.setParameter("email", entity.getEmail().replaceAll(Regex.SEM_ESPACO, ""));
         if (AcaoCrud.UPDATE.equals(acao)) {
             q.setParameter("id", entity.getId());
         }

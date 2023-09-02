@@ -28,7 +28,6 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
   opcoesGenero = [];
 
   editando: boolean;
-  vagaSigilosa: any;
   escolaridadeSelecionada : any;
   tipoContratoSelecionado : any;
   generoSelecionado : any;
@@ -46,7 +45,7 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
       this.form = this.formBuilder.group({
         empresa: ['', [Validators.required, Validators.maxLength(255)]],
         nomeDaFuncao: ['', [Validators.required, Validators.maxLength(120)]],
-        quantidadeDeVagas: ['', [Validators.required]],
+        quantidadeDeVagas: ['', [Validators.required, Validators.min(1)]],
         vagaSigilosa: [false, [Validators.required]],
         dataLimiteSelecao: ['', [Validators.required]],
         dataLimiteIntegracao: ['', [Validators.required]],
@@ -116,17 +115,12 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     this.form.get('situacao').updateValueAndValidity();
 
     this.empresa = this.autenticacaoService.loginInfo.usuario.empresa;
-    
+
     this.optionsSimNao = EnumUtils.getLabelValueArray(SimNaoBoolean);
     this.opcoesEscolaridade = EnumUtils.getLabelValueArray(Escolaridade);
     this.opcoesTipoContrato = EnumUtils.getLabelValueArray(TipoContrato);
     this.opcoesSituacoes = EnumUtils.getLabelValueArray(Situacao);
     this.opcoesGenero = EnumUtils.getLabelValueArray(Genero);
-
-    this.vagaSigilosa = "false";
-    this.escolaridadeSelecionada = "SEM_NIVEL_EXIGIDO";
-    this.tipoContratoSelecionado = "CLT";
-    this.generoSelecionado = 'IGNORADO';
 
     this.form.get('comissoesBonus').disable();
     this.form.get('comissoesBonus').setValue(null);
@@ -169,16 +163,15 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     }
     return '';
   }
-  
-  onNovo() {
+
+  onRegistroNovo() {
     this.editando = false;
     this.abrirRelatorioSalvo = false;
+    
+    this.escolaridadeSelecionada = "SEM_NIVEL_EXIGIDO";
+    this.tipoContratoSelecionado = "CLT";
+    this.generoSelecionado = "IGNORADO";
   }
-
-  onRegistroIncluido(registroId: number) {
-    this.abrirRelatorioSalvo = true;
-  }
-
 
   onRegistroAtualizado(registroId: number) {
     this.abrirRelatorioSalvo = true;
@@ -192,6 +185,10 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
       this.abrirRelatorio();
       this.abrirRelatorioSalvo = false;
     }
+
+    this.escolaridadeSelecionada = registro.escolaridade;
+    this.tipoContratoSelecionado = registro.tipoContrato;
+    this.generoSelecionado = registro.genero;
   }
 
   changeHabilitaComissoes() {

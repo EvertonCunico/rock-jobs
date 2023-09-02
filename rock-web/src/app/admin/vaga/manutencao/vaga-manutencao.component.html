@@ -52,10 +52,8 @@
                                            maxlength='120'/>
                                 </app-rotulo>
                             </div>
-                            <div class='p-col-12 p-md-2'>
-                                <app-rotulo rotulo='Vaga Sigilosa'>
-                                    <p-dropdown [(ngModel)]="this.vagaSigilosa" formControlName="vagaSigilosa" [options]='optionsSimNao'></p-dropdown>
-                                </app-rotulo>
+                            <div class='p-col-12 p-md-2' style="display: flex; align-items: center;">
+                                <p-checkbox formControlName="vagaSigilosa" label="Vaga Sigilosa" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-12 p-md-2'>
                                 <app-rotulo rotulo='Gênero'>

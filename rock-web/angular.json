@@ -70,6 +70,30 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "teste": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": false,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.teste.ts"
+                }
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
             }
           }
         },
@@ -81,6 +105,10 @@
           },
           "configurations": {
             "production": {
+              "browserTarget": "apollo:build:production",
+              "proxyConfig": "src/proxy-prod.conf.json"
+            },
+            "teste": {
               "browserTarget": "apollo:build:production",
               "proxyConfig": "src/proxy-prod.conf.json"
             }
@@ -148,6 +176,9 @@
           },
           "configurations": {
             "production": {
+              "devServerTarget": "apollo:serve:production"
+            },
+            "teste": {
               "devServerTarget": "apollo:serve:production"
             }
           }

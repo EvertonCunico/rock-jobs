@@ -73,6 +73,8 @@ public class EmpresaService implements ServiceBase<Empresa, Long>, PanacheReposi
 		c.setRamoDeAtuacao(empresaAlterar.getRamoDeAtuacao());
 		c.setResponsavelRH(empresaAlterar.getResponsavelRH());
 		c.setTelefoneResponsavelRH(empresaAlterar.getTelefoneResponsavelRH());
+		c.setResponsavelEmpresa(empresaAlterar.getResponsavelEmpresa());
+		c.setTelefoneResponsavelEmpresa(empresaAlterar.getTelefoneResponsavelEmpresa());
 		this.preOperacao(AcaoCrud.UPDATE, c);
 		em.merge(c);
 		this.posOperacao(AcaoCrud.UPDATE, c);

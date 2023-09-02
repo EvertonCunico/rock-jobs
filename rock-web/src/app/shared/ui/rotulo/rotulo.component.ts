@@ -47,6 +47,8 @@ export class RotuloComponent {
                 key => {
                     if (key === 'invalidCPF') {
                         mensagem += ', CPF inválido ';
+                    }if (key === 'textoInvalido') {
+                        mensagem += ', Este campo permite apenas letras e espaços ';
                     } else if (key === 'invalidCNPJ') {
                         mensagem += ', CNPJ inválido';
                     } else if (key === 'required') {

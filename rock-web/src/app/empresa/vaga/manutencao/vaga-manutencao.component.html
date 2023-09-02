@@ -48,14 +48,12 @@
                             </div>
                             <div class='p-col-12 p-md-2'>
                                 <app-rotulo rotulo='Quantidade de vagas'>
-                                    <input formControlName='quantidadeDeVagas' pInputText type='number'
+                                    <input formControlName='quantidadeDeVagas' pInputText type='number' min="1"
                                            maxlength='120'/>
                                 </app-rotulo>
                             </div>
                             <div class='p-col-12 p-md-2'>
-                                <app-rotulo rotulo='Vaga Sigilosa'>
-                                    <p-dropdown [(ngModel)]="this.vagaSigilosa" formControlName="vagaSigilosa" [options]='optionsSimNao'></p-dropdown>
-                                </app-rotulo>
+                                <p-checkbox formControlName="vagaSigilosa" label="Vaga Sigilosa" [binary]="true"></p-checkbox>
                             </div>
                             <div class='p-col-12 p-md-2'>
                                 <app-rotulo rotulo='Gênero'>
