@@ -3,6 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Data
@@ -17,5 +18,5 @@ public class RecuperarSenha {
     private String email;
 
     @NotNull(message = "Data nascimento é obrigatório")
-    private Date dataNascimento;
+    private LocalDate dataNascimento;
 }

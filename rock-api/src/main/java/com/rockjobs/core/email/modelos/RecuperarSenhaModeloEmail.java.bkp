@@ -1,0 +1,33 @@
+package com.chillpass.features.email.modelos;
+
+import com.chillpass.features.email.EmailService;
+import com.chillpass.features.usuario.Usuario;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+
+@RequestScoped
+public class RecuperarSenhaModeloEmail {
+
+    @Inject
+    EmailService emailService;
+
+    public void gerar(Usuario usuario, String senha) {
+        var resolver = new ClassLoaderTemplateResolver();
+        resolver.setPrefix("/templates/");
+        resolver.setSuffix(".html");
+        resolver.setCharacterEncoding("UTF-8");
+        var engine = new TemplateEngine();
+        engine.setTemplateResolver(resolver);
+
+        var context = new Context();
+        context.setVariable("novaSenha", senha);
+
+        var html = engine.process("recuperar-senha", context);
+        emailService.enviar(usuario.getEmail() , "Recuperar Senha", html);
+    }
+
+}

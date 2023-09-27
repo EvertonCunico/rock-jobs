@@ -1,0 +1,5 @@
+package com.rockjobs.core.email.domain;
+
+public enum EmailModelo {
+    RECIBO_PAGAMENTO, RECUPERAR_SENHA, USUARIO_SEJA_BEM_VINDO, CLIENTE_SEJA_BEM_VINDO, RECIBO_PAGAMENTO_PRE_PAGO_MYTAPP
+}

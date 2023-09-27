@@ -1,0 +1,76 @@
+package com.chillpass.features.email.modelos;
+
+import com.chillpass.features.email.EmailService;
+import com.chillpass.features.ticket.email.TicketEmailSituacao;
+import com.chillpass.features.ticket.item.TicketItem;
+import com.chillpass.features.ticket.servico.TicketServico;
+import com.chillpass.features.usuario.Usuario;
+import org.joda.time.LocalDateTime;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import java.util.*;
+
+@RequestScoped
+public class ReciboPagamentoModeloEmail {
+
+    @Inject
+    EmailService emailService;
+
+    public TicketEmailSituacao gerar(Set<TicketItem> listaItens, Set<TicketServico> listaServicos, Usuario usuario, Long idTicket, Double desconto, Double valorPago) {
+        try {
+            List<Map<String, Object>> produtos = new ArrayList<>();
+
+            var subtotal = "subtotal";
+
+            listaItens.forEach(item -> {
+                Map<String, Object> produto = new HashMap<>();
+                produto.put("tipo", "Item");
+                produto.put("descricao", item.getItem().getDescricao());
+                produto.put("quantidade", item.getQuantidade());
+                produto.put("precoUnitario", item.getValor_unitario());
+                produto.put(subtotal, item.getValor_total() * item.getQuantidade());
+                produtos.add(produto);
+            });
+            listaServicos.forEach(servico -> {
+                Map<String, Object> produto = new HashMap<>();
+                produto.put("tipo", "Serviço");
+                produto.put("descricao", servico.getServico().getDescricao());
+                produto.put("quantidade", servico.getQuantidade());
+                produto.put("precoUnitario", servico.getValor_unitario());
+                produto.put(subtotal, servico.getQuantidade() * servico.getValor_unitario());
+                produtos.add(produto);
+            });
+
+//            var total = produtos.stream()
+//                    .mapToDouble(produto -> (Double) produto.get(subtotal))
+//                    .sum();
+
+            var resolver = new ClassLoaderTemplateResolver();
+            resolver.setPrefix("/templates/");
+            resolver.setSuffix(".html");
+            resolver.setCharacterEncoding("UTF-8");
+            var engine = new TemplateEngine();
+            engine.setTemplateResolver(resolver);
+
+            var context = new Context();
+            context.setVariable("nome", usuario.getNome());
+            context.setVariable("email", usuario.getEmail());
+            context.setVariable("cpf", usuario.getCpf());
+            context.setVariable("data", LocalDateTime.now().toString("dd/MM/yyyy HH:mm:ss"));
+            context.setVariable("ticket", idTicket);
+            context.setVariable("produtos", produtos);
+            context.setVariable("desconto", desconto);
+            context.setVariable("total", valorPago);
+
+            var html = engine.process("recibo-pagamento", context);
+            emailService.enviar(usuario.getEmail(), "Recibo", html);
+            return TicketEmailSituacao.ENVIADO;
+        } catch (Exception e) {
+            return TicketEmailSituacao.ENVIAR;
+        }
+    }
+}

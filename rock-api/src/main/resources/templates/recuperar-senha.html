@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Recuperação de senha bem sucedida</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .text {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .text p {
+            margin: 10px 0;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #555;
+        }
+        .text p:last-child {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Recuperação de senha bem sucedida</h1>
+    <div class="text">
+        <p>Sua nova senha é: <strong th:text="${novaSenha}"></strong></p>
+        <p>Por favor, acesse sua conta o mais rápido possível e altere a senha.</p>
+        <p>Obrigado!</p>
+    </div>
+</div>
+</body>
+</html>
