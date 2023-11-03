@@ -13,12 +13,6 @@ export enum AreaDeAtuacao {
   PRESTACAO_DE_SERVICO = 'Prestação de Serviço'
 }
 
-export enum RamoDeAtuacao {
-  FRIGORIFICO = 'Frigorífico',
-  MOVELEIRO = 'Moveleiro',
-  METALURGICO = 'Metalúrgico'
-}
-
 export class Empresa extends Modelo  {
   id: number;
   nomeFantasia: string;
@@ -34,10 +28,10 @@ export class Empresa extends Modelo  {
   enderecoCep: string;
   numeroColaboradores: NumeroColaboradores;
   areaDeAtuacao: AreaDeAtuacao;
-  ramoDeAtuacao: RamoDeAtuacao;
+  ramoDeAtuacao: string;
   responsavelRH: string;
   telefoneResponsavelRH: string;
   responsavelEmpresa: string;
   telefoneResponsavelEmpresa: string;
- 
+  complemento: string;
 }

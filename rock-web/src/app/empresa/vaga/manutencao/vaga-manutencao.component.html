@@ -183,10 +183,13 @@
                 <p-fieldset legend='Horários'>
                     <div class='p-grid p-nogutter'>
                         <div style='margin-left: 1%' class='p-col p-grid'>
-                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
                                 <p-checkbox formControlName="trabalhaSegunda" label="Segunda Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Primeiro Turno</label>
+                            </div>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="segundaInicio" 
                                     name="segundaInicio"
@@ -196,7 +199,7 @@
                                     [inline]="false" 
                                     placeholder="Início"></p-calendar>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="segundaFim" 
                                     name="segundaFim"
@@ -206,12 +209,40 @@
                                     [inline]="false" 
                                     placeholder="Fim"></p-calendar>
                             </div>
-                            <div class='p-col-6'></div>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Segundo Turno</label>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoSegundaInicio" 
+                                    name="contraturnoSegundaInicio"
+                                    [disabled]="this.form.get('trabalhaSegunda').value == false"
+                                    formControlName="contraturnoSegundaInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoSegundaFim" 
+                                    name="contraturnoSegundaFim"
+                                    [disabled]="this.form.get('trabalhaSegunda').value == false"
+                                    formControlName="contraturnoSegundaFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-5'>
+                                <button pButton type="button" label="Replicar demais dias" (click)="replicarHorarios()"  icon="pi pi-sync" class="ui-button-success" style="width: auto; height: 30px;"></button>
+                            </div>
 
-                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
                                 <p-checkbox formControlName="trabalhaTerca" label="Terça Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Primeiro Turno</label>
+                            </div>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="tercaInicio" 
                                     name="tercaInicio"
@@ -221,7 +252,7 @@
                                     [inline]="false" 
                                     placeholder="Início"></p-calendar>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="tercaFim" 
                                     name="tercaFim"
@@ -231,12 +262,38 @@
                                     [inline]="false" 
                                     placeholder="Fim"></p-calendar>
                             </div>
-                            <div class='p-col-6'></div>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Segundo Turno</label>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoTercaInicio" 
+                                    name="contraturnoTercaInicio"
+                                    [disabled]="this.form.get('trabalhaTerca').value == false"
+                                    formControlName="contraturnoTercaInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoTercaFim" 
+                                    name="contraturnoTercaFim"
+                                    [disabled]="this.form.get('trabalhaTerca').value == false"
+                                    formControlName="contraturnoTercaFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-5'></div>
 
-                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
                                 <p-checkbox formControlName="trabalhaQuarta" label="Quarta Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Primeiro Turno</label>
+                            </div>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="quartaInicio" 
                                     name="quartaInicio"
@@ -246,7 +303,7 @@
                                     [inline]="false" 
                                     placeholder="Início"></p-calendar>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="quartaFim" 
                                     name="quartaFim"
@@ -256,12 +313,38 @@
                                     [inline]="false" 
                                     placeholder="Fim"></p-calendar>
                             </div>
-                            <div class='p-col-6'></div>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Segundo Turno</label>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoQuartaInicio" 
+                                    name="contraturnoQuartaInicio"
+                                    [disabled]="this.form.get('trabalhaQuarta').value == false"
+                                    formControlName="contraturnoQuartaInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoQuartaFim" 
+                                    name="contraturnoQuartaFim"
+                                    [disabled]="this.form.get('trabalhaQuarta').value == false"
+                                    formControlName="contraturnoQuartaFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-5'></div>
 
-                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
                                 <p-checkbox formControlName="trabalhaQuinta" label="Quinta Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Primeiro Turno</label>
+                            </div>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="quintaInicio" 
                                     name="quintaInicio"
@@ -271,7 +354,7 @@
                                     [inline]="false" 
                                     placeholder="Início"></p-calendar>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="quintaFim" 
                                     name="quintaFim"
@@ -281,12 +364,39 @@
                                     [inline]="false" 
                                     placeholder="Fim"></p-calendar>
                             </div>
-                            <div class='p-col-6'></div>
 
-                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Segundo Turno</label>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoQuintaInicio" 
+                                    name="contraturnoQuintaInicio"
+                                    [disabled]="this.form.get('trabalhaQuinta').value == false"
+                                    formControlName="contraturnoQuintaInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoQuintaFim" 
+                                    name="contraturnoQuintaFim"
+                                    [disabled]="this.form.get('trabalhaQuinta').value == false"
+                                    formControlName="contraturnoQuintaFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-5'></div>
+
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
                                 <p-checkbox formControlName="trabalhaSexta" label="Sexta Feira" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Primeiro Turno</label>
+                            </div>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="sextaInicio" 
                                     name="sextaInicio"
@@ -296,7 +406,7 @@
                                     [inline]="false" 
                                     placeholder="Início"></p-calendar>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="sextaFim" 
                                     name="sextaFim"
@@ -306,12 +416,38 @@
                                     [inline]="false" 
                                     placeholder="Fim"></p-calendar>
                             </div>
-                            <div class='p-col-6'></div>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Segundo Turno</label>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoSextaInicio" 
+                                    name="contraturnoSextaInicio"
+                                    [disabled]="this.form.get('trabalhaSexta').value == false"
+                                    formControlName="contraturnoSextaInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoSextaFim" 
+                                    name="contraturnoSextaFim"
+                                    [disabled]="this.form.get('trabalhaSexta').value == false"
+                                    formControlName="contraturnoSextaFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-5'></div>
 
-                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
                                 <p-checkbox formControlName="trabalhaSabado" label="Sábado" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Primeiro Turno</label>
+                            </div>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="sabadoInicio" 
                                     name="sabadoInicio"
@@ -321,7 +457,7 @@
                                     [inline]="false" 
                                     placeholder="Início"></p-calendar>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="sabadoFim" 
                                     name="sabadoFim"
@@ -331,12 +467,38 @@
                                     [inline]="false" 
                                     placeholder="Fim"></p-calendar>
                             </div>
-                            <div class='p-col-6'></div>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Segundo Turno</label>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoSabadoInicio" 
+                                    name="contraturnoSabadoInicio"
+                                    [disabled]="this.form.get('trabalhaSabado').value == false"
+                                    formControlName="contraturnoSabadoInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoSabadoFim" 
+                                    name="contraturnoSabadoFim"
+                                    [disabled]="this.form.get('trabalhaSabado').value == false"
+                                    formControlName="contraturnoSabadoFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-5'></div>
 
-                            <div class='p-col-2' style="display: flex; align-items: center; justify-content: flex-end">
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
                                 <p-checkbox formControlName="trabalhaDomingo" label="Domingo" (onChange)="changeDiasSemana()" [binary]="true"></p-checkbox>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Primeiro Turno</label>
+                            </div>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="domingoInicio" 
                                     name="domingoInicio"
@@ -346,7 +508,7 @@
                                     [inline]="false" 
                                     placeholder="Início"></p-calendar>
                             </div>
-                            <div class='p-col-2'>
+                            <div class='p-col-1'>
                                 <p-calendar  
                                     id="domingoFim" 
                                     name="domingoFim"
@@ -356,7 +518,30 @@
                                     [inline]="false" 
                                     placeholder="Fim"></p-calendar>
                             </div>
-                            <div class='p-col-6'></div>
+                            <div class='p-col-1' style="display: flex; align-items: center; justify-content: flex-end">
+                                <label>Segundo Turno</label>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoDomingoInicio" 
+                                    name="contraturnoDomingoInicio"
+                                    [disabled]="this.form.get('trabalhaDomingo').value == false"
+                                    formControlName="contraturnoDomingoInicio"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Início"></p-calendar>
+                            </div>
+                            <div class='p-col-1'>
+                                <p-calendar  
+                                    id="contraturnoDomingoFim" 
+                                    name="contraturnoDomingoFim"
+                                    [disabled]="this.form.get('trabalhaDomingo').value == false"
+                                    formControlName="contraturnoDomingoFim"
+                                    [timeOnly]="true" hourFormat="24" 
+                                    [inline]="false" 
+                                    placeholder="Fim"></p-calendar>
+                            </div>
+                            <div class='p-col-5'></div>
                         </div>
                     </div>
                 </p-fieldset>

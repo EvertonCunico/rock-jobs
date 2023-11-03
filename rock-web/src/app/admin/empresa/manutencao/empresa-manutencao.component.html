@@ -101,8 +101,8 @@
                             </div>
                             <div class='p-col-12 p-md-4'>
                                 <app-rotulo rotulo='Ramo de Atuação'>
-                                    <p-dropdown formControlName='ramoDeAtuacao' [options]='optionsRamoAtuacao'
-                                                [autoDisplayFirst]='true'></p-dropdown>
+                                    <input formControlName='ramoDeAtuacao' pInputText type='text'
+                                           maxlength='100'/>
                                 </app-rotulo>
                             </div>
                             <div class='p-col-12 p-md-3'>
@@ -127,6 +127,11 @@
                                 <app-rotulo rotulo='Telefone do Responsável Empresa'>
                                     <p-inputMask formControlName='telefoneResponsavelEmpresa' mask='(99) 9999-9999?9'
                                                 value='telefoneResponsavelEmpresa'></p-inputMask>
+                                </app-rotulo>
+                            </div>
+                            <div class='p-col-12'>
+                                <app-rotulo rotulo='Complemento'>
+                                    <textarea maxlength="3000" pInputTextarea formControlName='complemento' [rows]='10' style="width: 100%; max-width: 100%;"></textarea>
                                 </app-rotulo>
                             </div>
                         </div>

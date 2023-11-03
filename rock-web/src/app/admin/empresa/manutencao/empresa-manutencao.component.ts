@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit } from '@angular/core';
 import { AbstractControl, Validators } from '@angular/forms';
 import { ManutencaoViewBase } from '@boom/ui/views/manutencao-view-base';
-import { AreaDeAtuacao, Empresa, NumeroColaboradores, RamoDeAtuacao } from 'app/modelos/empresa';
+import { AreaDeAtuacao, Empresa, NumeroColaboradores } from 'app/modelos/empresa';
 import { EmpresaCRUDService } from 'app/services/empresa-crud.service';
 import { EnumUtils } from 'app/shared/utils/enum-utils';
 import { MessageService } from 'primeng';
@@ -63,7 +63,6 @@ export class EmpresaManutencaoComponent extends ManutencaoViewBase<Empresa> impl
 
   optionsNumeroDeColaboradores = [];
   optionsAreaAtuacao = [];
-  optionsRamoAtuacao = [];
 
   constructor(
     protected injector: Injector,
@@ -90,13 +89,13 @@ export class EmpresaManutencaoComponent extends ManutencaoViewBase<Empresa> impl
         telefoneResponsavelRH: [undefined],
         responsavelEmpresa: [undefined],
         telefoneResponsavelEmpresa: [undefined],
+        complemento: [undefined],
       });
     }
 
   ngOnInit(): void {
     this.optionsNumeroDeColaboradores = EnumUtils.getLabelValueArray(NumeroColaboradores);
     this.optionsAreaAtuacao = EnumUtils.getLabelValueArray(AreaDeAtuacao);
-    this.optionsRamoAtuacao = EnumUtils.getLabelValueArray(RamoDeAtuacao);
     
     super.ngOnInit();
   }

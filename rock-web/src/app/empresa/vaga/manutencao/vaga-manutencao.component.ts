@@ -70,24 +70,38 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
         trabalhaSegunda: [false],
         segundaFeiraInicio: [''],
         segundaFeiraFim: [''],
+        contraturnoSegundaInicio: [''],
+        contraturnoSegundaFim: [''],
         trabalhaTerca: [false],
         tercaFeiraInicio: [''],
         tercaFeiraFim: [''],
+        contraturnoTercaInicio: [''],
+        contraturnoTercaFim: [''],
         trabalhaQuarta: [false],
         quartaFeiraInicio: [''],
         quartaFeiraFim: [''],
+        contraturnoQuartaInicio: [''],
+        contraturnoQuartaFim: [''],
         trabalhaQuinta: [false],
         quintaFeiraInicio: [''],
         quintaFeiraFim: [''],
+        contraturnoQuintaInicio: [''],
+        contraturnoQuintaFim: [''],
         trabalhaSexta: [false],
         sextaFeiraInicio: [''],
         sextaFeiraFim: [''],
+        contraturnoSextaInicio: [''],
+        contraturnoSextaFim: [''],
         trabalhaSabado: [false],
         sabadoInicio: [''],
         sabadoFim: [''],
+        contraturnoSabadoInicio: [''],
+        contraturnoSabadoFim: [''],
         trabalhaDomingo: [false],
         domingoInicio: [''],
         domingoFim: [''],
+        contraturnoDomingoInicio: [''],
+        contraturnoDomingoFim: [''],
         genero: ["IGNORADO", [Validators.required]],
         dataInclusao: [''],
         sequencialEmpresa: [''],
@@ -213,48 +227,116 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     return `${ano}${sequencialEmpresa}${idEmpresa}`;
   }
 
+  
+
+  replicarHorarios() {
+    this.form.get('trabalhaTerca').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('tercaFeiraInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('tercaFeiraFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoTercaInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoTercaFim').setValue(this.form.get('contraturnoSegundaFim').value);
+
+    this.form.get('trabalhaQuarta').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('quartaFeiraInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('quartaFeiraFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoQuartaInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoQuartaFim').setValue(this.form.get('contraturnoSegundaFim').value);
+    
+    this.form.get('trabalhaQuinta').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('quintaFeiraInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('quintaFeiraFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoQuintaInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoQuintaFim').setValue(this.form.get('contraturnoSegundaFim').value);
+    
+    this.form.get('trabalhaSexta').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('sextaFeiraInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('sextaFeiraFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoSextaInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoSextaFim').setValue(this.form.get('contraturnoSegundaFim').value);
+    
+    this.form.get('trabalhaSabado').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('sabadoInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('sabadoFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoSabadoInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoSabadoFim').setValue(this.form.get('contraturnoSegundaFim').value);
+    
+    this.form.get('trabalhaDomingo').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('domingoInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('domingoFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoDomingoInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoDomingoFim').setValue(this.form.get('contraturnoSegundaFim').value);
+  }
+
   changeDiasSemana() {
     if (this.form.get('trabalhaDomingo').value == false) {
       this.form.get('domingoInicio').setValue(null);
       this.form.get('domingoInicio').updateValueAndValidity();
       this.form.get('domingoFim').setValue(null);
       this.form.get('domingoFim').updateValueAndValidity();
+      this.form.get('contraturnoDomingoInicio').setValue(null);
+      this.form.get('contraturnoDomingoInicio').updateValueAndValidity();
+      this.form.get('contraturnoDomingoFim').setValue(null);
+      this.form.get('contraturnoDomingoFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaSegunda').value == false) {
       this.form.get('segundaFeiraInicio').setValue(null);
       this.form.get('segundaFeiraInicio').updateValueAndValidity();
       this.form.get('segundaFeiraFim').setValue(null);
       this.form.get('segundaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoSegundaInicio').setValue(null);
+      this.form.get('contraturnoSegundaFim').setValue(null);
+      this.form.get('contraturnoSegundaInicio').updateValueAndValidity();
+      this.form.get('contraturnoSegundaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaTerca').value == false) {
       this.form.get('tercaFeiraInicio').setValue(null);
       this.form.get('tercaFeiraInicio').updateValueAndValidity();
       this.form.get('tercaFeiraFim').setValue(null);
       this.form.get('tercaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoTercaInicio').setValue(null);
+      this.form.get('contraturnoTercaFim').setValue(null);
+      this.form.get('contraturnoTercaInicio').updateValueAndValidity();
+      this.form.get('contraturnoTercaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaQuarta').value == false) {
       this.form.get('quartaFeiraInicio').setValue(null);
       this.form.get('quartaFeiraInicio').updateValueAndValidity();
       this.form.get('quartaFeiraFim').setValue(null);
       this.form.get('quartaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoQuartaInicio').setValue(null);
+      this.form.get('contraturnoQuartaFim').setValue(null);
+      this.form.get('contraturnoQuartaInicio').updateValueAndValidity();
+      this.form.get('contraturnoQuartaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaQuinta').value == false) {
       this.form.get('quintaFeiraInicio').setValue(null);
       this.form.get('quintaFeiraInicio').updateValueAndValidity();
       this.form.get('quintaFeiraFim').setValue(null);
       this.form.get('quintaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoQuintaInicio').setValue(null);
+      this.form.get('contraturnoQuintaFim').setValue(null);
+      this.form.get('contraturnoQuintaInicio').updateValueAndValidity();
+      this.form.get('contraturnoQuintaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaSexta').value == false) {
       this.form.get('sextaFeiraInicio').setValue(null);
       this.form.get('sextaFeiraInicio').updateValueAndValidity();
       this.form.get('sextaFeiraFim').setValue(null);
       this.form.get('sextaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoSextaInicio').setValue(null);
+      this.form.get('contraturnoSextaFim').setValue(null);
+      this.form.get('contraturnoSextaInicio').updateValueAndValidity();
+      this.form.get('contraturnoSextaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaSabado').value == false) {
       this.form.get('sabadoInicio').setValue(null);
       this.form.get('sabadoInicio').updateValueAndValidity();
       this.form.get('sabadoFim').setValue(null);
       this.form.get('sabadoFim').updateValueAndValidity();
+      this.form.get('contraturnoSabadoInicio').setValue(null);
+      this.form.get('contraturnoSabadoFim').setValue(null);
+      this.form.get('contraturnoSabadoInicio').updateValueAndValidity();
+      this.form.get('contraturnoSabadoFim').updateValueAndValidity();
     }
   }
 
@@ -345,14 +427,34 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
           <div class="section">
             <div class="section-title">Dias da Semana</div>
             <div class="section-content">
-              <div><b>Segunda-Feira:</b> ${this.registro.trabalhaSegunda ? DateUtils.formatTime(this.registro.segundaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.segundaFeiraFim) : 'Não'}</div>
-              <div><b>Terça:</b> ${this.registro.trabalhaTerca ? DateUtils.formatTime(this.registro.tercaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.tercaFeiraFim) : 'Não'}</div>
-              <div><b>Quarta:</b> ${this.registro.trabalhaQuarta ? DateUtils.formatTime(this.registro.quartaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quartaFeiraFim) : 'Não'}</div>
-              <div><b>Quinta:</b> ${this.registro.trabalhaQuinta ? DateUtils.formatTime(this.registro.quintaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quintaFeiraFim) : 'Não'}</div>
-              <div><b>Sexta:</b> ${this.registro.trabalhaSexta ? DateUtils.formatTime(this.registro.sextaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.sextaFeiraFim) : 'Não'}</div>
-              <div><b>Sábado:</b> ${this.registro.trabalhaSabado ? DateUtils.formatTime(this.registro.sabadoInicio) + ' - ' + DateUtils.formatTime(this.registro.sabadoInicio) : 'Não'}</div>
-              <div><b>Domingo:</b> ${this.registro.trabalhaDomingo ? DateUtils.formatTime(this.registro.domingoInicio) + ' - ' + DateUtils.formatTime(this.registro.domingoFim) : 'Não'}</div>
-            </div>
+                <div><b>Segunda-Feira:</b></div>
+                <div>Primeiro Turno: ${this.registro.trabalhaSegunda ? DateUtils.formatTime(this.registro.segundaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.segundaFeiraFim) : 'Não'} |
+                Segundo Turno: ${this.registro.trabalhaSegunda ? DateUtils.formatTime(this.registro.contraturnoSegundaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoSegundaFim) : 'Não'}</div>
+                
+                <div><b>Terça-Feira:</b></div>
+                <div>Primeiro Turno: ${this.registro.trabalhaTerca ? DateUtils.formatTime(this.registro.tercaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.tercaFeiraInicio) : 'Não'} |
+                Segundo Turno: ${this.registro.trabalhaTerca ? DateUtils.formatTime(this.registro.contraturnoTercaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoTercaFim) : 'Não'}</div>
+                
+                <div><b>Quarta-Feira:</b></div>
+                <div>Primeiro Turno: ${this.registro.trabalhaQuarta ? DateUtils.formatTime(this.registro.quartaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quartaFeiraFim) : 'Não'} |
+                Segundo Turno: ${this.registro.trabalhaQuarta ? DateUtils.formatTime(this.registro.contraturnoQuartaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoQuartaFim) : 'Não'}</div>
+
+                <div><b>Quinta-Feira:</b></div>
+                <div>Primeiro Turno: ${this.registro.trabalhaQuinta ? DateUtils.formatTime(this.registro.quintaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quintaFeiraFim) : 'Não'} |
+                Segundo Turno: ${this.registro.trabalhaQuinta ? DateUtils.formatTime(this.registro.contraturnoQuintaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoQuintaFim) : 'Não'}</div>
+
+                <div><b>Sexta-Feira:</b></div>
+                <div>Primeiro Turno: ${this.registro.trabalhaSexta ? DateUtils.formatTime(this.registro.sextaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.sextaFeiraFim) : 'Não'} |
+                Segundo Turno: ${this.registro.trabalhaSexta ? DateUtils.formatTime(this.registro.contraturnoSextaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoSextaFim) : 'Não'}</div>
+
+                <div><b>Sábado:</b></div>
+                <div>Primeiro Turno: ${this.registro.trabalhaSabado ? DateUtils.formatTime(this.registro.sabadoInicio) + ' - ' + DateUtils.formatTime(this.registro.sabadoFim) : 'Não'} |
+                Segundo Turno: ${this.registro.trabalhaSabado ? DateUtils.formatTime(this.registro.contraturnoSabadoInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoSabadoFim) : 'Não'}</div>
+
+                <div><b>Domingo:</b></div>
+                <div>Primeiro Turno: ${this.registro.trabalhaDomingo ? DateUtils.formatTime(this.registro.domingoInicio) + ' - ' + DateUtils.formatTime(this.registro.domingoFim) : 'Não'} | 
+                Segundo Turno: ${this.registro.trabalhaDomingo ? DateUtils.formatTime(this.registro.contraturnoDomingoInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoDomingoFim) : 'Não'}</div>
+              </div>
           </div>
       </body>
       </html>

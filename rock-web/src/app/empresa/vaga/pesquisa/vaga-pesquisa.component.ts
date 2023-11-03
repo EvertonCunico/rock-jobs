@@ -4,7 +4,9 @@ import { Coluna } from '@boom/modelos/coluna';
 import { TiposCampo } from '@boom/modelos/tipos-campo';
 import { ViewBase } from '@boom/ui/views/view-base';
 import { AutenticacaoService } from 'app/autenticacao/services/autenticacao.service';
+import { Situacao } from 'app/modelos/vaga/situacao';
 import { VagaPesquisaService } from 'app/services/vaga/vaga-pesquisa.service';
+import { EnumUtils } from 'app/shared/utils/enum-utils';
 
 @Component({
   selector: 'app-vaga-pesquisa',
@@ -12,6 +14,7 @@ import { VagaPesquisaService } from 'app/services/vaga/vaga-pesquisa.service';
 })
 export class VagaPesquisaComponent extends ViewBase {
   formFiltros: FormGroup;
+  opcoesSituacoes = EnumUtils.getLabelValueArray(Situacao);
   colunas: Coluna[] = [
     { field: 'id', header: 'Código'},
     { field: 'empresa', header: 'Empresa', tipo: TiposCampo.OBJETO, propriedades: ['id', 'razaoSocial']},
@@ -37,6 +40,9 @@ export class VagaPesquisaComponent extends ViewBase {
     return this.formBuilder.group({
       empresa: '',
       dataSelecao: '',
+      funcao: '',
+      vagas: '',
+      situacao: ''
     });
   }
 

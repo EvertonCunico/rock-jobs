@@ -13,6 +13,7 @@ import { EnumUtils } from 'app/shared/utils/enum-utils';
 })
 export class VagaPesquisaComponent extends ViewBase {
   formFiltros: FormGroup;
+  opcoesSituacoes = EnumUtils.getLabelValueArray(Situacao);
   colunas: Coluna[] = [
     { field: 'id', header: 'Código'},
     { field: 'empresa', header: 'Empresa', tipo: TiposCampo.OBJETO, propriedades: ['id', 'razaoSocial']},
@@ -29,7 +30,7 @@ export class VagaPesquisaComponent extends ViewBase {
   ];
 
   constructor(protected injector: Injector, public vagaPesquisaService: VagaPesquisaService) {
-    super(injector);
+    super(injector); 
     this.titulo = 'Cadastros / Vagas';
     this.formFiltros = this.criarFormularioFiltros();
   }
@@ -41,6 +42,9 @@ export class VagaPesquisaComponent extends ViewBase {
     return this.formBuilder.group({
       empresa: '',
       dataSelecao: '',
+      funcao: '',
+      vagas: '',
+      situacao: ''
     });
   }
 

@@ -1,8 +1,10 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {of, Observable} from 'rxjs';
 import {CRUDAPIService} from '@boom/services/api/crud-api.service';
 import { Vaga } from 'app/modelos/vaga/vaga';
+import { environment } from 'environments/environment';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class VagaCRUDService extends CRUDAPIService<Vaga> {
@@ -26,5 +28,19 @@ export class VagaCRUDService extends CRUDAPIService<Vaga> {
         let object: any;
         object = registro;
         return super.post(object);
+    }
+
+    contadorVagasAtivas(empresa: any) {
+        const url = `${environment.api}/` + this.urlBase + `/buscar-vagas-ativas`;
+        const options = {
+            params: new HttpParams().set('empresa', empresa)
+        };
+        return this.httpClient.get<any>(url, options).pipe(
+            tap(
+                resultado => {
+                    return of(resultado);
+                }
+            )
+        );
     }
 }

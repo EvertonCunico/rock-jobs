@@ -16,6 +16,7 @@ import { MessageService } from 'primeng';
 import html2pdf from 'html2pdf.js';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { AutenticacaoService } from 'app/autenticacao/services/autenticacao.service';
 
 @Component({
   selector: 'app-vaga-manutencao',
@@ -39,8 +40,11 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
 
   empresa: Empresa = new Empresa();
 
+  registroRelatorio : Vaga = new Vaga();
+
   constructor(
     protected injector: Injector,
+    public autenticacaoService: AutenticacaoService,
     public vagaCRUDService: VagaCRUDService) {
       super(injector, vagaCRUDService);
       this.titulo = "Cadastros / Vaga";
@@ -72,24 +76,38 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
         trabalhaSegunda: [false],
         segundaFeiraInicio: [''],
         segundaFeiraFim: [''],
+        contraturnoSegundaInicio: [''],
+        contraturnoSegundaFim: [''],
         trabalhaTerca: [false],
         tercaFeiraInicio: [''],
         tercaFeiraFim: [''],
+        contraturnoTercaInicio: [''],
+        contraturnoTercaFim: [''],
         trabalhaQuarta: [false],
         quartaFeiraInicio: [''],
         quartaFeiraFim: [''],
+        contraturnoQuartaInicio: [''],
+        contraturnoQuartaFim: [''],
         trabalhaQuinta: [false],
         quintaFeiraInicio: [''],
         quintaFeiraFim: [''],
+        contraturnoQuintaInicio: [''],
+        contraturnoQuintaFim: [''],
         trabalhaSexta: [false],
         sextaFeiraInicio: [''],
         sextaFeiraFim: [''],
+        contraturnoSextaInicio: [''],
+        contraturnoSextaFim: [''],
         trabalhaSabado: [false],
         sabadoInicio: [''],
         sabadoFim: [''],
+        contraturnoSabadoInicio: [''],
+        contraturnoSabadoFim: [''],
         trabalhaDomingo: [false],
         domingoInicio: [''],
         domingoFim: [''],
+        contraturnoDomingoInicio: [''],
+        contraturnoDomingoFim: [''],
         informacoesRock: [''],
         genero: ["IGNORADO", [Validators.required]],
         dataInclusao: [''],
@@ -200,6 +218,7 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
 
   onRegistroCarregado(registro: Vaga) {
     this.registro = registro;
+    this.registroRelatorio.copiarValores(this.registro);
     this.editando = true;
     this.changeHabilitaComissoes();
     if (this.abrirRelatorioSalvo) {
@@ -232,42 +251,70 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
       this.form.get('domingoInicio').updateValueAndValidity();
       this.form.get('domingoFim').setValue(null);
       this.form.get('domingoFim').updateValueAndValidity();
+      this.form.get('contraturnoDomingoInicio').setValue(null);
+      this.form.get('contraturnoDomingoInicio').updateValueAndValidity();
+      this.form.get('contraturnoDomingoFim').setValue(null);
+      this.form.get('contraturnoDomingoFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaSegunda').value == false) {
       this.form.get('segundaFeiraInicio').setValue(null);
       this.form.get('segundaFeiraInicio').updateValueAndValidity();
       this.form.get('segundaFeiraFim').setValue(null);
       this.form.get('segundaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoSegundaInicio').setValue(null);
+      this.form.get('contraturnoSegundaFim').setValue(null);
+      this.form.get('contraturnoSegundaInicio').updateValueAndValidity();
+      this.form.get('contraturnoSegundaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaTerca').value == false) {
       this.form.get('tercaFeiraInicio').setValue(null);
       this.form.get('tercaFeiraInicio').updateValueAndValidity();
       this.form.get('tercaFeiraFim').setValue(null);
       this.form.get('tercaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoTercaInicio').setValue(null);
+      this.form.get('contraturnoTercaFim').setValue(null);
+      this.form.get('contraturnoTercaInicio').updateValueAndValidity();
+      this.form.get('contraturnoTercaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaQuarta').value == false) {
       this.form.get('quartaFeiraInicio').setValue(null);
       this.form.get('quartaFeiraInicio').updateValueAndValidity();
       this.form.get('quartaFeiraFim').setValue(null);
       this.form.get('quartaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoQuartaInicio').setValue(null);
+      this.form.get('contraturnoQuartaFim').setValue(null);
+      this.form.get('contraturnoQuartaInicio').updateValueAndValidity();
+      this.form.get('contraturnoQuartaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaQuinta').value == false) {
       this.form.get('quintaFeiraInicio').setValue(null);
       this.form.get('quintaFeiraInicio').updateValueAndValidity();
       this.form.get('quintaFeiraFim').setValue(null);
       this.form.get('quintaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoQuintaInicio').setValue(null);
+      this.form.get('contraturnoQuintaFim').setValue(null);
+      this.form.get('contraturnoQuintaInicio').updateValueAndValidity();
+      this.form.get('contraturnoQuintaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaSexta').value == false) {
       this.form.get('sextaFeiraInicio').setValue(null);
       this.form.get('sextaFeiraInicio').updateValueAndValidity();
       this.form.get('sextaFeiraFim').setValue(null);
       this.form.get('sextaFeiraFim').updateValueAndValidity();
+      this.form.get('contraturnoSextaInicio').setValue(null);
+      this.form.get('contraturnoSextaFim').setValue(null);
+      this.form.get('contraturnoSextaInicio').updateValueAndValidity();
+      this.form.get('contraturnoSextaFim').updateValueAndValidity();
     }
     if (this.form.get('trabalhaSabado').value == false) {
       this.form.get('sabadoInicio').setValue(null);
       this.form.get('sabadoInicio').updateValueAndValidity();
       this.form.get('sabadoFim').setValue(null);
       this.form.get('sabadoFim').updateValueAndValidity();
+      this.form.get('contraturnoSabadoInicio').setValue(null);
+      this.form.get('contraturnoSabadoFim').setValue(null);
+      this.form.get('contraturnoSabadoInicio').updateValueAndValidity();
+      this.form.get('contraturnoSabadoFim').updateValueAndValidity();
     }
   }
 
@@ -283,111 +330,51 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     return `${ano}${sequencialEmpresa}${idEmpresa}`;
   }
 
-  abrirRelatorio() {
-    const relatorioWindow = window.open('', '_blank');
-    if (relatorioWindow) {
-      relatorioWindow.document.write(`<!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Relatório de Vaga</title>
-          <style>
-              body {
-                  font-family: Arial, sans-serif;
-                  margin-left: 20px;
-                  margin-right: 20px;
-                  margin-bottom: 50px;
-              }
-              .header {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  flex-direction: column;
-                  font-size: 45px;
-                  margin-bottom: 20px;
-              }
-              .section {
-                  margin-bottom: 20px;
-              }
-              .section-title {
-                  font-size: 30px;
-                  font-weight: bold;
-                  margin-bottom: 5px;
-              }
-              .section-content {
-                  font-size: 24px;
-                  border: 1px solid #ccc;
-                  padding: 10px;
-              }
-          </style>
-      </head>
-      <body>
-          <div id="relatorio">
-            <div class="header">
-              <img src="assets/imagens/logo.png" style="max-width:300px;max-height:300px" />
-              <span>Relatório de Vaga</span>
-            </div>
-            <div class="section">
-                <div class="section-title">Dados Gerais</div>
-                <div class="section-content">
-                    <div><b>Empresa:</b> ${this.registro.empresa.razaoSocial}</div>
-                    <div><b>Nome da Função:</b> ${this.registro.nomeDaFuncao}</div>
-                    <div><b>Quantidade de Vagas:</b> ${this.registro.quantidadeDeVagas ? this.registro.quantidadeDeVagas : 'Não Informado'}</div>
-                    <div><b>Vaga Sigilosa:</b> ${this.registro.vagaSigilosa ? 'Sim' : 'Não' }</div>
-                    <div><b>Gênero:</b> ${Genero[this.registro.genero]}</div>
-                    <div><b>Data de Inclusão:</b> ${DateUtils.formatDateTime(this.registro.dataInclusao)}</div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="section-title">Prazos</div>
-                <div class="section-content">
-                    <div><b>Data Limite de Seleção:</b> ${DateUtils.formatDate(this.registro.dataLimiteSelecao)}</div>
-                    <div><b>Data Limite de Integração:</b> ${DateUtils.formatDate(this.registro.dataLimiteIntegracao)}</div>
-                    <div><b>Situação:</b> ${Situacao[this.registro.situacao]}</div>
-                </div>
-            </div>
-            <div class="section">
-                <div class="section-title">Descrição</div>
-                <div class="section-content">
-                    <div><b>Atribuição Sumária: </b> ${this.registro.atribuicaoSumaria}</div>
-                    <div><b>Atividades Típicas: </b> ${this.registro.atividadesTipicas}</div>
-                    <div><b>Atividades Eventuais: </b> ${this.registro.atividadesEventuais}</div>
-                    <div><b>Nível de Autoridade e Responsabilidade: </b> ${this.registro.nivelAutoridadeResponsabilidade}</div>
-                    <div><b>Habilidades Necessárias: </b> ${this.registro.habilidadesNecessarias}</div>
-                    <div><b>Requisitos Básicos: </b> ${this.registro.requisitosBasicos}</div>
-                    <div><b>Requisitos Desejáveis: </b> ${this.registro.requisitosDesejaveis}</div>
-                    <div><b>Escolaridade: </b> ${Escolaridade[this.registro.escolaridade]}</div>
-                    <div><b>Cursos Obrigatórios: </b> ${this.registro.cursosObrigatorios}</div>
-                    <div><b>Tipo de Contrato: </b> ${TipoContrato[this.registro.tipoContrato]}</div>
-                    <div><b>Carga Horária Semanal: </b> ${this.registro.cargaHorariaSemanal}</div>
-                    <div><b>Remuneração: </b> ${this.registro.remuneracao}</div>
-                    <div><b>Comissões e Bônus: </b> ${this.registro.informaComissoesBonus ? this.registro.comissoesBonus : 'Não informado'}</div>
-                    <div><b>Vale Alimentação: </b> ${this.registro.valeAlimentacao ? 'Sim' : 'Não'}</div>
-                    <div><b>Vale Transporte: </b> ${this.registro.valeTransporte ? 'Sim' : 'Não'}</div>
-                    <div><b>Vale Refeição: </b> ${this.registro.valeRefeicao ? 'Sim' : 'Não'}</div>
-                </div>
-            </div>
-            <div class="section">
-              <div class="section-title">Dias da Semana</div>
-              <div class="section-content">
-                <div><b>Segunda-Feira:</b> ${this.registro.trabalhaSegunda ? DateUtils.formatTime(this.registro.segundaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.segundaFeiraFim) : 'Não'}</div>
-                <div><b>Terça:</b> ${this.registro.trabalhaTerca ? DateUtils.formatTime(this.registro.tercaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.tercaFeiraFim) : 'Não'}</div>
-                <div><b>Quarta:</b> ${this.registro.trabalhaQuarta ? DateUtils.formatTime(this.registro.quartaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quartaFeiraFim) : 'Não'}</div>
-                <div><b>Quinta:</b> ${this.registro.trabalhaQuinta ? DateUtils.formatTime(this.registro.quintaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quintaFeiraFim) : 'Não'}</div>
-                <div><b>Sexta:</b> ${this.registro.trabalhaSexta ? DateUtils.formatTime(this.registro.sextaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.sextaFeiraFim) : 'Não'}</div>
-                <div><b>Sábado:</b> ${this.registro.trabalhaSabado ? DateUtils.formatTime(this.registro.sabadoInicio) + ' - ' + DateUtils.formatTime(this.registro.sabadoInicio) : 'Não'}</div>
-                <div><b>Domingo:</b> ${this.registro.trabalhaDomingo ? DateUtils.formatTime(this.registro.domingoInicio) + ' - ' + DateUtils.formatTime(this.registro.domingoFim) : 'Não'}</div>
-              </div>
-            </div>
-          </div>
-      </body>
-      </html>
-      `);
+  replicarHorarios() {
+    this.form.get('trabalhaTerca').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('tercaFeiraInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('tercaFeiraFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoTercaInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoTercaFim').setValue(this.form.get('contraturnoSegundaFim').value);
 
-      window.scroll(0, 0);
-      html2canvas(relatorioWindow.document.querySelector('#relatorio')).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
+    this.form.get('trabalhaQuarta').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('quartaFeiraInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('quartaFeiraFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoQuartaInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoQuartaFim').setValue(this.form.get('contraturnoSegundaFim').value);
+    
+    this.form.get('trabalhaQuinta').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('quintaFeiraInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('quintaFeiraFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoQuintaInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoQuintaFim').setValue(this.form.get('contraturnoSegundaFim').value);
+    
+    this.form.get('trabalhaSexta').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('sextaFeiraInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('sextaFeiraFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoSextaInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoSextaFim').setValue(this.form.get('contraturnoSegundaFim').value);
+    
+    this.form.get('trabalhaSabado').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('sabadoInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('sabadoFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoSabadoInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoSabadoFim').setValue(this.form.get('contraturnoSegundaFim').value);
+    
+    this.form.get('trabalhaDomingo').setValue(this.form.get('trabalhaSegunda').value);
+    this.form.get('domingoInicio').setValue(this.form.get('segundaFeiraInicio').value);
+    this.form.get('domingoFim').setValue(this.form.get('segundaFeiraFim').value);
+    this.form.get('contraturnoDomingoInicio').setValue(this.form.get('contraturnoSegundaInicio').value);
+    this.form.get('contraturnoDomingoFim').setValue(this.form.get('contraturnoSegundaFim').value);
+  }
+
+  abrirRelatorio() {
+    let component: HTMLElement = document.querySelector('#relatorio');
+    component.style.display = 'block';
+
+    window.scroll(0, 0);
+    html2canvas(component).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
       const imgWidth = 200;
       const pageHeight = 285;
       const imgHeight = canvas.height * imgWidth / canvas.width;
@@ -407,9 +394,11 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
       }
       this.relatorioBlob = undefined;
       doc.save('Relatorio.pdf');
+    });
+    component.style.display = 'none';
+  }
 
-      relatorioWindow.close();
-      });
-    }
+  get dataHoraAtual(): string {
+    return DateUtils.formatDateTime(new Date());
   }
 }

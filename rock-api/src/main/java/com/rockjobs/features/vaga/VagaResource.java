@@ -32,6 +32,12 @@ public class VagaResource {
         return service.buscarPorId(id);
     }
 
+    @GET
+    @Path("buscar-vagas-ativas")
+    public Response buscarVagasAtivas(@PathParam("estab") Long estab) throws Exception {
+        return Response.ok().entity(Vaga.vagasAtivas(estab)).build();
+    }
+
     @POST
     public Response novo(@Valid Vaga dto) throws Exception {
         return Response.ok(service.novo(dto).getId()).build();

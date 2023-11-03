@@ -10,4 +10,5 @@ export class VagaPesquisaService extends PesquisaAPIService<Vaga> {
   constructor(protected httpClient: HttpClient) {
     super(httpClient);
   }
+  
 }

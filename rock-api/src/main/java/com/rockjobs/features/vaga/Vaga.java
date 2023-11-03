@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -120,6 +121,12 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
     @Column(name = "segunda_feira_fim")
     private LocalTime segundaFeiraFim;
 
+    @Column(name = "contraturno_segunda_inicio")
+    private LocalTime contraturnoSegundaInicio;
+
+    @Column(name = "contraturno_segunda_fim")
+    private LocalTime contraturnoSegundaFim;
+
     @Column(name = "trabalha_terca")
     private Boolean trabalhaTerca;
 
@@ -128,6 +135,12 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
 
     @Column(name = "terca_feira_fim")
     private LocalTime tercaFeiraFim;
+
+    @Column(name = "contraturno_terca_inicio")
+    private LocalTime contraturnoTercaInicio;
+
+    @Column(name = "contraturno_terca_fim")
+    private LocalTime contraturnoTercaFim;
 
     @Column(name = "trabalha_quarta")
     private Boolean trabalhaQuarta;
@@ -138,6 +151,12 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
     @Column(name = "quarta_feira_fim")
     private LocalTime quartaFeiraFim;
 
+    @Column(name = "contraturno_quarta_inicio")
+    private LocalTime contraturnoQuartaInicio;
+
+    @Column(name = "contraturno_quarta_fim")
+    private LocalTime contraturnoQuartaFim;
+
     @Column(name = "trabalha_quinta")
     private Boolean trabalhaQuinta;
 
@@ -146,6 +165,12 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
 
     @Column(name = "quinta_feira_fim")
     private LocalTime quintaFeiraFim;
+
+    @Column(name = "contraturno_quinta_inicio")
+    private LocalTime contraturnoQuintaInicio;
+
+    @Column(name = "contraturno_quinta_fim")
+    private LocalTime contraturnoQuintaFim;
 
     @Column(name = "trabalha_sexta")
     private Boolean trabalhaSexta;
@@ -156,6 +181,12 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
     @Column(name = "sexta_feira_fim")
     private LocalTime sextaFeiraFim;
 
+    @Column(name = "contraturno_sexta_inicio")
+    private LocalTime contraturnoSextaInicio;
+
+    @Column(name = "contraturno_sexta_fim")
+    private LocalTime contraturnoSextaFim;
+
     @Column(name = "trabalha_sabado")
     private Boolean trabalhaSabado;
 
@@ -165,6 +196,12 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
     @Column(name = "sabado_fim")
     private LocalTime sabadoFim;
 
+    @Column(name = "contraturno_sabado_inicio")
+    private LocalTime contraturnoSabadoInicio;
+
+    @Column(name = "contraturno_sabado_fim")
+    private LocalTime contraturnoSabadoFim;
+
     @Column(name = "trabalha_domingo")
     private Boolean trabalhaDomingo;
 
@@ -173,6 +210,12 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
 
     @Column(name = "domingo_fim")
     private LocalTime domingoFim;
+
+    @Column(name = "contraturno_domingo_inicio")
+    private LocalTime contraturnoDomingoInicio;
+
+    @Column(name = "contraturno_domingo_fim")
+    private LocalTime contraturnoDomingoFim;
 
     @Column(name = "informacao_rock")
     private String informacoesRock;
@@ -194,6 +237,13 @@ public class Vaga extends PanacheEntityBase implements Serializable, Cloneable {
 
     public static Vaga findByEmpresa(Long empresaId) {
         return find("Empresa.id = ?1", empresaId).firstResult();
+    }
+
+    public static Long vagasAtivas(Long empresaId) {
+        if (empresaId != null) {
+            return find("Empresa.id = ?1 and situacao not in ?2", empresaId, List.of(Situacao.CANCELADA, Situacao.CONCLUIDA)).stream().count();
+        }
+        return find("situacao not in ?1", List.of(Situacao.CANCELADA, Situacao.CONCLUIDA)).stream().count();
     }
 
     public static Long findSeqByEmpresa(Long empresaId) {

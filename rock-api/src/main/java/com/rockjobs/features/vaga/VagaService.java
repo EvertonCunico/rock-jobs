@@ -100,6 +100,20 @@ public class VagaService implements ServiceBase<Vaga, Long>, PanacheRepositoryBa
 		vagaExistente.setSabadoFim(vagaAtualizada.getSabadoFim());
 		vagaExistente.setDomingoInicio(vagaAtualizada.getDomingoInicio());
 		vagaExistente.setDomingoFim(vagaAtualizada.getDomingoFim());
+		vagaExistente.setContraturnoSegundaInicio(vagaAtualizada.getContraturnoSegundaInicio());
+		vagaExistente.setContraturnoSegundaFim(vagaAtualizada.getContraturnoSegundaFim());
+		vagaExistente.setContraturnoTercaInicio(vagaAtualizada.getContraturnoTercaInicio());
+		vagaExistente.setContraturnoTercaFim(vagaAtualizada.getContraturnoTercaFim());
+		vagaExistente.setContraturnoQuartaInicio(vagaAtualizada.getContraturnoQuartaInicio());
+		vagaExistente.setContraturnoQuartaFim(vagaAtualizada.getContraturnoQuartaFim());
+		vagaExistente.setContraturnoQuintaInicio(vagaAtualizada.getContraturnoQuintaInicio());
+		vagaExistente.setContraturnoQuintaFim(vagaAtualizada.getContraturnoQuintaFim());
+		vagaExistente.setContraturnoSextaInicio(vagaAtualizada.getContraturnoSextaInicio());
+		vagaExistente.setContraturnoSextaFim(vagaAtualizada.getContraturnoSextaFim());
+		vagaExistente.setContraturnoSabadoInicio(vagaAtualizada.getContraturnoSabadoInicio());
+		vagaExistente.setContraturnoSabadoFim(vagaAtualizada.getContraturnoSabadoFim());
+		vagaExistente.setContraturnoDomingoInicio(vagaAtualizada.getContraturnoDomingoInicio());
+		vagaExistente.setContraturnoDomingoFim(vagaAtualizada.getContraturnoDomingoFim());
 
 		// Mantém o valor atual de informacoesRock se estiver nulo na entidade vagaAtualizada
 		if (vagaAtualizada.getInformacoesRock() != null) {

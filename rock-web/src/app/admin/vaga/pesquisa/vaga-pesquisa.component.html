@@ -3,17 +3,34 @@
         <div [formGroup]='formFiltros'>
             <div class='ui-fluid'>
                 <div class='p-grid'>
-                    <div class='p-col-12 p-md-4'>
+                    <div class='p-col-12 p-md-6'>
                         <app-rotulo rotulo='Empresa'>
                             <app-autocomplete url='empresa/pesquisa' dataKey='id'
                                               label='{razaoSocial}'
                                               formControlName='empresa'></app-autocomplete>
                         </app-rotulo>
                     </div>
+                    <div class='p-col-12 p-md-6'>
+                        <app-rotulo rotulo='Nome da função'>
+                            <input formControlName='funcao' pInputText type='text'
+                                   maxlength='120'/>
+                        </app-rotulo>
+                    </div>
                     <div class='p-col-12 p-md-4'>
                         <app-rotulo rotulo='Data Limite Seleção'>
                             <app-date-picker formControlName='dataSelecao'>
                             </app-date-picker>
+                        </app-rotulo>
+                    </div>
+                    <div class='p-col-12 p-md-4'>
+                        <app-rotulo rotulo='Quantidade de vagas'>
+                            <input formControlName='vagas' pInputText type='number'
+                                   maxlength='120'/>
+                        </app-rotulo>
+                    </div>
+                    <div class='p-col-12 p-md-4'>
+                        <app-rotulo rotulo='Situação'>
+                            <p-dropdown formControlName="situacao" [options]='opcoesSituacoes'></p-dropdown>
                         </app-rotulo>
                     </div>
                 </div>

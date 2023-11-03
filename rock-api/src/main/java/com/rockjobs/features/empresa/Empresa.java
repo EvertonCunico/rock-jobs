@@ -3,7 +3,6 @@ package com.rockjobs.features.empresa;
 import com.rockjobs.features.cidade.Cidade;
 import com.rockjobs.features.empresa.enums.AreaDeAtuacao;
 import com.rockjobs.features.empresa.enums.NumeroColaboradores;
-import com.rockjobs.features.empresa.enums.RamoDeAtuacao;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import lombok.*;
 
@@ -73,9 +72,8 @@ public class Empresa extends PanacheEntityBase implements Serializable {
     @Column(name = "area_atuacao")
     private AreaDeAtuacao areaDeAtuacao;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "ramo_atuacao")
-    private RamoDeAtuacao ramoDeAtuacao;
+    @Column(name = "ramo_atuacao",length = 100)
+    private String ramoDeAtuacao;
 
     @Column(name = "responsavel_rh")
     private String responsavelRH;
@@ -88,6 +86,9 @@ public class Empresa extends PanacheEntityBase implements Serializable {
 
     @Column(name = "telefone_responsavel_empresa", length = 20)
     private String telefoneResponsavelEmpresa;
+
+    @Column(name = "complemento", length = 3000)
+    private String complemento;
 
     public static Empresa findByCNPJ(Long id, String value) {
         if (id != null) {
