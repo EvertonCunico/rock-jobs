@@ -14,6 +14,8 @@ import { VagaCRUDService } from 'app/services/vaga/vaga-crud.service';
 import { DateUtils } from 'app/shared/utils/date-utils';
 import { EnumUtils } from 'app/shared/utils/enum-utils';
 import { MessageService } from 'primeng';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-vaga-manutencao',
@@ -32,9 +34,11 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
   tipoContratoSelecionado : any;
   generoSelecionado : any;
 
-  abrirRelatorioSalvo: boolean = false;
+  registroRelatorio : Vaga = new Vaga();
 
   empresa: Empresa = new Empresa();
+
+  relatorioBlob: any;
 
   constructor(
     protected injector: Injector,
@@ -180,25 +184,16 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
 
   onRegistroNovo() {
     this.editando = false;
-    this.abrirRelatorioSalvo = false;
     
     this.escolaridadeSelecionada = "SEM_NIVEL_EXIGIDO";
     this.tipoContratoSelecionado = "CLT";
     this.generoSelecionado = "IGNORADO";
   }
 
-  onRegistroAtualizado(registroId: number) {
-    this.abrirRelatorioSalvo = true;
-  }
-
   onRegistroCarregado(registro: Vaga) {
     this.registro = registro;
     this.editando = true;
     this.changeHabilitaComissoes();
-    if (this.abrirRelatorioSalvo) {
-      this.abrirRelatorio();
-      this.abrirRelatorioSalvo = false;
-    }
 
     this.escolaridadeSelecionada = registro.escolaridade;
     this.tipoContratoSelecionado = registro.tipoContrato;
@@ -340,126 +335,38 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     }
   }
 
+  get dataHoraAtual(): string {
+    return DateUtils.formatDateTime(new Date());
+  }
+
   abrirRelatorio() {
-    const relatorioWindow = window.open('', '_blank');
-    if (relatorioWindow) {
-      relatorioWindow.document.write(`<!DOCTYPE html>
-      <html lang="en">
-      <head>
-          <meta charset="UTF-8">
-          <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Relatório de Vaga</title>
-          <style>
-              body {
-                  font-family: Arial, sans-serif;
-                  margin-left: 20px;
-                  margin-right: 20px;
-                  margin-bottom: 50px;
-              }
-              .header {
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  flex-direction: column;
-                  font-size: 24px;
-                  margin-bottom: 20px;
-              }
-              .section {
-                  margin-bottom: 20px;
-              }
-              .section-title {
-                  font-size: 16px;
-                  font-weight: bold;
-                  margin-bottom: 5px;
-              }
-              .section-content {
-                  font-size: 12px;
-                  border: 1px solid #ccc;
-                  padding: 10px;
-              }
-          </style>
-      </head>
-      <body>
-          <div class="header">
-            <img src="assets/imagens/logo.png" style="max-width:150px;max-height:150px" />
-            <span>Relatório de Vaga</span>
-          </div>
-          <div class="section">
-              <div class="section-title">Dados Gerais</div>
-              <div class="section-content">
-                  <div><b>Empresa:</b> ${this.registro.empresa.razaoSocial}</div>
-                  <div><b>Nome da Função:</b> ${this.registro.nomeDaFuncao}</div>
-                  <div><b>Quantidade de Vagas:</b> ${this.registro.quantidadeDeVagas ? this.registro.quantidadeDeVagas : 'Não Informado'}</div>
-                  <div><b>Vaga Sigilosa:</b> ${this.registro.vagaSigilosa ? 'Sim' : 'Não' }</div>
-                  <div><b>Gênero:</b> ${Genero[this.registro.genero]}</div>
-                  <div><b>Data de Inclusão:</b> ${DateUtils.formatDateTime(this.registro.dataInclusao)}</div>
-              </div>
-          </div>
-          <div class="section">
-              <div class="section-title">Prazos</div>
-              <div class="section-content">
-                  <div><b>Data Limite de Seleção:</b> ${DateUtils.formatDate(this.registro.dataLimiteSelecao)}</div>
-                  <div><b>Data Limite de Integração:</b> ${DateUtils.formatDate(this.registro.dataLimiteIntegracao)}</div>
-                  <div><b>Situação:</b> ${Situacao[this.registro.situacao]}</div>
-              </div>
-          </div>
-          <div class="section">
-              <div class="section-title">Descrição</div>
-              <div class="section-content">
-                  <div><b>Atribuição Sumária: </b> ${this.registro.atribuicaoSumaria}</div>
-                  <div><b>Atividades Típicas: </b> ${this.registro.atividadesTipicas}</div>
-                  <div><b>Atividades Eventuais: </b> ${this.registro.atividadesEventuais}</div>
-                  <div><b>Nível de Autoridade e Responsabilidade: </b> ${this.registro.nivelAutoridadeResponsabilidade}</div>
-                  <div><b>Habilidades Necessárias: </b> ${this.registro.habilidadesNecessarias}</div>
-                  <div><b>Requisitos Básicos: </b> ${this.registro.requisitosBasicos}</div>
-                  <div><b>Requisitos Desejáveis: </b> ${this.registro.requisitosDesejaveis}</div>
-                  <div><b>Escolaridade: </b> ${Escolaridade[this.registro.escolaridade]}</div>
-                  <div><b>Cursos Obrigatórios: </b> ${this.registro.cursosObrigatorios}</div>
-                  <div><b>Tipo de Contrato: </b> ${TipoContrato[this.registro.tipoContrato]}</div>
-                  <div><b>Carga Horária Semanal: </b> ${this.registro.cargaHorariaSemanal}</div>
-                  <div><b>Remuneração: </b> ${this.registro.remuneracao}</div>
-                  <div><b>Comissões e Bônus: </b> ${this.registro.informaComissoesBonus ? this.registro.comissoesBonus : 'Não informado'}</div>
-                  <div><b>Vale Alimentação: </b> ${this.registro.valeAlimentacao ? 'Sim' : 'Não'}</div>
-                  <div><b>Vale Transporte: </b> ${this.registro.valeTransporte ? 'Sim' : 'Não'}</div>
-                  <div><b>Vale Refeição: </b> ${this.registro.valeRefeicao ? 'Sim' : 'Não'}</div>
-              </div>
-          </div>
-          <div class="section">
-            <div class="section-title">Dias da Semana</div>
-            <div class="section-content">
-                <div><b>Segunda-Feira:</b></div>
-                <div>Primeiro Turno: ${this.registro.trabalhaSegunda ? DateUtils.formatTime(this.registro.segundaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.segundaFeiraFim) : 'Não'} |
-                Segundo Turno: ${this.registro.trabalhaSegunda ? DateUtils.formatTime(this.registro.contraturnoSegundaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoSegundaFim) : 'Não'}</div>
-                
-                <div><b>Terça-Feira:</b></div>
-                <div>Primeiro Turno: ${this.registro.trabalhaTerca ? DateUtils.formatTime(this.registro.tercaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.tercaFeiraInicio) : 'Não'} |
-                Segundo Turno: ${this.registro.trabalhaTerca ? DateUtils.formatTime(this.registro.contraturnoTercaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoTercaFim) : 'Não'}</div>
-                
-                <div><b>Quarta-Feira:</b></div>
-                <div>Primeiro Turno: ${this.registro.trabalhaQuarta ? DateUtils.formatTime(this.registro.quartaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quartaFeiraFim) : 'Não'} |
-                Segundo Turno: ${this.registro.trabalhaQuarta ? DateUtils.formatTime(this.registro.contraturnoQuartaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoQuartaFim) : 'Não'}</div>
+    let component: HTMLElement = document.querySelector('#relatorio');
+    let a: any = document.querySelector('#teste');
+    a.style.display = 'block';
 
-                <div><b>Quinta-Feira:</b></div>
-                <div>Primeiro Turno: ${this.registro.trabalhaQuinta ? DateUtils.formatTime(this.registro.quintaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.quintaFeiraFim) : 'Não'} |
-                Segundo Turno: ${this.registro.trabalhaQuinta ? DateUtils.formatTime(this.registro.contraturnoQuintaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoQuintaFim) : 'Não'}</div>
+    window.scroll(0, 0);
+    html2canvas(component).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const imgWidth = 200;
+      const pageHeight = 285;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      let heightLeft = imgHeight;
 
-                <div><b>Sexta-Feira:</b></div>
-                <div>Primeiro Turno: ${this.registro.trabalhaSexta ? DateUtils.formatTime(this.registro.sextaFeiraInicio) + ' - ' + DateUtils.formatTime(this.registro.sextaFeiraFim) : 'Não'} |
-                Segundo Turno: ${this.registro.trabalhaSexta ? DateUtils.formatTime(this.registro.contraturnoSextaInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoSextaFim) : 'Não'}</div>
+      const doc = new jsPDF('p', 'mm');
+      let position = 5;
 
-                <div><b>Sábado:</b></div>
-                <div>Primeiro Turno: ${this.registro.trabalhaSabado ? DateUtils.formatTime(this.registro.sabadoInicio) + ' - ' + DateUtils.formatTime(this.registro.sabadoFim) : 'Não'} |
-                Segundo Turno: ${this.registro.trabalhaSabado ? DateUtils.formatTime(this.registro.contraturnoSabadoInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoSabadoFim) : 'Não'}</div>
+      doc.addImage(imgData, 'PNG', 5, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
 
-                <div><b>Domingo:</b></div>
-                <div>Primeiro Turno: ${this.registro.trabalhaDomingo ? DateUtils.formatTime(this.registro.domingoInicio) + ' - ' + DateUtils.formatTime(this.registro.domingoFim) : 'Não'} | 
-                Segundo Turno: ${this.registro.trabalhaDomingo ? DateUtils.formatTime(this.registro.contraturnoDomingoInicio) + ' - ' + DateUtils.formatTime(this.registro.contraturnoDomingoFim) : 'Não'}</div>
-              </div>
-          </div>
-      </body>
-      </html>
-      `);
-      relatorioWindow.document.close();
-    }
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        doc.addPage();
+        doc.addImage(imgData, 'PNG', 5, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      this.relatorioBlob = undefined;
+      doc.save('Relatorio.pdf');
+    });
+    a.style.display = 'none';
   }
 }

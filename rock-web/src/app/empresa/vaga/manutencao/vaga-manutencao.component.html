@@ -549,3 +549,132 @@
         </div>
     </p-card>
 </app-manutencao>
+
+<p-card id="teste" [ngStyle]="{display: 'none'}" *ngIf="this.registroRelatorio != null && this.registroRelatorio.empresa != null">
+    <div id="relatorio" style="background-color: white;">
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Relatório de Vaga</title>
+            <style>
+                body {
+                    font-family: Arial, sans-serif;
+                    margin-left: 20px;
+                    margin-right: 20px;
+                    margin-bottom: 50px;
+                }
+                .header {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    font-size: 45px;
+                    margin-bottom: 20px;
+                }
+                .section {
+                    margin-bottom: 20px;
+                }
+                .section-title {
+                    font-size: 30px;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                }
+                .section-content {
+                    font-size: 24px;
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                }
+            </style>
+        </head>
+        <body>
+            <div id="relatorio" style="background-color: white;">
+            <div class="header">
+                <img src="assets/imagens/logo.png" style="max-width:300px;max-height:300px" />
+                <span>Relatório de Vaga</span>
+            </div>
+            <div class="section">
+                <div class="section-title">Dados Gerais</div>
+                <div class="section-content">
+                    <div><b>Empresa:</b> {{this.registroRelatorio.empresa.razaoSocial}}</div>
+                    <div><b>Nome da Função:</b> {{this.registroRelatorio.nomeDaFuncao}}</div>
+                    <div><b>Quantidade de Vagas:</b> {{this.registroRelatorio.quantidadeDeVagas ? this.registroRelatorio.quantidadeDeVagas : 'Não Informado'}}</div>
+                    <div><b>Vaga Sigilosa:</b> {{this.registroRelatorio.vagaSigilosa ? 'Sim' : 'Não' }}</div>
+                    <div><b>Gênero:</b> {{this.registroRelatorio.generoFormatado}}</div>
+                    <div><b>Data de Inclusão:</b> {{this.registroRelatorio.dataInclusaoFormatado}}</div>
+                </div>
+            </div>
+            <div class="section" style="background-color: white;">
+                <div class="section-title">Prazos</div>
+                <div class="section-content">
+                    <div><b>Data Limite de Seleção:</b> {{this.registroRelatorio.dataLimiteSelecaoFormatado}}</div>
+                    <div><b>Data Limite de Integração:</b> {{this.registroRelatorio.dataLimiteIntegracaoFormatado}}</div>
+                    <div><b>Situação:</b> {{this.registroRelatorio.situacaoFormatado}}</div>
+                </div>
+            </div>
+            <div class="section" style="background-color: white;">
+                <div class="section-title">Descrição</div>
+                <div class="section-content">
+                    <div><b>Atribuição Sumária: </b> {{this.registroRelatorio.atribuicaoSumaria}}</div>
+                    <div><b>Atividades Típicas: </b> {{this.registroRelatorio.atividadesTipicas}}</div>
+                    <div><b>Atividades Eventuais: </b> {{this.registroRelatorio.atividadesEventuais}}</div>
+                    <div><b>Nível de Autoridade e Responsabilidade: </b> {{this.registroRelatorio.nivelAutoridadeResponsabilidade}}</div>
+                    <div><b>Habilidades Necessárias: </b> {{this.registroRelatorio.habilidadesNecessarias}}</div>
+                    <div><b>Requisitos Básicos: </b> {{this.registroRelatorio.requisitosBasicos}}</div>
+                    <div><b>Requisitos Desejáveis: </b> {{this.registroRelatorio.requisitosDesejaveis}}</div>
+                    <div><b>Escolaridade: </b> {{this.registroRelatorio.escolaridadeFormatado}}</div>
+                    <div><b>Cursos Obrigatórios: </b> {{this.registroRelatorio.cursosObrigatorios}}</div>
+                    <div><b>Tipo de Contrato: </b> {{this.registroRelatorio.tipoContratoFormatado}}</div>
+                    <div><b>Carga Horária Semanal: </b> {{this.registroRelatorio.cargaHorariaSemanal}}</div>
+                    <div><b>Remuneração: </b> {{this.registroRelatorio.remuneracao}}</div>
+                    <div><b>Comissões e Bônus: </b> {{this.registroRelatorio.informaComissoesBonus ? this.registroRelatorio.comissoesBonus : 'Não informado'}}</div>
+                    <div><b>Vale Alimentação: </b> {{this.registroRelatorio.valeAlimentacao ? 'Sim' : 'Não'}}</div>
+                    <div><b>Vale Transporte: </b> {{this.registroRelatorio.valeTransporte ? 'Sim' : 'Não'}}</div>
+                    <div><b>Vale Refeição: </b> {{this.registroRelatorio.valeRefeicao ? 'Sim' : 'Não'}}</div>
+                </div>
+            </div>
+            <div class="section" style="background-color: white;">
+                <div class="section-title">Dias da Semana</div>
+                <div class="section-content">
+                <div><b>Segunda-Feira:</b></div>
+                <div>Primeiro Turno: {{this.registroRelatorio.trabalhaSegunda ? this.registroRelatorio.segundaFeiraInicioFormatado + ' - ' + this.registroRelatorio.segundaFeiraFimFormatado : 'Não'}} |
+                Segundo Turno: {{this.registroRelatorio.trabalhaSegunda ?this.registroRelatorio.contraTurnoSegundaFeiraInicioFormatado + ' - ' + this.registroRelatorio.contraTurnoSegundaFeiraFimFormatado : 'Não'}}</div>
+                
+                <div><b>Terça-Feira:</b></div>
+                <div>Primeiro Turno: {{this.registroRelatorio.trabalhaTerca ? this.registroRelatorio.tercaFeiraInicioFormatado+ ' - ' + this.registroRelatorio.tercaFeiraInicioFormatado : 'Não'}} |
+                Segundo Turno: {{this.registroRelatorio.trabalhaTerca ? this.registroRelatorio.contraTurnoTercaFeiraInicioFormatado+ ' - ' + this.registroRelatorio.contraTurnoTercaFeiraFimFormatado : 'Não'}}</div>
+                
+                <div><b>Quarta-Feira:</b></div>
+                <div>Primeiro Turno: {{this.registroRelatorio.trabalhaQuarta ? this.registroRelatorio.quartaFeiraInicioFormatado+ ' - ' + this.registroRelatorio.quartaFeiraFimFormatado : 'Não'}} |
+                Segundo Turno: {{this.registroRelatorio.trabalhaQuarta ? this.registroRelatorio.contraTurnoQuartaFeiraInicioFormatado+ ' - ' + this.registroRelatorio.contraTurnoQuartaFeiraFimFormatado : 'Não'}}</div>
+        
+                <div><b>Quinta-Feira:</b></div>
+                <div>Primeiro Turno: {{this.registroRelatorio.trabalhaQuinta ? this.registroRelatorio.quintaFeiraInicioFormatado+ ' - ' + this.registroRelatorio.quintaFeiraFimFormatado : 'Não'}} |
+                Segundo Turno: {{this.registroRelatorio.trabalhaQuinta ? this.registroRelatorio.contraTurnoQuintaFeiraInicioFormatado+ ' - ' + this.registroRelatorio.contraTurnoQuintaFeiraFimFormatado : 'Não'}}</div>
+        
+                <div><b>Sexta-Feira:</b></div>
+                <div>Primeiro Turno: {{this.registroRelatorio.trabalhaSexta ? this.registroRelatorio.sextaFeiraInicioFormatado+ ' - ' + this.registroRelatorio.sextaFeiraFimFormatado : 'Não'}} |
+                Segundo Turno: {{this.registroRelatorio.trabalhaSexta ? this.registroRelatorio.contraTurnoSextaFeiraInicioFormatado+ ' - ' + this.registroRelatorio.contraTurnoSextaFeiraFimFormatado : 'Não'}}</div>
+        
+                <div><b>Sábado:</b></div>
+                <div>Primeiro Turno: {{this.registroRelatorio.trabalhaSabado ? this.registroRelatorio.sabadoInicioFormatado+ ' - ' + this.registroRelatorio.sabadoFimFormatado : 'Não'}} |
+                Segundo Turno: {{this.registroRelatorio.trabalhaSabado ? this.registroRelatorio.contraTurnoSabadoInicioFormatado+ ' - ' + this.registroRelatorio.contraTurnoSabadoFimFormatado : 'Não'}}</div>
+        
+                <div><b>Domingo:</b></div>
+                <div>Primeiro Turno: {{this.registroRelatorio.trabalhaDomingo ? this.registroRelatorio.domingoInicioFormatado+ ' - ' + this.registroRelatorio.domingoFimFormatado : 'Não'}} | 
+                Segundo Turno: {{this.registroRelatorio.trabalhaDomingo ? this.registroRelatorio.contraTurnoDomingoInicioFormatado+ ' - ' + this.registroRelatorio.contraTurnoDomingoFimFormatado : 'Não'}}</div>
+                </div>
+            </div>
+            <div class="section" style="background-color: white;">
+                <div class="section-content">
+                    <div><b>Impresso por:</b> {{this.autenticacaoService.loginInfo.usuario.nome + " " + this.autenticacaoService.loginInfo.usuario.sobrenome}}</div>
+                    <div>Em: {{this.dataHoraAtual}}</div>
+                </div>
+            </div>
+            </div>
+        </body>
+        </html>
+    </div>
+    
+</p-card>

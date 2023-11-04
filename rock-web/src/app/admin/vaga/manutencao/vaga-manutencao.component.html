@@ -555,8 +555,8 @@
     </p-card>
 </app-manutencao>
 
-<p-card>
-    <div  id="relatorio"  style="display: none; background-color: white;">
+<p-card id="teste" [ngStyle]="{display: 'none'}" *ngIf="this.registroRelatorio != null && this.registroRelatorio.empresa != null">
+    <div id="relatorio" style="background-color: white;">
         <!DOCTYPE html>
         <html lang="en">
         <head>
