@@ -173,7 +173,7 @@ export class UsuarioManutencaoComponent
           severity: "warn",
           summary: "Atenção!!",
           detail:
-            "A senha deve ter pelo menos 5 caracteres, incluindo pelo menos um dígito, uma letra minúscula, uma letra maiúscula e um caractere especial.",
+            "A senha deve ter pelo menos 5 caracteres, incluindo dígitos, letras maiúsculas e minúsculas.",
           life: 6000,
         });
         return false;

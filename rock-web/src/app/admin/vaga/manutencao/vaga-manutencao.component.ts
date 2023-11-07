@@ -36,8 +36,6 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
   tipoContratoSelecionado : any;
   generoSelecionado : any;
 
-  abrirRelatorioSalvo: boolean = false;
-
   empresa: Empresa = new Empresa();
 
   registroRelatorio : Vaga = new Vaga();
@@ -196,7 +194,6 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
   
   onRegistroNovo() {
     this.editando = false;
-    this.abrirRelatorioSalvo = false;
 
     this.escolaridadeSelecionada = "SEM_NIVEL_EXIGIDO";
     this.tipoContratoSelecionado = "CLT";
@@ -207,24 +204,11 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
     this.form.get('genero').updateValueAndValidity();
   }
 
-  onRegistroIncluido(registroId: number) {
-    this.abrirRelatorioSalvo = true;
-  }
-
-
-  onRegistroAtualizado(registroId: number) {
-    this.abrirRelatorioSalvo = true;
-  }
-
   onRegistroCarregado(registro: Vaga) {
     this.registro = registro;
     this.registroRelatorio.copiarValores(this.registro);
     this.editando = true;
     this.changeHabilitaComissoes();
-    if (this.abrirRelatorioSalvo) {
-      this.abrirRelatorio();
-      this.abrirRelatorioSalvo = false;
-    }
 
     this.escolaridadeSelecionada = registro.escolaridade;
     this.tipoContratoSelecionado = registro.tipoContrato;
@@ -370,7 +354,8 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
 
   abrirRelatorio() {
     let component: HTMLElement = document.querySelector('#relatorio');
-    component.style.display = 'block';
+    let a: any = document.querySelector('#teste');
+    a.style.display = 'block';
 
     window.scroll(0, 0);
     html2canvas(component).then(canvas => {
@@ -395,7 +380,7 @@ export class VagaManutencaoComponent extends ManutencaoViewBase<Vaga> implements
       this.relatorioBlob = undefined;
       doc.save('Relatorio.pdf');
     });
-    component.style.display = 'none';
+    a.style.display = 'none';
   }
 
   get dataHoraAtual(): string {
